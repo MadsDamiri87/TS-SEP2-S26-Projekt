@@ -2,8 +2,12 @@ import './App.css'
 import "./styles.css"
 import { MobileMenu } from "./components/sidemenu/mobile_menu/MobileMenu.jsx";
 import { DesktopMenu } from "./components/sidemenu/desktop_menu/DesktopMenu.jsx";
-import { useEffect, useState } from "react";
 import { PopupModal } from "./components/popup/PopupModal.jsx";
+
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import {LandingPage} from "./pages/landingpage/LandingPage.jsx";
 
 function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -35,7 +39,7 @@ function App() {
 
 
     return (
-        <>
+        <BrowserRouter>
             <div className={isMobile ? "mobile-layout" : "desktop-layout"}>
                 {isMobile ? (
                     <MobileMenu
@@ -52,6 +56,12 @@ function App() {
                         checkLoginStatus={checkLoginStatus}
                     />
                 )}
+
+                <main className="page-container">
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                    </Routes>
+                </main>
             </div>
 
             <PopupModal
@@ -59,10 +69,9 @@ function App() {
                 isLogin={isLoginModalOpen}
                 setIsLogin={setIsLoginModalOpen}
                 onSubmit={checkLoginStatus}
-                onClose={() => setShowPopup(false)
-            }
+                onClose={() => setShowPopup(false)}
             />
-        </>
+        </BrowserRouter>
     );
 }
 

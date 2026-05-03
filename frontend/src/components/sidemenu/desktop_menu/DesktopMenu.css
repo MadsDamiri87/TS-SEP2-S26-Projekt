@@ -1,11 +1,16 @@
 .desktop-menu-wrapper {
     display: flex;
     flex-direction: column;
+
     width: 5rem;
     height: 100vh;
+
+    position: sticky;
+    top: 0;
+
     background-color: var(--bg);
     transition: width 0.17s ease;
-
+    flex-shrink: 0;
 }
 
 .desktop-menu-wrapper:hover {
