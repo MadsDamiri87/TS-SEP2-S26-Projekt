@@ -1,0 +1,6 @@
+.course-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
