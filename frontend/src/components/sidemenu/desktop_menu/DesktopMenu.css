@@ -8,7 +8,8 @@
     position: sticky;
     top: 0;
 
-    background-color: var(--bg);
+    background-color: var(--accent-bg);
+    border-right: 4px solid var(--bg);
     transition: width 0.17s ease;
     flex-shrink: 0;
 }

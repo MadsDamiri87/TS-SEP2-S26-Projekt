@@ -57,7 +57,7 @@ function App() {
                     />
                 )}
 
-                <main className="page-container">
+                <main className="router-container">
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
                     </Routes>

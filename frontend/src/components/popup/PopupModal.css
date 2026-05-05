@@ -57,22 +57,6 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.submit-btn {
-  padding: 12px;
-  font-size: 17px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgb(42 125 155) 0%, rgba(87, 199, 133, 1) 50%, rgb(237 229 83) 100%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-.submit-btn:hover {
-  opacity: 0.9;
-}
-
 .switch-mode {
   color: lightgreen;
   cursor: pointer;
@@ -85,8 +69,8 @@
 }
 
 input:user-valid{
-  outline: 3px solid #24fc7e;
+  outline: 3px solid var(--succes);
 }
 input:user-invalid{
-  outline: 3px solid #dd5e37;
+  outline: 3px solid var(--danger);
 }

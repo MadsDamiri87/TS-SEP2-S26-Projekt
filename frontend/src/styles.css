@@ -9,11 +9,17 @@
     min-height: 100vh;
 }
 
-.page-container {
+.course-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.router-container {
     width: 100%;
     min-height: 100vh;
     padding: clamp(2rem, 5vw, 5rem);
-    box-sizing: border-box;
 
     background: linear-gradient(
             135deg,
@@ -22,9 +28,13 @@
             #1b5260 75%,
             #45b883 100%
     );
+    color: var(--text-color);
+}
 
-    color: #f5f7fa;
-
+.page-container {
+    display: flex;
+    flex-direction: column;
+    gap: calc((var(--std-gap) * 3));
 }
 
 

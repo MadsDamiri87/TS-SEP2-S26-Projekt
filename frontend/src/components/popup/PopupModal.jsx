@@ -88,7 +88,7 @@ export function PopupModal({ isOpen, onClose, isLogin, setIsLogin, onSubmit }) {
                         required
                     />
 
-                    <button type="submit" className="submit-btn">
+                    <button type="submit" className="highlight-btn">
                         {isLogin ? "Login" : "Create Account"}
                     </button>
                 </form>

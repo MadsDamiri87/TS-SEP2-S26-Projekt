@@ -7,7 +7,7 @@
 }
 
 :root {
-    --dark-blue: #212e40;
+    --dark-blue: #02062f;
     --medium-blue: #2f3c4f;
     --light-blue: #485669;
     --light-gray: #6d6767;
@@ -16,9 +16,12 @@
     --super-light-blue: #acbfde;
     --off-red: #f66969;
     --light-red: #f77f7f;
+    --light-green: #24fc7e;
+    --lime-green: #45b883;
 
     /*  Variabler vi skal bruger nedenunder  */
     --accent-bg: var(--dark-blue);
+    --contrast-bg: var(--lime-green);
     --accent-text: var(--off-white);
     --bg: var(--medium-blue);
     --text-color: var(--off-white);
@@ -34,7 +37,7 @@
     --link-hover-text: ;
     --input-bg: var(--c-light-ghostwhite);
     --input-border: var(--c-light-periwrinkle);
-    --succes: var(--c-light-tiffanyblue);
+    --succes: var(--light-green);
     --danger: var(--off-red);
     --transparent: hsl(0, 0%, 0%, 0%);
     --logout-btn: var(--off-red);
@@ -44,6 +47,15 @@
     --std-padding: 1rem;
     --std-gap: 1rem; 
     --std-border: 2px solid;
+    --opaque-bg: rgba(0, 0, 0, 0.21);
+    --std-box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    --gradient-bg: linear-gradient(
+            90deg,
+            rgb(42 125 155) 0%,
+            rgba(87, 199, 133, 1) 50%,
+            rgb(237 229 83) 100%
+    );
+
 }
 
 body {
@@ -66,7 +78,6 @@ p {
     max-width: 42rem;
     font-size: clamp(1rem, 2vw, 1.25rem);
     line-height: 1.6;
-    margin: 0 0 3rem;
     color: rgba(245, 247, 250, 0.82);
 }
 
@@ -76,4 +87,30 @@ h2 {
     line-height: 1.2;
     margin: 0 0 1rem;
     letter-spacing: -0.02em;
+}
+
+h3 {
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+}
+
+button {
+    padding: 12px;
+    font-size: 17px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.highlight-btn {
+    background: var(--gradient-bg);
 }

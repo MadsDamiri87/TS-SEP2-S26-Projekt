@@ -17,9 +17,9 @@ export function CourseCard({ courseId }) {
   }, [courseId]);
   return (
     <div className="course-card">
-      <h2 className="course-card-title">
+      <h3 className="course-card-title">
         {isLoading ? "The best course in the world" : course.title}
-      </h2>
+      </h3>
       <p className="course-card-description">
         {isLoading
           ? "You will learn everything and become as clever as the worlds leading president by just signing up for this course!"
