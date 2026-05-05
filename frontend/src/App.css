@@ -39,7 +39,11 @@
     --transparent: hsl(0, 0%, 0%, 0%);
     --logout-btn: var(--off-red);
     --logout-btn-hover: var(--light-red);
-    --logout-btn-text: var(--light-gray)
+    --logout-btn-text: var(--light-gray);
+    --border-radius: 15px;
+    --std-padding: 1rem;
+    --std-gap: 1rem; 
+    --std-border: 2px solid;
 }
 
 body {

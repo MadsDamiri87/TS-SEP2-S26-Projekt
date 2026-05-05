@@ -1,0 +1,73 @@
+.course-card {
+  padding: var(--std-padding);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--std-gap);
+  max-width: clamp(200px, 350px, 90%);
+  border: var(--std-border);
+  border-color: linear-gradient(
+    90deg,
+    rgb(42 125 155) 0%,
+    rgba(87, 199, 133, 1) 50%,
+    rgb(237 229 83) 100%
+  );
+  border-radius: var(--border-radius);
+}
+
+.course-card-price {
+  display: flex;
+  font-weight: 500;
+  justify-content: flex-end;
+}
+
+.course-card-actions {
+  display: flex;
+  gap: calc(2 * var(--std-gap));
+  justify-content: flex-end;
+}
+
+.highlight-btn {
+  padding: 12px;
+  font-size: 17px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgb(42 125 155) 0%,
+    rgba(87, 199, 133, 1) 50%,
+    rgb(237 229 83) 100%
+  );
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.submit-btn {
+  padding: 12px;
+  font-size: 17px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgb(42 125 155) 0%,
+    rgba(87, 199, 133, 1) 50%,
+    rgb(237 229 83) 100%
+  );
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 12px;
+  font-size: 17px;
+  border: none;
+  border-radius: 8px;
+  background: var(--button-face);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
