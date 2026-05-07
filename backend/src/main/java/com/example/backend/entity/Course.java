@@ -2,6 +2,8 @@ package com.example.backend.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "courses")
 public class Course
@@ -28,6 +30,9 @@ public class Course
 
     @Column(nullable = false)
     private boolean isPublished;
+
+    @Column(nullable = false)
+    private LocalDateTime lastEdited;
 
     public Course()
     {
@@ -101,5 +106,19 @@ public class Course
     public void setPublished(boolean published)
     {
         isPublished = published;
+    }
+
+    public LocalDateTime getLastEdited()
+    {
+        return lastEdited;
+    }
+
+    public void setLastEdited(LocalDateTime lastEdited)
+    {
+        this.lastEdited = lastEdited;
+    }
+
+    public void setLastEditedToNow() {
+        lastEdited = LocalDateTime.now();
     }
 }
