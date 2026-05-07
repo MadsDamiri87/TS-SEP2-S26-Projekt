@@ -16,13 +16,13 @@ public class Course
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(nullable = false, length = 130)
+    @Column(nullable = false)
     private String shortDescription;
 
-    @Column(nullable = false, length = 800)
+    @Column(nullable = false, length = 5000)
     private String description;
 
     @Column(nullable = false)
