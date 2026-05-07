@@ -67,6 +67,9 @@ export function CreateCoursePage() {
                         >
                             Create Course
                         </button>
+                        <p> * All courses are by default initially created as drafts to be found and edited in your Course Builder!</p>
+
+
 
                     </form>
                 </div>

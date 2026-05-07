@@ -52,11 +52,22 @@
 .form-container
 {
   padding: 2rem;
-  border-radius: 24px;
 
   background: rgba(255, 255, 255, 0.08);
 
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  --gradient-bg: linear-gradient(
+      90deg,
+      rgb(42 125 155) 0%,
+      rgba(87, 199, 133, 1) 50%,
+      rgb(237 229 83) 100%
+  );
+
+  border: 1px solid;
+
+
+  border-image-source: var(--gradient-bg);
+  border-image-slice: 1;
+
 
   backdrop-filter: blur(18px);
 
@@ -70,11 +81,16 @@
   gap: 1.25rem;
 }
 
+.formular p {
+  font-size: 0.7rem;
+}
+
 .form-group
 {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+
 }
 
 #price{
@@ -141,6 +157,8 @@
 {
   margin-top: 0.5rem;
 
+  align-self: center;
+  width: 25%;
   border: none;
   border-radius: 16px;
 
@@ -164,5 +182,5 @@
 {
   transform: translateY(-2px);
 
-  box-shadow: 0 12px 30px rgba(69, 184, 131, 0.35);
+  box-shadow: 0 12px 12px rgba(69, 184, 131, 0.35);
 }
