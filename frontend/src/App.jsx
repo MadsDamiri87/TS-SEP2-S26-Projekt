@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import {LandingPage} from "./pages/landingpage/LandingPage.jsx";
+import {CreateCoursePage} from "./pages/createCoursePage/CreateCoursePage.jsx";
 
 function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -59,7 +60,7 @@ function App() {
 
                 <main className="router-container">
                     <Routes>
-                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/" element={<CreateCoursePage />} />
                     </Routes>
                 </main>
             </div>

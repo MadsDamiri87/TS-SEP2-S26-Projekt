@@ -1,0 +1,186 @@
+.create-course-hero
+{
+  max-width: 850px;
+}
+
+.hero-kicker
+{
+  color: #45b883;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.create-course-hero h1
+{
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero-description
+{
+  max-width: 700px;
+  line-height: 1.7;
+  opacity: 0.88;
+  font-size: 1.05rem;
+}
+
+.create-course-section
+{
+  width: min(100%, 760px);
+}
+
+.section-heading
+{
+  margin-bottom: 1.5rem;
+}
+
+.section-heading h2
+{
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.section-heading p
+{
+  opacity: 0.8;
+}
+
+.form-container
+{
+  padding: 2rem;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  --gradient-bg: linear-gradient(
+      90deg,
+      rgb(42 125 155) 0%,
+      rgba(87, 199, 133, 1) 50%,
+      rgb(237 229 83) 100%
+  );
+
+  border: 1px solid;
+
+
+  border-image-source: var(--gradient-bg);
+  border-image-slice: 1;
+
+
+  backdrop-filter: blur(18px);
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.formular
+{
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formular p {
+  font-size: 0.7rem;
+}
+
+.form-group
+{
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+
+}
+
+#price{
+  width: 25%;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
+}
+
+.form-group label
+{
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea
+{
+  width: 100%;
+  padding: 1rem;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  background: rgba(2, 6, 47, 0.55);
+
+  color: white;
+  font-size: 1rem;
+
+  outline: none;
+
+  transition: border-color 0.2s ease,
+  transform 0.2s ease,
+  box-shadow 0.2s ease;
+}
+
+.form-group textarea
+{
+  resize: vertical;
+  min-height: 140px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder
+{
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.form-group input:focus,
+.form-group textarea:focus
+{
+  border-color: #45b883;
+
+  box-shadow: 0 0 0 4px rgba(69, 184, 131, 0.2);
+}
+
+.create-course-btn
+{
+  margin-top: 0.5rem;
+
+  align-self: center;
+  width: 25%;
+  border: none;
+  border-radius: 16px;
+
+  padding: 1rem 1.2rem;
+
+  background: var(--gradient-bg);
+  );
+
+  color: #02062f;
+
+  font-weight: 700;
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease,
+  box-shadow 0.2s ease;
+}
+
+.create-course-btn:hover
+{
+  transform: translateY(-2px);
+
+  box-shadow: 0 12px 12px rgba(69, 184, 131, 0.35);
+}
