@@ -16,6 +16,7 @@ public class CourseMapper
                 course.getShortDescription(),
                 course.getDescription(),
                 course.getPrice(),
+                course.isPublished(),
                 course.getLastEdited()
         );
     }

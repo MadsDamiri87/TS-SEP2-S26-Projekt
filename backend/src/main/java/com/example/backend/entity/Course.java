@@ -121,4 +121,9 @@ public class Course
     public void setLastEditedToNow() {
         lastEdited = LocalDateTime.now();
     }
+
+    public void publishCourse()
+    {
+        isPublished = true;
+    }
 }

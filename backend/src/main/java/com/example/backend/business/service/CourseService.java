@@ -41,4 +41,16 @@ public class CourseService
         Course savedCourse = courseRepository.save(course);
         return courseMapper.toResponse(savedCourse);
     }
+
+    public CourseResponse publishCourse(long courseId)
+    {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("No course found with id = " + courseId));
+
+        course.publishCourse();
+
+        Course savedCourse = courseRepository.save(course);
+
+        return courseMapper.toResponse(savedCourse);
+    }
 }

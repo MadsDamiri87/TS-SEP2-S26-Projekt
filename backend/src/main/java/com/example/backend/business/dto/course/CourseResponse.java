@@ -8,6 +8,7 @@ public record CourseResponse(Long courseId,
                              String shortDescription,
                              String description,
                              double price,
+                             boolean isPublished,
                              LocalDateTime lastEdited)
 {
 }

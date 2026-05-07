@@ -44,76 +44,67 @@ class CourseServiceTest {
     class CreateCourseWithValidInput {
 
         private CourseResponse response;
+
         @BeforeEach
         void setup() {
-            //Arrange
+            // Arrange
             CourseRequest request = validCourseRequest();
 
             mockUserExists();
             mockCourseSaved();
             mockCourseMappedToResponse();
 
-            //Act
+            // Act
             response = courseService.createCourse(request);
         }
 
         @Test
         void shouldReturnCourseResponse() {
-            // Assert
             assertNotNull(response);
         }
 
         @Test
         void shouldReturnResponseWithGeneratedId() {
-            // Assert
             assertEquals(1L, response.courseId());
         }
 
         @Test
         void shouldReturnResponseWithTitle() {
-            // Assert
             assertEquals("test", response.title());
         }
 
         @Test
         void shouldReturnResponseWithShortDescription() {
-            // Assert
             assertEquals("short description", response.shortDescription());
         }
 
         @Test
         void shouldReturnResponseWithLongDescription() {
-            // Assert
             assertEquals("long description", response.description());
         }
 
         @Test
         void shouldReturnResponseWithPrice() {
-            // Assert
-            assertEquals(100.00, response.price());
+            assertEquals(100.00, response.price(), 0.001);
         }
 
         @Test
         void shouldFindUserById() {
-            // Assert
             verify(userRepository, times(1)).findById(1L);
         }
 
         @Test
         void shouldSaveCourseOnce() {
-            // Assert
             verify(courseRepository, times(1)).save(any(Course.class));
         }
 
         @Test
         void shouldMapSavedCourseToResponse() {
-            // Assert
             verify(courseMapper, times(1)).toResponse(any(Course.class));
         }
 
         @Test
         void shouldSaveCourseWithCorrectTitle() {
-            // Assert
             verify(courseRepository).save(argThat(course ->
                     course.getTitle().equals("test")
             ));
@@ -121,7 +112,6 @@ class CourseServiceTest {
 
         @Test
         void shouldSaveCourseWithCorrectShortDescription() {
-            // Assert
             verify(courseRepository).save(argThat(course ->
                     course.getShortDescription().equals("short description")
             ));
@@ -129,7 +119,6 @@ class CourseServiceTest {
 
         @Test
         void shouldSaveCourseWithCorrectLongDescription() {
-            // Assert
             verify(courseRepository).save(argThat(course ->
                     course.getDescription().equals("long description")
             ));
@@ -137,17 +126,22 @@ class CourseServiceTest {
 
         @Test
         void shouldSaveCourseWithCorrectPrice() {
-            // Assert
             verify(courseRepository).save(argThat(course ->
-                    course.getPrice() == 100.00
+                    Math.abs(course.getPrice() - 100.00) < 0.001
             ));
         }
 
         @Test
-        void shouldSaveCourseWithCorrectUser() {
-            // Assert
+        void shouldSaveCourseWithCorrectOwner() {
             verify(courseRepository).save(argThat(course ->
                     course.getOwner().getId().equals(1L)
+            ));
+        }
+
+        @Test
+        void shouldSaveCourseAsUnpublished() {
+            verify(courseRepository).save(argThat(course ->
+                    !course.isPublished()
             ));
         }
     }
@@ -155,13 +149,16 @@ class CourseServiceTest {
     @Nested
     class CreateCourseWithMissingOwner {
 
+        @BeforeEach
+        void setup() {
+            // Arrange
+            mockUserDoesNotExist();
+        }
+
         @Test
         void shouldThrowResourceNotFoundExceptionWhenOwnerDoesNotExist() {
             // Arrange
             CourseRequest request = validCourseRequest();
-
-            when(userRepository.findById(1L))
-                    .thenReturn(Optional.empty());
 
             // Act + Assert
             assertThrows(ResourceNotFoundException.class, () ->
@@ -171,17 +168,8 @@ class CourseServiceTest {
 
         @Test
         void shouldNotSaveCourseWhenOwnerDoesNotExist() {
-            // Arrange
-            CourseRequest request = validCourseRequest();
-
-            when(userRepository.findById(1L))
-                    .thenReturn(Optional.empty());
-
             // Act
-            try {
-                courseService.createCourse(request);
-            } catch (ResourceNotFoundException ignored) {
-            }
+            createCourseIgnoringResourceNotFoundException();
 
             // Assert
             verify(courseRepository, never()).save(any(Course.class));
@@ -189,17 +177,90 @@ class CourseServiceTest {
 
         @Test
         void shouldNotMapCourseWhenOwnerDoesNotExist() {
-            // Arrange
-            CourseRequest request = validCourseRequest();
+            // Act
+            createCourseIgnoringResourceNotFoundException();
 
-            when(userRepository.findById(1L))
-                    .thenReturn(Optional.empty());
+            // Assert
+            verify(courseMapper, never()).toResponse(any(Course.class));
+        }
+    }
+
+    @Nested
+    class PublishCourseWithValidInput {
+
+        private CourseResponse response;
+
+        @BeforeEach
+        void setup() {
+            // Arrange
+            mockCourseExists();
+            mockCourseSaved();
+            mockCourseMappedToResponse();
 
             // Act
-            try {
-                courseService.createCourse(request);
-            } catch (ResourceNotFoundException ignored) {
-            }
+            response = courseService.publishCourse(1L);
+        }
+
+        @Test
+        void shouldReturnCourseResponse() {
+            assertNotNull(response);
+        }
+
+        @Test
+        void shouldReturnResponseWithGeneratedId() {
+            assertEquals(1L, response.courseId());
+        }
+
+        @Test
+        void shouldFindCourseById() {
+            verify(courseRepository, times(1)).findById(1L);
+        }
+
+        @Test
+        void shouldSaveCourseOnce() {
+            verify(courseRepository, times(1)).save(any(Course.class));
+        }
+
+        @Test
+        void shouldSaveCourseAsPublished() {
+            verify(courseRepository).save(argThat(Course::isPublished));
+        }
+
+        @Test
+        void shouldMapSavedCourseToResponse() {
+            verify(courseMapper, times(1)).toResponse(any(Course.class));
+        }
+    }
+
+    @Nested
+    class PublishCourseWithMissingCourse {
+
+        @BeforeEach
+        void setup() {
+            // Arrange
+            mockCourseDoesNotExist();
+        }
+
+        @Test
+        void shouldThrowResourceNotFoundExceptionWhenCourseDoesNotExist() {
+            assertThrows(ResourceNotFoundException.class, () ->
+                    courseService.publishCourse(1L)
+            );
+        }
+
+        @Test
+        void shouldNotSaveCourseWhenCourseDoesNotExist() {
+            // Act
+            publishCourseIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(courseRepository, never()).save(any(Course.class));
+        }
+
+        @Test
+        void shouldNotMapCourseWhenCourseDoesNotExist() {
+            // Act
+            publishCourseIgnoringResourceNotFoundException();
 
             // Assert
             verify(courseMapper, never()).toResponse(any(Course.class));
@@ -211,6 +272,21 @@ class CourseServiceTest {
                 .thenReturn(Optional.of(validUser()));
     }
 
+    private void mockUserDoesNotExist() {
+        when(userRepository.findById(1L))
+                .thenReturn(Optional.empty());
+    }
+
+    private void mockCourseExists() {
+        when(courseRepository.findById(1L))
+                .thenReturn(Optional.of(savedCourse()));
+    }
+
+    private void mockCourseDoesNotExist() {
+        when(courseRepository.findById(1L))
+                .thenReturn(Optional.empty());
+    }
+
     private void mockCourseSaved() {
         when(courseRepository.save(any(Course.class)))
                 .thenReturn(savedCourse());
@@ -219,6 +295,20 @@ class CourseServiceTest {
     private void mockCourseMappedToResponse() {
         when(courseMapper.toResponse(any(Course.class)))
                 .thenReturn(courseResponse());
+    }
+
+    private void createCourseIgnoringResourceNotFoundException() {
+        try {
+            courseService.createCourse(validCourseRequest());
+        } catch (ResourceNotFoundException ignored) {
+        }
+    }
+
+    private void publishCourseIgnoringResourceNotFoundException() {
+        try {
+            courseService.publishCourse(1L);
+        } catch (ResourceNotFoundException ignored) {
+        }
     }
 
     private CourseRequest validCourseRequest() {
@@ -252,6 +342,7 @@ class CourseServiceTest {
                 "short description",
                 "long description",
                 100.00,
+                false,
                 LocalDateTime.of(2026, 1, 1, 12, 0)
         );
     }
