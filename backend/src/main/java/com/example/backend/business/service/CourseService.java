@@ -8,7 +8,6 @@ import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.UserRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,6 +42,9 @@ public class CourseService
         course.setLastEditedToNow();
 
         Course savedCourse = courseRepository.save(course);
+
+        // set user to be course provider.. and save
+
         return courseMapper.toResponse(savedCourse);
     }
 

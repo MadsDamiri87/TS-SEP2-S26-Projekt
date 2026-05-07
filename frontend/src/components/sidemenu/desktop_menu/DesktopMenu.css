@@ -8,12 +8,53 @@
     position: sticky;
     top: 0;
 
-    background-color: var(--accent-bg);
+    background: var(--menu-gradient);
     border-right: 4px solid var(--bg);
+
     transition: width 0.17s ease;
     flex-shrink: 0;
+
+    overflow: hidden;
 }
 
 .desktop-menu-wrapper:hover {
     width: 15rem;
+}
+
+.desktop-menu-section {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.65rem;
+
+    padding: 0.75rem 0;
+}
+
+.profile-section {
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+}
+
+.bottom-section {
+    padding-bottom: 1rem;
+}
+
+.desktop-menu-divider {
+    width: calc(100% - 1.4rem);
+    height: 1px;
+
+    margin: 0.25rem auto;
+
+    background-color: rgba(255, 255, 255, 0.55);
+
+    flex-shrink: 0;
+}
+
+.desktop-menu-spacer {
+    flex: 1;
+    min-height: 2rem;
+}
+
+.login-menu-area {
+    padding: 1rem;
 }

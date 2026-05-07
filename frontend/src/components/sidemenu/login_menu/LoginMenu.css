@@ -1,25 +1,55 @@
-.login-wrapper {
+.login-menu {
     display: flex;
     flex-direction: column;
-    align-content: center;
+    gap: 0.75rem;
+
     width: 100%;
-    gap: 0.2rem;
-    padding: 1rem;
+    padding: 0.75rem 0;
+    box-sizing: border-box;
 }
 
-.login-button {
-    padding: 10px 0 10px 0;
-    background-color: var(--button-face);
-    color: var(--button-text);
-    border-radius: 10px;
-    border-color: var(--button-border);
-    cursor: pointer;
-    margin-bottom: 1rem;
-}
+.login-menu .menu-button-wrapper {
+    width: 100%;
+    height: 3.25rem;
 
+    padding: 0 0.6rem;
+    box-sizing: border-box;
+}
 
 .register-link {
-    text-decoration: underline;
+    width: calc(100% - 1.2rem);
+    min-height: 3.25rem;
+
+    margin: 0 auto;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 0.9rem;
+
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #f8fafc;
+
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: inherit;
     text-align: center;
+
     cursor: pointer;
+
+    transition:
+            background-color 0.15s ease,
+            border-color 0.15s ease,
+            transform 0.15s ease;
+}
+
+.register-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+
+    transform: translateX(0.12rem);
+}
+
+.register-link:active {
+    transform: translateX(0.12rem) scale(0.98);
 }

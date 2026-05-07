@@ -1,14 +1,22 @@
-import "./LoginMenu.css"
+import "./LoginMenu.css";
+import { MenuButton } from "../menu_button/MenuButton.jsx";
 
-export function LoginMenu({ onOpenLoginModal, onOpenRegisterModal}) {
-
-    const handleLogin = () => {
-        onOpenLoginModal()
-    }
+export function LoginMenu({ onOpenLoginModal, onOpenRegisterModal }) {
     return (
-        <div className="login-wrapper">
-            <button className="login-button" onClick={handleLogin}>Login</button>
-            <a onClick={onOpenRegisterModal} className="register-link">Not registered yet? Sign up </a>
+        <div className="login-menu">
+            <MenuButton
+                buttonText="Login"
+                iconSrc="/icons/login.png"
+                onClick={onOpenLoginModal}
+            />
+
+            <button
+                type="button"
+                onClick={onOpenRegisterModal}
+                className="register-link"
+            >
+                Not registered yet?
+            </button>
         </div>
-    )
+    );
 }

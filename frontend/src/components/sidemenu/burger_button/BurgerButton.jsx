@@ -1,17 +1,20 @@
-import {FaBars} from "react-icons/fa";
-import {FaXmark} from "react-icons/fa6";
+import { FaBars } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
+import "./BurgerButton.css";
 
-export function BurgerButton({isOpen, toggleMenu}) {
-    return(
-        <div
-        onClick={toggleMenu}
+export function BurgerButton({ isOpen, toggleMenu }) {
+    return (
+        <button
+            type="button"
+            onClick={toggleMenu}
+            className="burger-button"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
         >
-            {isOpen ?
+            {isOpen ? (
                 <FaXmark size={24} />
-                :
+            ) : (
                 <FaBars size={24} />
-
-            }
-        </div>
-    )
+            )}
+        </button>
+    );
 }
