@@ -60,7 +60,8 @@ function App() {
 
                 <main className="router-container">
                     <Routes>
-                        <Route path="/" element={<CreateCoursePage />} />
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/create-course" element={<CreateCoursePage />} />
                     </Routes>
                 </main>
             </div>
