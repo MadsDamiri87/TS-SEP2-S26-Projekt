@@ -10,6 +10,9 @@ import com.example.backend.persistence.repository.UserRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CourseService
 {
@@ -48,9 +51,27 @@ public class CourseService
                 .orElseThrow(() -> new ResourceNotFoundException("No course found with id = " + courseId));
 
         course.publishCourse();
+        course.setLastEditedToNow();
 
         Course savedCourse = courseRepository.save(course);
 
         return courseMapper.toResponse(savedCourse);
     }
+
+    public List<CourseResponse> getAllPublishedCourses(){
+        List<Course> courses = courseRepository.findCoursesByIsPublishedIs(true);
+        return mapToCourseResponses(courses);
+    }
+
+    private List<CourseResponse> mapToCourseResponses(List<Course> courses)
+    {
+        List<CourseResponse> responses = new ArrayList<>();
+
+        for(Course course : courses)
+        {
+            responses.add(courseMapper.toResponse(course));
+        }
+        return responses;
+    }
+
 }
