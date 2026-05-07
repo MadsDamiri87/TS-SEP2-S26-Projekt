@@ -8,8 +8,9 @@ import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.UserRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class CourseService
 {
     private final UserRepository userRepository;
