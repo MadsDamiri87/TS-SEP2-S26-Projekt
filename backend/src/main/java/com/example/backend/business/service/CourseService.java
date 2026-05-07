@@ -8,6 +8,7 @@ import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.UserRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,8 +48,7 @@ public class CourseService
 
     public CourseResponse publishCourse(long courseId)
     {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new ResourceNotFoundException("No course found with id = " + courseId));
+        Course course = getCourse(courseId);
 
         course.publishCourse();
         course.setLastEditedToNow();
@@ -63,6 +63,12 @@ public class CourseService
         return mapToCourseResponses(courses);
     }
 
+    public CourseResponse getCourseById(long courseId)
+    {
+        Course course = getCourse(courseId);
+        return courseMapper.toResponse(course);
+    }
+
     private List<CourseResponse> mapToCourseResponses(List<Course> courses)
     {
         List<CourseResponse> responses = new ArrayList<>();
@@ -74,4 +80,9 @@ public class CourseService
         return responses;
     }
 
+    private Course getCourse(long courseId)
+    {
+        return courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("No course found with id = " + courseId));
+    }
 }
