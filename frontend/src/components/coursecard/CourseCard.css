@@ -1,14 +1,17 @@
 .course-card {
   position: relative;
-
   padding: var(--std-padding);
   display: flex;
-  flex-flow: column nowrap;
+  flex-direction: column;
   gap: var(--std-gap);
+
   background-color: var(--opaque-bg);
   box-shadow: var(--std-box-shadow);
-  max-width: clamp(200px, 350px, 90%);
   border-radius: var(--border-radius);
+
+  width: 440px;
+  height: 320px;
+  box-sizing: border-box;
 }
 
 .course-card::before {
@@ -37,6 +40,8 @@
   display: flex;
   font-weight: 500;
   justify-content: flex-end;
+
+  margin-top: auto;
 }
 
 .course-card-actions {
@@ -44,3 +49,5 @@
   gap: calc(2 * var(--std-gap));
   justify-content: flex-end;
 }
+
+

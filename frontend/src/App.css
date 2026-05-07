@@ -105,6 +105,7 @@ button {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     color: #ffffff;
     cursor: pointer;
+    background-color: var(--bg);
 }
 
 button:hover {
