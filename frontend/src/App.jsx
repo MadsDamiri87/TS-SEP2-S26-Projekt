@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import {LandingPage} from "./pages/landingpage/LandingPage.jsx";
 import {CreateCoursePage} from "./pages/createCoursePage/CreateCoursePage.jsx";
+import {CourseBuilderPage} from "./pages/coursebuilderpage/CourseBuilderPage.jsx";
 
 function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -62,6 +63,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/create-course" element={<CreateCoursePage />} />
+                        <Route path="/course-builder" element={<CourseBuilderPage />} />
                     </Routes>
                 </main>
             </div>
