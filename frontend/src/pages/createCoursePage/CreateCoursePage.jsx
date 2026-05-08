@@ -24,7 +24,7 @@ export function CreateCoursePage() {
         const userDetails = JSON.parse(rawData);
 
         const uid = userDetails.userId;
-        console.log(uid);
+        console.log("Creating course with ownerId:", uid);
 
         if (!uid) {
             console.error("User object found, but no ID property exists:", userDetails);
