@@ -1,9 +1,9 @@
 import {api} from "./api.js";
 
-export function createCourse(courseId, title, shortDescription, description, price) {
+export function createCourse(ownerId, title, shortDescription, description, price) {
     return api("/courses/create", {
         method: "POST",
-        body: {courseId, title, shortDescription, description, price}
+        body: {ownerId, title, shortDescription, description, price}
     }).then((data) => {
         return data
     })

@@ -184,6 +184,21 @@
   text-decoration: underline;
 }
 
+input:user-valid{
+  outline: 3px solid var(--succes);
+}
+input:user-invalid{
+  outline: 3px solid var(--danger);
+}
+
+textarea:user-valid{
+  outline: 3px solid var(--succes);
+}
+
+textarea:user-invalid{
+  outline: 3px solid var(--danger);
+}
+
 @media (max-width: 600px)
 {
   .formular
