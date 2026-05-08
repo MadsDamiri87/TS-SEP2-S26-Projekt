@@ -5,6 +5,7 @@ import { UserDetails } from "../user_details/UserDetails.jsx";
 import { LoginMenu } from "../login_menu/LoginMenu.jsx";
 import { LogoutButton } from "../logout_button/LogoutButton.jsx";
 import { MenuButton } from "../menu_button/MenuButton.jsx";
+import {useNavigate} from "react-router-dom";
 
 export function DesktopMenu({
                                 openLoginModal,
@@ -12,12 +13,14 @@ export function DesktopMenu({
                                 isLoggedIn,
                                 checkLoginStatus
                             }) {
+    const navigate = useNavigate()
     const [isMenuOpened, setIsMenuOpened] = useState(false);
 
     const isCourseProvider = getIsCourseProvider();
 
     const handleLogout = () => {
         localStorage.removeItem("userDetails")
+        navigate("/")
         window.location.reload()
     }
 
