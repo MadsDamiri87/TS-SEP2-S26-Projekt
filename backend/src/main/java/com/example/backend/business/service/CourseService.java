@@ -44,6 +44,8 @@ public class CourseService
         Course savedCourse = courseRepository.save(course);
 
         // set user to be course provider.. and save
+        owner.setCourseProvider(true);
+        userRepository.save(owner);
 
         return courseMapper.toResponse(savedCourse);
     }
