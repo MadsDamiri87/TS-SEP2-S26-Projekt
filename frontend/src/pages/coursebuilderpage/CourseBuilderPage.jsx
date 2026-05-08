@@ -1,13 +1,19 @@
 import "./CourseBuilderPage.css";
-import { OwnedCourseItem } from "../../components/ownedcourses/OwnedCourseItem.jsx";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {getAllCreatedCourses, publishCourse, unPublishCourse} from "../../api/courseApi.js"
+import {OwnedCourseItem} from "../../components/ownedcourses/OwnedCourseItem.jsx";
+import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import { PublishCourseModal } from "../../components/modal/PublishCourseModal.jsx";
+import {getAllCreatedCourses, publishCourse, unPublishCourse} from "../../api/courseApi.js";
 
 export function CourseBuilderPage() {
     const navigate = useNavigate();
 
     const [ownedCourses, setOwnedCourses] = useState([]);
+
+    // her
+    const [showPublishModal, setShowPublishModal] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    // her
 
     useEffect(() => {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -51,30 +57,40 @@ export function CourseBuilderPage() {
             ? "Are you sure you want to unpublish this course?"
             : "Are you sure you want to publish this course?";
 
-        if (!window.confirm(message)) {
-            return;
-        }
+        setSelectedCourse(course);
+        setShowPublishModal(true);
+        console.log("show modal should open");
 
-        try {
-            const updatedCourse = course.isPublished
-                ? await unPublishCourse(courseId)
-                : await publishCourse(courseId);
-
-            setOwnedCourses((prevCourses) =>
-                prevCourses.map((course) =>
-                    course.courseId === courseId
-                        ? updatedCourse
-                        : course
-                )
-            );
-        } catch (error) {
-            console.error("Could not update course visibility:", error);
-        }
     };
 
     const handleDelete = (courseId) => {
         console.log("Delete course:", courseId);
     };
+
+    // her
+    const confirmToggleVisibility = async () => {
+        if (!selectedCourse) {
+            return;
+        }
+        try {
+            const updatedCourse = selectedCourse.isPublished
+                ? await unPublishCourse(selectedCourse.courseId)
+                : await publishCourse(selectedCourse.courseId);
+
+            setOwnedCourses((prevCourses) =>
+                prevCourses.map((course) =>
+                    course.courseId === updatedCourse.courseId
+                        ? updatedCourse
+                        : course));
+        }
+        catch (error) {
+            console.error("Could not update course visibility:", error);
+        } finally {
+            setShowPublishModal(false);
+            setSelectedCourse(null);
+        }
+    }
+    // her
 
     return (
         <div className="page-container">
@@ -116,6 +132,18 @@ export function CourseBuilderPage() {
                     ))}
                 </div>
             </section>
+
+            {showPublishModal && (
+                <PublishCourseModal
+                    selectedCourse={selectedCourse}
+                    onCancel={() => {
+                        setShowPublishModal(false);
+                        setSelectedCourse(null);
+                    }}
+                    onConfirm={confirmToggleVisibility}
+                />
+            )}
+
         </div>
     );
 }
