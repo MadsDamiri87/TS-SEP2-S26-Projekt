@@ -1,0 +1,240 @@
+.course-builder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+
+    margin-bottom: 2rem;
+}
+
+.course-builder-header h1 {
+    margin: 0;
+}
+
+.course-builder-header p {
+    max-width: 720px;
+    margin-top: 0.75rem;
+
+    line-height: 1.6;
+    color: var(--muted-text, #9ca3af);
+}
+
+.create-course-button {
+    flex-shrink: 0;
+
+    padding: 0.85rem 1.2rem;
+
+    border: none;
+    border-radius: var(--border-radius, 0.9rem);
+
+    background: var(--gradient-bg);
+    color: white;
+
+    font-weight: 700;
+    cursor: pointer;
+
+    transition:
+            transform 0.15s ease,
+            opacity 0.15s ease;
+}
+
+.create-course-button:hover {
+    transform: translateY(-0.12rem);
+    opacity: 0.92;
+}
+
+.owned-courses-panel {
+    width: 100%;
+
+    padding: var(--std-padding, 1.5rem);
+    box-sizing: border-box;
+
+    background-color: var(--opaque-bg);
+    border-radius: var(--border-radius, 1rem);
+    box-shadow: var(--std-box-shadow);
+
+    position: relative;
+    overflow: hidden;
+}
+
+.owned-courses-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    padding: 2px;
+    border-radius: inherit;
+
+    background: var(--gradient-bg);
+
+    -webkit-mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+
+    mask:
+            linear-gradient(#000 0 0) content-box,
+            linear-gradient(#000 0 0);
+    mask-composite: exclude;
+
+    pointer-events: none;
+}
+
+.owned-courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    margin-bottom: 1rem;
+}
+
+.owned-courses-header h2 {
+    margin: 0;
+}
+
+.owned-courses-header span {
+    color: var(--muted-text, #9ca3af);
+    font-size: 0.95rem;
+}
+
+.owned-course-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.owned-course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    padding: 1rem;
+
+    border-radius: 0.85rem;
+    background-color: rgba(255, 255, 255, 0.04);
+
+    transition:
+            background-color 0.15s ease,
+            transform 0.15s ease;
+}
+
+.owned-course-item:hover {
+    background-color: rgba(255, 255, 255, 0.07);
+    transform: translateX(0.15rem);
+}
+
+.owned-course-info {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+
+    min-width: 0;
+}
+
+.owned-course-info h3 {
+    margin: 0;
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.course-status {
+    flex-shrink: 0;
+
+    padding: 0.25rem 0.6rem;
+
+    border-radius: 999px;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.course-status-published {
+    background-color: rgba(34, 197, 94, 0.15);
+    color: #86efac;
+}
+
+.course-status-draft {
+    background-color: rgba(251, 191, 36, 0.15);
+    color: #fde68a;
+}
+
+.owned-course-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    flex-shrink: 0;
+}
+
+.course-action-button {
+    padding: 0.55rem 0.85rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.7rem;
+
+    background-color: rgba(255, 255, 255, 0.06);
+    color: inherit;
+
+    font-weight: 600;
+    cursor: pointer;
+
+    transition:
+            background-color 0.15s ease,
+            border-color 0.15s ease,
+            transform 0.15s ease;
+}
+
+.course-action-button:hover {
+    background-color: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-0.08rem);
+}
+
+.course-action-button.danger {
+    color: #fecaca;
+}
+
+.course-action-button.danger:hover {
+    background-color: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+@media (max-width: 800px) {
+    .course-builder-header {
+        flex-direction: column;
+    }
+
+    .create-course-button {
+        width: 100%;
+    }
+
+    .owned-course-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .owned-course-actions {
+        width: 100%;
+    }
+
+    .course-action-button {
+        flex: 1;
+    }
+}
+
+@media (max-width: 500px) {
+    .owned-course-actions {
+        flex-direction: column;
+    }
+
+    .course-action-button {
+        width: 100%;
+    }
+}
