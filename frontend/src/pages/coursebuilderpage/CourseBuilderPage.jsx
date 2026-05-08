@@ -1,46 +1,47 @@
 import "./CourseBuilderPage.css";
-import { OwnedCourseItem } from "../../components/ownedcourses/OwnedCourseItem.jsx"
-import {useNavigate} from "react-router-dom";
-
-const ownedCourses = [
-    {
-        id: 1,
-        name: "React Basics",
-        isPublished: true
-    },
-    {
-        id: 2,
-        name: "Advanced JavaScript",
-        isPublished: false
-    },
-    {
-        id: 3,
-        name: "UI Design Fundamentals",
-        isPublished: true
-    }
-];
+import { OwnedCourseItem } from "../../components/ownedcourses/OwnedCourseItem.jsx";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getAllCreatedCourses } from "../../api/courseApi.js"
 
 export function CourseBuilderPage() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const [ownedCourses, setOwnedCourses] = useState([]);
+
+    useEffect(() => {
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+        const userId = userDetails?.userId;
+
+        if (!userId) {
+            console.log("No user id found");
+            return;
+        }
+
+        getAllCreatedCourses(userId)
+            .then((courses) => {
+                const sortedCourses = [...courses].sort((a, b) => {
+                    return new Date(b.lastEdited) - new Date(a.lastEdited);
+                });
+
+                setOwnedCourses(sortedCourses);
+            })
+            .catch((error) => {
+                console.error("Could not fetch created courses:", error);
+            });
+    }, []);
+
     const handleEdit = (courseId) => {
         console.log("Edit course:", courseId);
-
-        // later you can navigate with the id:
         // navigate(`/course-builder/${courseId}`);
     };
 
     const handleToggleVisibility = (courseId) => {
         console.log("Toggle visibility for course:", courseId);
-
-        // later:
-        // publish/unpublish course with this id
     };
 
     const handleDelete = (courseId) => {
         console.log("Delete course:", courseId);
-
-        // later:
-        // delete course with this id
     };
 
     return (
@@ -55,7 +56,8 @@ export function CourseBuilderPage() {
                     </p>
                 </div>
 
-                <button className="create-course-button"
+                <button
+                    className="create-course-button"
                     onClick={() => navigate("/create-course")}
                 >
                     Create Course
@@ -71,9 +73,9 @@ export function CourseBuilderPage() {
                 <div className="owned-course-list">
                     {ownedCourses.map((course) => (
                         <OwnedCourseItem
-                            key={course.id}
-                            courseId={course.id}
-                            courseName={course.name}
+                            key={course.courseId}
+                            courseId={course.courseId}
+                            courseName={course.title}
                             isPublished={course.isPublished}
                             onEdit={handleEdit}
                             onToggleVisibility={handleToggleVisibility}

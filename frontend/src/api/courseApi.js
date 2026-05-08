@@ -25,6 +25,13 @@ export function getAllPublishedCourses() {
         })
 }
 
+export function getAllCreatedCourses(userId) {
+    return api(`/courses/created/${userId}`)
+        .then((data) => {
+            return data
+        })
+}
+
 export function getCourseById(courseId) {
     return api(`/courses/${courseId}`)
         .then((data) => {
