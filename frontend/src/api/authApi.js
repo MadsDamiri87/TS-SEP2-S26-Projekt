@@ -5,11 +5,13 @@ export function register(username, password, email) {
         method: "POST",
         body: { username, password, email }
     }).then((data) => {
-        if (data?.id != null) {
+        if (data?.userId != null) {
             const userDetails = {
-                id: data.id,
+                userId: data.userId,
                 username: data.username,
-                email: data.email
+                email: data.email,
+                isAdministrator: data.isAdministrator,
+                isCourseParticipant: data.isCourseParticipant
             }
             localStorage.setItem("userDetails", JSON.stringify(userDetails));
         }
@@ -22,11 +24,13 @@ export function login(username, password) {
         method: "POST",
         body: { username, password }
     }).then((data) => {
-        if (data?.id != null) {
+        if (data?.userId != null) {
             const userDetails = {
-                id: data.id,
+                userId: data.userId,
                 username: data.username,
-                email: data.email
+                email: data.email,
+                isAdministrator: data.isAdministrator,
+                isCourseParticipant: data.isCourseParticipant
             }
             localStorage.setItem("userDetails", JSON.stringify(userDetails));
         }
