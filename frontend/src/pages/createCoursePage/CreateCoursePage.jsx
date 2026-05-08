@@ -43,6 +43,7 @@ export function CreateCoursePage() {
             );
 
             navigate("/course-builder");
+            window.location.reload()
         } catch (error) {
             console.error("Failed to create course:", error);
             alert("There was an error saving your course. Please try again.");

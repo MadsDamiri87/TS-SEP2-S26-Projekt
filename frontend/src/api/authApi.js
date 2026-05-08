@@ -11,7 +11,8 @@ export function register(username, password, email) {
                 username: data.username,
                 email: data.email,
                 isAdministrator: data.isAdministrator,
-                isCourseParticipant: data.isCourseParticipant
+                isCourseParticipant: data.isCourseParticipant,
+                isCourseProvider: data.isCourseProvider
             }
             localStorage.setItem("userDetails", JSON.stringify(userDetails));
         }
@@ -30,7 +31,8 @@ export function login(username, password) {
                 username: data.username,
                 email: data.email,
                 isAdministrator: data.isAdministrator,
-                isCourseParticipant: data.isCourseParticipant
+                isCourseParticipant: data.isCourseParticipant,
+                isCourseProvider: data.isCourseProvider
             }
             localStorage.setItem("userDetails", JSON.stringify(userDetails));
         }
