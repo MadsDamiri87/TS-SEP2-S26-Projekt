@@ -1,9 +1,11 @@
 import {api} from "./api.js";
 
 export function createCourse(ownerId, title, shortDescription, description, price) {
+    const body = {ownerId, title, shortDescription, description, price}
+    console.log("Create course request body:", body)
     return api("/courses/create", {
         method: "POST",
-        body: { ownerId, title, shortDescription, description, price }
+        body: body
     }).then((data) => {
         markUserAsCourseProvider();
         return data;
