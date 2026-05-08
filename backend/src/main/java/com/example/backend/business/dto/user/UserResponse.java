@@ -2,11 +2,14 @@ package com.example.backend.business.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"id", "username", "email"})
+@JsonPropertyOrder({"userId", "username", "email", "isAdministrator", "isCourseProvider", "isCourseParticipant"})
 public record UserResponse(
-        long id,
+        long userId,
         String username,
-        String email
+        String email,
+        boolean isAdministrator,
+        boolean isCourseProvider,
+        boolean isCourseParticipant
 )
 {
 }
