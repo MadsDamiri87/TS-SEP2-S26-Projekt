@@ -13,6 +13,8 @@ export function MobileMenu({
                            }) {
     const [isOpen, setIsOpen] = useState(false);
 
+    const isCourseProvider = getIsCourseProvider();
+
     const toggleMenu = () => {
         setIsOpen((prev) => !prev);
     };
@@ -74,23 +76,25 @@ export function MobileMenu({
                                 />
                             </section>
 
-                            <div className="mobile-menu-divider" />
+                            {isCourseProvider && (
+                                <>
+                                    <div className="desktop-menu-divider" />
 
-                            <section className="mobile-menu-section">
-                                <MenuButton
-                                    buttonText="Business Insights"
-                                    iconSrc="/icons/businessInsights.png"
-                                    linkTo="/business-insights"
-                                    onClick={closeMenu}
-                                />
+                                    <section className="desktop-menu-section">
+                                        <MenuButton
+                                            buttonText="Business Insights"
+                                            iconSrc="/icons/businessInsights.png"
+                                            linkTo="/business-insights"
+                                        />
 
-                                <MenuButton
-                                    buttonText="Course Builder"
-                                    iconSrc="/icons/courseBuilder.png"
-                                    linkTo="/course-builder"
-                                    onClick={closeMenu}
-                                />
-                            </section>
+                                        <MenuButton
+                                            buttonText="Course Builder"
+                                            iconSrc="/icons/courseBuilder.png"
+                                            linkTo="/course-builder"
+                                        />
+                                    </section>
+                                </>
+                            )}
 
                             <div className="mobile-menu-spacer" />
 
@@ -142,4 +146,9 @@ export function MobileMenu({
             </div>
         </>
     );
+}
+
+function getIsCourseProvider() {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    return userDetails?.isCourseProvider === true;
 }

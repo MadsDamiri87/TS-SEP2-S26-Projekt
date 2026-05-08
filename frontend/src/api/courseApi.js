@@ -7,8 +7,9 @@ export function createCourse(ownerId, title, shortDescription, description, pric
         method: "POST",
         body: body
     }).then((data) => {
-        return data
-    })
+        markUserAsCourseProvider();
+        return data;
+    });
 }
 
 export function publishCourse(courseId) {
@@ -20,8 +21,23 @@ export function publishCourse(courseId) {
     })
 }
 
+export function unPublishCourse(courseId) {
+    return api(`/courses/unPublish/${courseId}`, {
+        method: "POST"
+    }).then((data) => {
+        return data
+    })
+}
+
 export function getAllPublishedCourses() {
     return api("/courses")
+        .then((data) => {
+            return data
+        })
+}
+
+export function getAllCreatedCourses(userId) {
+    return api(`/courses/created/${userId}`)
         .then((data) => {
             return data
         })
@@ -32,6 +48,21 @@ export function getCourseById(courseId) {
         .then((data) => {
             return data
         })
+}
+
+
+
+function markUserAsCourseProvider() {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+    if (!userDetails) {
+        return;
+    }
+
+    localStorage.setItem("userDetails", JSON.stringify({
+        ...userDetails,
+        isCourseProvider: true
+    }));
 }
 
 
