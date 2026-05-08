@@ -21,6 +21,13 @@ public class CourseController
         this.courseService = courseService;
     }
 
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> getCourseById(@PathVariable long courseId)
+    {
+        CourseResponse response = courseService.getCourseById(courseId);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
     public ResponseEntity<List<CourseResponse>> getAllPublishedCourses()
     {
@@ -28,11 +35,10 @@ public class CourseController
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/{courseId}")
-    public ResponseEntity<CourseResponse> getCourseById(@PathVariable long courseId)
-    {
-        CourseResponse response = courseService.getCourseById(courseId);
-        return ResponseEntity.ok(response);
+    @GetMapping("/created/{userId}")
+    public ResponseEntity<List<CourseResponse>> getAllCreatedCourses(@PathVariable Long userId) {
+        List<CourseResponse> responses = courseService.getAllCreatedCourses(userId);
+        return ResponseEntity.ok(responses);
     }
 
     @PostMapping("/create")

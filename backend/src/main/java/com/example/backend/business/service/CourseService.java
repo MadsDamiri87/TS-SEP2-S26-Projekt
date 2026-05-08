@@ -8,6 +8,7 @@ import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.UserRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,8 +31,7 @@ public class CourseService
     public CourseResponse createCourse(CourseRequest request) {
         Course course = new Course();
 
-        User owner = userRepository.findById(request.ownerId())
-                .orElseThrow(() -> new ResourceNotFoundException("No user found with id = " + request.ownerId()));
+        User owner = getUser(request.ownerId());
 
         course.setOwner(owner);
         course.setTitle(request.title());
@@ -67,6 +67,12 @@ public class CourseService
         return mapToCourseResponses(courses);
     }
 
+    public List<CourseResponse> getAllCreatedCourses(Long userId) {
+        User courseCreator = getUser(userId);
+        List<Course> courses = courseRepository.findByOwner(courseCreator);
+        return mapToCourseResponses(courses);
+    }
+
     public CourseResponse getCourseById(long courseId)
     {
         Course course = getCourse(courseId);
@@ -88,5 +94,11 @@ public class CourseService
     {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("No course found with id = " + courseId));
+    }
+
+    private User getUser(Long userId)
+    {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("No user found with id = " + userId));
     }
 }
