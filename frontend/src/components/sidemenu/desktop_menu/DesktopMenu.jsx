@@ -14,6 +14,8 @@ export function DesktopMenu({
                             }) {
     const [isMenuOpened, setIsMenuOpened] = useState(false);
 
+    const isCourseProvider = getIsCourseProvider();
+
     const handleLogout = () => {
         localStorage.removeItem("userDetails")
         window.location.reload()
@@ -57,21 +59,25 @@ export function DesktopMenu({
                         />
                     </section>
 
-                    <div className="desktop-menu-divider" />
+                    {isCourseProvider && (
+                        <>
+                            <div className="desktop-menu-divider" />
 
-                    <section className="desktop-menu-section">
-                        <MenuButton
-                            buttonText="Business Insights"
-                            iconSrc="/icons/businessInsights.png"
-                            linkTo="/business-insights"
-                        />
+                            <section className="desktop-menu-section">
+                                <MenuButton
+                                    buttonText="Business Insights"
+                                    iconSrc="/icons/businessInsights.png"
+                                    linkTo="/business-insights"
+                                />
 
-                        <MenuButton
-                            buttonText="Course Builder"
-                            iconSrc="/icons/courseBuilder.png"
-                            linkTo="/course-builder"
-                        />
-                    </section>
+                                <MenuButton
+                                    buttonText="Course Builder"
+                                    iconSrc="/icons/courseBuilder.png"
+                                    linkTo="/course-builder"
+                                />
+                            </section>
+                        </>
+                    )}
 
                     <div className="desktop-menu-spacer" />
 
@@ -112,4 +118,9 @@ export function DesktopMenu({
             )}
         </aside>
     );
+}
+
+function getIsCourseProvider() {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    return userDetails?.isCourseProvider === true;
 }
