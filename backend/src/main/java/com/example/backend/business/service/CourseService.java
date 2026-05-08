@@ -62,6 +62,18 @@ public class CourseService
         return courseMapper.toResponse(savedCourse);
     }
 
+    public CourseResponse unPublishCourse(long courseId)
+    {
+        Course course = getCourse(courseId);
+
+        course.unPublishCourse();
+        course.setLastEditedToNow();
+
+        Course savedCourse = courseRepository.save(course);
+
+        return courseMapper.toResponse(savedCourse);
+    }
+
     public List<CourseResponse> getAllPublishedCourses(){
         List<Course> courses = courseRepository.findCoursesByIsPublishedIs(true);
         return mapToCourseResponses(courses);

@@ -54,4 +54,11 @@ public class CourseController
         CourseResponse response = courseService.publishCourse(courseId);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/unPublish/{courseId}")
+    public ResponseEntity<CourseResponse> unPublishCourse(@PathVariable long courseId)
+    {
+        CourseResponse response = courseService.unPublishCourse(courseId);
+        return ResponseEntity.ok(response);
+    }
 }

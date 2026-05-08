@@ -2,7 +2,7 @@ import "./CourseBuilderPage.css";
 import { OwnedCourseItem } from "../../components/ownedcourses/OwnedCourseItem.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAllCreatedCourses, publishCourse } from "../../api/courseApi.js"
+import {getAllCreatedCourses, publishCourse, unPublishCourse} from "../../api/courseApi.js"
 
 export function CourseBuilderPage() {
     const navigate = useNavigate();
@@ -36,10 +36,40 @@ export function CourseBuilderPage() {
         // navigate(`/course-builder/${courseId}`);
     };
 
-    const handleToggleVisibility = (courseId) => {
-        console.log("Toggle visibility for course:", courseId);
-        publishCourse(courseId)
-        window.location.reload()
+    const handleToggleVisibility = async (courseId) => {
+        console.log("Clicked courseId:", courseId);
+        console.log("Owned courses:", ownedCourses);
+
+        const course = ownedCourses.find((course) => course.courseId === courseId);
+
+        console.log("Found course:", course);
+        if (!course) {
+            return;
+        }
+
+        const message = course.isPublished
+            ? "Are you sure you want to unpublish this course?"
+            : "Are you sure you want to publish this course?";
+
+        if (!window.confirm(message)) {
+            return;
+        }
+
+        try {
+            const updatedCourse = course.isPublished
+                ? await unPublishCourse(courseId)
+                : await publishCourse(courseId);
+
+            setOwnedCourses((prevCourses) =>
+                prevCourses.map((course) =>
+                    course.courseId === courseId
+                        ? updatedCourse
+                        : course
+                )
+            );
+        } catch (error) {
+            console.error("Could not update course visibility:", error);
+        }
     };
 
     const handleDelete = (courseId) => {

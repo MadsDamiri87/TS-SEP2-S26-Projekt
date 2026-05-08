@@ -18,6 +18,14 @@ export function publishCourse(courseId) {
     })
 }
 
+export function unPublishCourse(courseId) {
+    return api(`/courses/unPublish/${courseId}`, {
+        method: "POST"
+    }).then((data) => {
+        return data
+    })
+}
+
 export function getAllPublishedCourses() {
     return api("/courses")
         .then((data) => {

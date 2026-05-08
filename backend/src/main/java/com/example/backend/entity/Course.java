@@ -126,4 +126,9 @@ public class Course
     {
         isPublished = true;
     }
+
+    public void unPublishCourse()
+    {
+        isPublished = false;
+    }
 }
