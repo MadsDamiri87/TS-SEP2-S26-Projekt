@@ -2,7 +2,7 @@ import "./CourseBuilderPage.css";
 import { OwnedCourseItem } from "../../components/ownedcourses/OwnedCourseItem.jsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAllCreatedCourses } from "../../api/courseApi.js"
+import { getAllCreatedCourses, publishCourse } from "../../api/courseApi.js"
 
 export function CourseBuilderPage() {
     const navigate = useNavigate();
@@ -38,6 +38,8 @@ export function CourseBuilderPage() {
 
     const handleToggleVisibility = (courseId) => {
         console.log("Toggle visibility for course:", courseId);
+        publishCourse(courseId)
+        window.location.reload()
     };
 
     const handleDelete = (courseId) => {

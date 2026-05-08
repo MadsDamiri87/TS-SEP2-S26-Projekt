@@ -36,7 +36,7 @@ export function LandingPage() {
                 <div className="course-container">
                     {courses.map((course) => (
                         <CourseCard
-                            key={course.id}
+                            key={course.courseId}
                             title={course.title}
                             shortDescription={course.shortDescription}
                             price={course.price}
