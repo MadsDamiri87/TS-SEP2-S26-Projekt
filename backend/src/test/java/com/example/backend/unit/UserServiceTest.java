@@ -30,20 +30,37 @@ class UserServiceTest {
   @InjectMocks
   private UserService userService;
 
+  // Test bruger felter
+  private static final long   USER_ID          = 1L;
+  private static final long   UNKNOWN_USER_ID  = 99L;
+  private static final String USERNAME         = "jdoe";
+  private static final String EMAIL            = "jane@example.com";
+  private static final String PHONE_NUMBER     = "12345678";
+  private static final String NAME             = "Jane Doe";
+
+  private static final String UPDATED_USERNAME = "jdoe_updated";
+  private static final String UPDATED_EMAIL    = "updated@example.com";
+  private static final String UPDATED_PHONE    = "87654321";
+  private static final String UPDATED_NAME     = "Jane Updated";
+
   // Hjælpemetoder
 
-  private User buildUser(long userId) {
+  private User buildUser() {
     User user = new User();
-    user.setId(userId);
-    user.setUsername("jdoe");
-    user.setEmail("jane@example.com");
-    user.setPhoneNumber("12345678");
-    user.setName("Jane Doe");
+    user.setId(USER_ID);
+    user.setUsername(USERNAME);
+    user.setEmail(EMAIL);
+    user.setPhoneNumber(PHONE_NUMBER);
+    user.setName(NAME);
     return user;
   }
 
-  private UserProfileResponse buildProfileResponse(long userId) {
-    return new UserProfileResponse(userId, "jdoe", "jane@example.com", "12345678", "Jane Doe");
+  private UserProfileResponse buildProfileResponse() {
+    return new UserProfileResponse(USER_ID, USERNAME, EMAIL, PHONE_NUMBER, NAME);
+  }
+
+  private UserProfileResponse buildUpdatedProfileResponse() {
+    return new UserProfileResponse(USER_ID, UPDATED_USERNAME, UPDATED_EMAIL, UPDATED_PHONE, UPDATED_NAME);
   }
 
   // getUserProfile(userId)
@@ -51,66 +68,61 @@ class UserServiceTest {
   @Test
   void getUserProfile_returnsProfile_whenUserExists() {
     // Arrange
-    User user = buildUser(1L);
-    UserProfileResponse expected = buildProfileResponse(1L);
+    User user = buildUser();
+    UserProfileResponse expected = buildProfileResponse();
 
-    when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
     when(userMapper.toProfileResponse(user)).thenReturn(expected);
 
     // Act
-    UserProfileResponse result = userService.getUserProfile(1L);
+    UserProfileResponse result = userService.getUserProfile(USER_ID);
 
     // Assert
-    assertThat(result.userId()).isEqualTo(1L);
-    assertThat(result.username()).isEqualTo("jdoe");
-    assertThat(result.email()).isEqualTo("jane@example.com");
+    assertThat(result.userId()).isEqualTo(USER_ID);
+    assertThat(result.username()).isEqualTo(USERNAME);
+    assertThat(result.email()).isEqualTo(EMAIL);
   }
 
   @Test
   void getUserProfile_throwsResourceNotFoundException_whenUserNotFound() {
-    when(userRepository.findById(99L)).thenReturn(Optional.empty());
+    when(userRepository.findById(UNKNOWN_USER_ID)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> userService.getUserProfile(99L))
+    assertThatThrownBy(() -> userService.getUserProfile(UNKNOWN_USER_ID))
         .isInstanceOf(ResourceNotFoundException.class)
-        .hasMessageContaining("99");
+        .hasMessageContaining(String.valueOf(UNKNOWN_USER_ID));
   }
 
   // updateUserProfile(request, userId)
 
   @Test
   void updateUserProfile_savesAndReturnsUpdatedProfile_whenUserExists() {
-    // Arrange
-    User user = buildUser(1L);
+    User user = buildUser();
     UpdateUserRequest request = new UpdateUserRequest(
-        "jdoe_updated", "updated@example.com", "87654321", "Jane Updated"
+        UPDATED_USERNAME, UPDATED_EMAIL, UPDATED_PHONE, UPDATED_NAME
     );
-    UserProfileResponse expected = new UserProfileResponse(
-        1L, "jdoe_updated", "updated@example.com", "87654321", "Jane Updated"
-    );
+    UserProfileResponse expected = buildUpdatedProfileResponse();
 
-    when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+    when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
     when(userMapper.toProfileResponse(user)).thenReturn(expected);
 
-    // Act
-    UserProfileResponse result = userService.updateUserProfile(request, 1L);
+    UserProfileResponse result = userService.updateUserProfile(request, USER_ID);
 
-    // Assert
     verify(userMapper, times(1)).updateUserFromRequest(user, request);
     verify(userRepository, times(1)).save(user);
-    assertThat(result.username()).isEqualTo("jdoe_updated");
-    assertThat(result.email()).isEqualTo("updated@example.com");
+    assertThat(result.username()).isEqualTo(UPDATED_USERNAME);
+    assertThat(result.email()).isEqualTo(UPDATED_EMAIL);
   }
 
   @Test
   void updateUserProfile_throwsResourceNotFoundException_whenUserNotFound() {
     UpdateUserRequest request = new UpdateUserRequest(
-        "ghost", "ghost@example.com", null, null
+        UPDATED_USERNAME, UPDATED_EMAIL, UPDATED_PHONE, UPDATED_NAME
     );
 
-    when(userRepository.findById(99L)).thenReturn(Optional.empty());
+    when(userRepository.findById(UNKNOWN_USER_ID)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> userService.updateUserProfile(request, 99L))
+    assertThatThrownBy(() -> userService.updateUserProfile(request, UNKNOWN_USER_ID))
         .isInstanceOf(ResourceNotFoundException.class)
-        .hasMessageContaining("99");
+        .hasMessageContaining(String.valueOf(UNKNOWN_USER_ID));
   }
 }
