@@ -14,28 +14,10 @@ export function CreateCoursePage() {
             return;
         }
 
-        const rawData = localStorage.getItem("userDetails");
-        if (!rawData) {
-            alert("Session expired. Please log in again.");
-            navigate("/login");
-            return;
-        }
-
-        const userDetails = JSON.parse(rawData);
-
-        const uid = userDetails.userId;
-        console.log("Creating course with ownerId:", uid);
-
-        if (!uid) {
-            console.error("User object found, but no ID property exists:", userDetails);
-            return;
-        }
-
         const formData = new FormData(form);
 
         try {
             await createCourse(
-                uid,
                 formData.get("title"),
                 formData.get("shortDescription"),
                 formData.get("description"),
