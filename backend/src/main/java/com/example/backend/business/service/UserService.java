@@ -32,6 +32,11 @@ public class UserService
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new ResourceNotFoundException("User " + userId + " not found."));
 
+    User conflictingUser = userRepository.findByUsername(request.username()).orElse(null);
+    if (conflictingUser != null && !conflictingUser.getId().equals(userId)) {
+      throw new IllegalArgumentException("Username already exists");
+    }
+
     userMapper.updateUserFromRequest(user, request);
 
     userRepository.save(user);

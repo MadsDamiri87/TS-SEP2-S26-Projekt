@@ -1,8 +1,0 @@
-fa-icon {
-  color: var(--gradient-bg)
-}
-
-fa-icon:hover {
-  transform: scale(1.2);
-  transition: all 0.2s ease;
-}

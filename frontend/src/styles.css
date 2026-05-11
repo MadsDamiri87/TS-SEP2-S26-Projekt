@@ -1,43 +1,55 @@
 .mobile-layout {
-    width: 100vw;
-    min-height: 100vh;
-    position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
 }
 
 .desktop-layout {
-    display: flex;
-    min-height: 100vh;
+  display: flex;
+  min-height: 100vh;
 }
 
 .course-container {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
 .router-container {
-    width: 100%;
-    min-height: 100vh;
-    padding: clamp(2rem, 5vw, 5rem);
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(2rem, 5vw, 5rem);
 
-    background: linear-gradient(
-            135deg,
-            #02062f 0%,
-            #0a1f3f 40%,
-            #1b5260 75%,
-            #45b883 100%
-    );
-    color: var(--text-color);
+  background: linear-gradient(
+    135deg,
+    #02062f 0%,
+    #0a1f3f 40%,
+    #1b5260 75%,
+    #45b883 100%
+  );
+  color: var(--text-color);
 }
 
 .page-container {
-    display: flex;
-    flex-direction: column;
-    gap: calc((var(--std-gap) * 3));
+  display: flex;
+  flex-direction: column;
+  gap: calc((var(--std-gap) * 3));
 }
 
-
 @media (min-width: 770px) {
+}
 
+.flex-row {
+  display: flex;
+  flex-flow: row wrap;
+  gap: calc(3*var(--std-gap));
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-flow: column wrap;
+  gap: calc(3*var(--std-gap));
+  align-content: space-between;
 }
