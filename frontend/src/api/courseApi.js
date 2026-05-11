@@ -1,6 +1,15 @@
 import {api} from "./api.js";
 
-export function createCourse(ownerId, title, shortDescription, description, price) {
+export function createCourse(title, shortDescription, description, price) {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+    const ownerId = userDetails.userId;
+
+    if (!ownerId) {
+        console.error("User object found, but no ID property exists:", userDetails);
+        return;
+    }
+
     const body = {ownerId, title, shortDescription, description, price}
     console.log("Create course request body:", body)
     return api("/courses/create", {
