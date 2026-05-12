@@ -19,6 +19,8 @@ export function CourseBuilderPage() {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         const userId = userDetails?.userId;
 
+        if (!userDetails.isCourseProvider) navigate("/access-denied")
+
         if (!userId) {
             console.log("No user id found");
             return;

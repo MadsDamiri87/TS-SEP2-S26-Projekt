@@ -5,8 +5,10 @@ import "./ProfilePage.css";
 import { getUserProfile, updateUserProfile } from "../../api/userApi.js";
 import PurchasedCourses from "../../components/purchasedcourses/PurchasedCourses.jsx";
 import CreatedCoursesForProfile from "../../components/createdcourses/CreatedCoursesForProfile.jsx";
+import {useNavigate} from "react-router-dom";
 
 export function ProfilePage() {
+  const navigate = useNavigate()
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -27,7 +29,10 @@ export function ProfilePage() {
   });
 
   useEffect(() => {
-    if (!userDetails) return;
+    if (!userDetails) {
+      navigate("/access-denied")
+      return
+    }
 
     getUserProfile()
       .then((data) => {
