@@ -77,7 +77,7 @@ export function ProfilePage() {
         <div className="flex-column">
           <div className="section-heading">
             <h3>
-              Her er dine profiloplysninger
+              Here is your profile information
               {displayName ? `, ${displayName}` : ""}
             </h3>
             <p>
