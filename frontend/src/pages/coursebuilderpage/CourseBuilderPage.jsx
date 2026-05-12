@@ -10,21 +10,20 @@ export function CourseBuilderPage() {
 
     const [ownedCourses, setOwnedCourses] = useState([]);
 
-    // her
     const [showPublishModal, setShowPublishModal] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
-    // her
 
     useEffect(() => {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         const userId = userDetails?.userId;
 
-        if (!userDetails.isCourseProvider) navigate("/access-denied")
-
         if (!userId) {
+            navigate("/access-denied")
             console.log("No user id found");
             return;
         }
+
+        else if (!userDetails.isCourseProvider) navigate("/access-denied")
 
         getAllCreatedCourses(userId)
             .then((courses) => {
