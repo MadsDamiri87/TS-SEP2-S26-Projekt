@@ -1,5 +1,5 @@
 import "./CourseBuilderPage.css";
-import {OwnedCourseItem} from "../../components/ownedcourses/OwnedCourseItem.jsx";
+import {OwnedCourseItem} from "../../components/createdcourses/OwnedCourseItem.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import { PublishCourseModal } from "../../components/modal/PublishCourseModal.jsx";
