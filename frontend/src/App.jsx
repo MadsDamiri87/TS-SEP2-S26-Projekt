@@ -2,7 +2,7 @@ import './App.css'
 import "./styles.css"
 import { MobileMenu } from "./components/sidemenu/mobile_menu/MobileMenu.jsx";
 import { DesktopMenu } from "./components/sidemenu/desktop_menu/DesktopMenu.jsx";
-import { PopupModal } from "./components/popup/PopupModal.jsx";
+import { LoginModal } from "./components/popup/LoginModal.jsx";
 
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -68,7 +68,7 @@ function App() {
                 </main>
             </div>
 
-            <PopupModal
+            <LoginModal
                 isOpen={showPopup}
                 isLogin={isLoginModalOpen}
                 setIsLogin={setIsLoginModalOpen}
