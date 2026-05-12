@@ -28,6 +28,11 @@ export function ProfilePage() {
     }
   });
 
+  const [errors, setErrors] = useState({
+    username: "",
+    email: "",
+  });
+
   useEffect(() => {
     if (!userDetails) {
       navigate("/access-denied");
@@ -53,6 +58,10 @@ export function ProfilePage() {
 
   async function handleSave(stopEditing) {
     try {
+      setErrors({
+        username: "",
+        email: "",
+      });
       await updateUserProfile(username, email, phoneNumber, name);
       setDisplayName(name);
       if (typeof stopEditing === "function") {
@@ -60,7 +69,28 @@ export function ProfilePage() {
       }
     } catch (error) {
       console.error("Failed to update profile:", error);
-      alert("There was an error saving your information. Please try again.");
+
+      if (error.response?.data?.fieldErrors) {
+        setErrors((prev) => ({
+          ...prev,
+          ...error.response.data.fieldErrors,
+        }));
+      } else if (error.response?.data?.message) {
+        const message = error.response.data.message;
+
+        if (message.toLowerCase().includes("username")) {
+          setErrors((prev) => ({ ...prev, username: message }));
+        } else if (message.toLowerCase().includes("email")) {
+          setErrors((prev) => ({ ...prev, email: message }));
+        } else {
+          setErrors((prev) => ({ ...prev, username: "" }));
+        }
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          username: "Something went wrong. Please try again.",
+        }));
+      }
     }
   }
 
@@ -93,6 +123,7 @@ export function ProfilePage() {
                     icon={faCheck}
                     onClick={() => handleSave(setEditingName)}
                   />
+                  <br></br>
                 </>
               ) : (
                 <>
@@ -112,7 +143,10 @@ export function ProfilePage() {
                   <span className="transparent">Username: </span>
                   <input
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                      setErrors((prev) => ({ ...prev, username: "" }));
+                    }}
                     pattern="^.{5,30}$"
                     title="Username must be between 5 and 30 characters"
                     required
@@ -122,6 +156,7 @@ export function ProfilePage() {
                     icon={faCheck}
                     onClick={() => handleSave(setEditingUsername)}
                   />
+                  <p className="errorMessage">{errors.username}</p>
                 </>
               ) : (
                 <>
@@ -141,7 +176,10 @@ export function ProfilePage() {
                   <span className="transparent">Email: </span>
                   <input
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setErrors((prev) => ({ ...prev, email: "" }));
+                    }}
                     required
                   />
                   <FontAwesomeIcon
