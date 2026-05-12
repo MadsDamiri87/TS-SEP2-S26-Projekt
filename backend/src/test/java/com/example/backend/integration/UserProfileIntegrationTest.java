@@ -3,61 +3,229 @@ package com.example.backend.integration;
 import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
-@SpringBootTest @AutoConfigureMockMvc @ActiveProfiles("test") class UserProfileIntegrationTest
-{
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class UpdateUserProfileIntegrationTest {
 
-  @Autowired private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-  private Long savedUserId;
-
-  // Test bruger felter
-  private static final long UNKNOWN_USER_ID = 99L;
-  private static final String USERNAME = "jdoe";
-  private static final String EMAIL = "jane@example.com";
-  private static final String PHONE_NUMBER = "12345678";
-  private static final String NAME = "Jane Doe";
-  private static final String PASSWORD = "hashed_password";
-
-  private static final String UPDATED_USERNAME = "jdoe_updated";
-  private static final String UPDATED_EMAIL = "updated@example.com";
-  private static final String UPDATED_PHONE = "87654321";
-  private static final String UPDATED_NAME = "Jane Updated";
-
-  private User buildUser()
-  {
-    User user = new User();
-    user.setUsername(USERNAME);
-    user.setEmail(EMAIL);
-    user.setPhoneNumber(PHONE_NUMBER);
-    user.setName(NAME);
-    user.setHashedPassword(PASSWORD);
-    return user;
-  }
-
-  @BeforeEach void setUp()
-  {
+  @BeforeEach
+  void cleanDatabase() {
     userRepository.deleteAll();
-    savedUserId = userRepository.save(buildUser()).getId();
   }
 
-  @Test void getUserProfile_returnsUserProfile_whenUserExists() throws Exception
-  {
-    mockMvc.perform(get("/api/user/" + savedUserId)).andExpect(status().isOk())
-        .andExpect(jsonPath("$.username").value(USERNAME))
-        .andExpect(jsonPath("$.email").value(EMAIL))
-        .andExpect(jsonPath("$.phoneNumber").value(PHONE_NUMBER))
-        .andExpect(jsonPath("$.name").value(NAME));
+  @Nested
+  class GetUserProfileWithValidId {
+
+    private int status;
+
+    @BeforeEach
+    void setup() throws Exception {
+      User user = saveValidUser();
+
+      status = mockMvc.perform(get("/api/user/" + user.getId()))
+          .andReturn()
+          .getResponse()
+          .getStatus();
+    }
+
+    @Test
+    void shouldReturnOkStatus() {
+      assertEquals(200, status);
+    }
+  }
+
+  @Nested
+  class GetUserProfileWithMissingId {
+
+    private int status;
+
+    @BeforeEach
+    void setup() throws Exception {
+      status = mockMvc.perform(get("/api/user/999"))
+          .andReturn()
+          .getResponse()
+          .getStatus();
+    }
+
+    @Test
+    void shouldReturnNotFoundStatus() {
+      assertEquals(404, status);
+    }
+  }
+
+  @Nested
+  class UpdateUserProfileWithValidInput {
+
+    private User updatedUser;
+    private int status;
+
+    @BeforeEach
+    void setup() throws Exception {
+      User user = saveValidUser();
+
+      status = mockMvc.perform(put("/api/user/" + user.getId())
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(validUpdateUserJson()))
+          .andReturn()
+          .getResponse()
+          .getStatus();
+
+      updatedUser = userRepository.findById(user.getId()).orElseThrow();
+    }
+
+    @Test
+    void shouldReturnOkStatus() {
+      assertEquals(200, status);
+    }
+
+    @Test
+    void shouldPersistUpdatedUsername() {
+      assertEquals("emil_updated", updatedUser.getUsername());
+    }
+
+    @Test
+    void shouldPersistUpdatedEmail() {
+      assertEquals("emil_updated@test.com", updatedUser.getEmail());
+    }
+
+    @Test
+    void shouldPersistUpdatedPhoneNumber() {
+      assertEquals("87654321", updatedUser.getPhoneNumber());
+    }
+
+    @Test
+    void shouldPersistUpdatedName() {
+      assertEquals("Emil Opdateret", updatedUser.getName());
+    }
+  }
+
+  @Nested
+  class UpdateUserProfileWithMissingUser {
+
+    private int status;
+
+    @BeforeEach
+    void setup() throws Exception {
+      status = mockMvc.perform(put("/api/user/999")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(validUpdateUserJson()))
+          .andReturn()
+          .getResponse()
+          .getStatus();
+    }
+
+    @Test
+    void shouldReturnNotFoundStatus() {
+      assertEquals(404, status);
+    }
+  }
+
+  @Nested
+  class UpdateUserProfileWithInvalidInput {
+
+    private User user;
+
+    @BeforeEach
+    void setup() {
+      user = saveValidUser();
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUsernameIsBlank() throws Exception {
+      int status = mockMvc.perform(put("/api/user/" + user.getId())
+              .contentType(MediaType.APPLICATION_JSON)
+              .content("""
+                                    {
+                                        "username": "",
+                                        "email": "emil@test.com",
+                                        "phoneNumber": "12345678",
+                                        "name": "Emil Hansen"
+                                    }
+                                    """))
+          .andReturn()
+          .getResponse()
+          .getStatus();
+
+      assertEquals(400, status);
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenEmailIsInvalid() throws Exception {
+      int status = mockMvc.perform(put("/api/user/" + user.getId())
+              .contentType(MediaType.APPLICATION_JSON)
+              .content("""
+                                    {
+                                        "username": "emil",
+                                        "email": "not-an-email",
+                                        "phoneNumber": "12345678",
+                                        "name": "Emil Hansen"
+                                    }
+                                    """))
+          .andReturn()
+          .getResponse()
+          .getStatus();
+
+      assertEquals(400, status);
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUsernameExceedsMaxLength() throws Exception {
+      int status = mockMvc.perform(put("/api/user/" + user.getId())
+              .contentType(MediaType.APPLICATION_JSON)
+              .content("""
+                                    {
+                                        "username": "%s",
+                                        "email": "emil@test.com",
+                                        "phoneNumber": "12345678",
+                                        "name": "Emil Hansen"
+                                    }
+                                    """.formatted("a".repeat(31))))
+          .andReturn()
+          .getResponse()
+          .getStatus();
+
+      assertEquals(400, status);
+    }
+  }
+
+  private User saveValidUser() {
+    User user = new User();
+    user.setUsername("emil");
+    user.setEmail("emil@test.com");
+    user.setHashedPassword("hashed-password");
+    user.setPhoneNumber("12345678");
+    user.setName("Emil Hansen");
+    user.setCourseProvider(false);
+    return userRepository.save(user);
+  }
+
+  private String validUpdateUserJson() {
+    return """
+                {
+                    "username":    "emil_updated",
+                    "email":       "emil_updated@test.com",
+                    "phoneNumber": "87654321",
+                    "name":        "Emil Opdateret"
+                }
+                """;
   }
 }
