@@ -1,11 +1,14 @@
 import "./createCourse.css"
 import {createCourse} from "../../api/courseApi.js"
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {ErrorModal} from "../../components/modal/error/ErrorModal.jsx";
 import {useEffect} from "react";
 
 export function CreateCoursePage() {
     const navigate = useNavigate();
 
+    const [error, setError] = useState(null);
     useEffect(() => {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         const userId = userDetails?.userId;
@@ -39,7 +42,10 @@ export function CreateCoursePage() {
             window.location.reload()
         } catch (error) {
             console.error("Failed to create course:", error);
-            alert("There was an error saving your course. Please try again.");
+            setError({
+                status: error.status || "Error",
+                message: error.message || "There was an error saving your course. Please try again."
+            });
         }
     }
 
@@ -115,6 +121,13 @@ export function CreateCoursePage() {
                     </div>
                 </form>
             </div>
+            {error && (
+                <ErrorModal
+                errorStatus={error.status}
+                errorMessage={error.message}
+                onClose={() => setError(null)}
+                />
+            )}
         </div>
     );
 }

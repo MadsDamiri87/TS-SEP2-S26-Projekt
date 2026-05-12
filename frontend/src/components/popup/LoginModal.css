@@ -65,6 +65,7 @@
 
 .popup-text-bottom
 {
+  margin-top: 1rem;
   color : #ffffff;
 }
 
@@ -73,4 +74,14 @@ input:user-valid{
 }
 input:user-invalid{
   outline: 3px solid var(--danger);
+}
+
+.error-message-label {
+  color: var(--off-red);
+
+  font-size: 0.9rem;
+
+  min-height: 1.2rem;
+
+  text-align: center;
 }

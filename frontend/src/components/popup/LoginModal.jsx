@@ -1,11 +1,14 @@
-import "./PopupModal.css";
-import { useState } from "react";
-import { login, register } from "../../api/authApi.js";
+import "./LoginModal.css";
+import {useState} from "react";
+import {login, register} from "../../api/authApi.js";
+import {ErrorModal} from "../modal/error/ErrorModal.jsx";
 
-export function PopupModal({ isOpen, onClose, isLogin, setIsLogin, onSubmit }) {
+
+export function LoginModal({isOpen, onClose, isLogin, setIsLogin, onSubmit}) {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const closeMenu = () => {
         setIsLogin(true);
@@ -20,6 +23,7 @@ export function PopupModal({ isOpen, onClose, isLogin, setIsLogin, onSubmit }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrorMessage("");
 
         if (isLogin) {
             login(username, password)
@@ -30,7 +34,7 @@ export function PopupModal({ isOpen, onClose, isLogin, setIsLogin, onSubmit }) {
                     closeMenu();
                 })
                 .catch((err) => {
-                    alert("[" + err.status + "] " + err.message)
+                    setErrorMessage(err.message);
                 });
         } else {
             register(username, password, email)
@@ -41,7 +45,7 @@ export function PopupModal({ isOpen, onClose, isLogin, setIsLogin, onSubmit }) {
                     closeMenu();
                 })
                 .catch((err) => {
-                    alert("[" + err.status + "] " + err.message)
+                    setErrorMessage(err.message);
                 });
         }
     };
@@ -88,6 +92,10 @@ export function PopupModal({ isOpen, onClose, isLogin, setIsLogin, onSubmit }) {
                         required
                     />
 
+                    <p className="error-message-label">
+                        {errorMessage}
+                    </p>
+
                     <button type="submit" className="highlight-btn">
                         {isLogin ? "Login" : "Create Account"}
                     </button>
@@ -103,6 +111,9 @@ export function PopupModal({ isOpen, onClose, isLogin, setIsLogin, onSubmit }) {
                     </span>
                 </p>
             </div>
+
         </div>
+
+
     );
 }

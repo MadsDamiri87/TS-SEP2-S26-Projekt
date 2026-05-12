@@ -1,0 +1,35 @@
+.error-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+.error-modal {
+  width: min(90%, 420px);
+  padding: 2rem;
+
+  background: var(--menu-gradient);
+  color: var(--text-color);
+
+  border-radius: var(--border-radius);
+  box-shadow: var(--std-box-shadow);
+
+  border: 1px solid var(--light-blue);
+}
+
+.error-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
