@@ -5,10 +5,10 @@ import "./ProfilePage.css";
 import { getUserProfile, updateUserProfile } from "../../api/userApi.js";
 import PurchasedCourses from "../../components/purchasedcourses/PurchasedCourses.jsx";
 import CreatedCoursesForProfile from "../../components/createdcourses/CreatedCoursesForProfile.jsx";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function ProfilePage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -30,8 +30,8 @@ export function ProfilePage() {
 
   useEffect(() => {
     if (!userDetails) {
-      navigate("/access-denied")
-      return
+      navigate("/access-denied");
+      return;
     }
 
     getUserProfile()
@@ -80,7 +80,7 @@ export function ProfilePage() {
               Her er dine profiloplysninger
               {displayName ? `, ${displayName}` : ""}
             </h3>
-            <div>
+            <p>
               {editingName ? (
                 <>
                   <span className="transparent">Name: </span>
@@ -105,7 +105,7 @@ export function ProfilePage() {
                   />
                 </>
               )}
-            </div>
+            </p>
             <p>
               {editingUsername ? (
                 <>
@@ -113,6 +113,9 @@ export function ProfilePage() {
                   <input
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    pattern="^.{5,30}$"
+                    title="Username must be between 5 and 30 characters"
+                    required
                   />
                   <FontAwesomeIcon
                     className="fa-icon fa-icon-highlighted"
@@ -139,6 +142,7 @@ export function ProfilePage() {
                   <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                   <FontAwesomeIcon
                     className="fa-icon fa-icon-highlighted"
