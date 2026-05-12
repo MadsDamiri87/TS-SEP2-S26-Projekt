@@ -5,6 +5,7 @@ import com.example.backend.business.dto.user.UpdateUserRequest;
 import com.example.backend.business.dto.user.UserProfileResponse;
 import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.UserRepository;
+import com.example.backend.shared.exception.ConflictException;
 import com.example.backend.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class UserService
 
     User conflictingUser = userRepository.findByUsername(request.username()).orElse(null);
     if (conflictingUser != null && !conflictingUser.getId().equals(userId)) {
-      throw new IllegalArgumentException("Username already exists");
+      throw new ConflictException("Username already exists");
     }
 
     userMapper.updateUserFromRequest(user, request);
