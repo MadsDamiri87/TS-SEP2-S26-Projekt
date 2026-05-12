@@ -11,7 +11,6 @@ export function DesktopMenu({
                                 openLoginModal,
                                 openRegisterModal,
                                 isLoggedIn,
-                                checkLoginStatus
                             }) {
     const navigate = useNavigate()
     const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -111,13 +110,16 @@ export function DesktopMenu({
                 </>
             )}
 
-            {!isLoggedIn && isMenuOpened && (
-                <div className="login-menu-area">
+            {!isLoggedIn && (
+
                     <LoginMenu
                         onOpenLoginModal={openLoginModal}
                         onOpenRegisterModal={openRegisterModal}
+
+                        isOpenMenu={isMenuOpened}
                     />
-                </div>
+
+
             )}
         </aside>
     );
