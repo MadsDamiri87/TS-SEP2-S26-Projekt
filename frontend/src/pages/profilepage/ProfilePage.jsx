@@ -58,38 +58,24 @@ export function ProfilePage() {
 
   async function handleSave(stopEditing) {
     try {
-      setErrors({
-        username: "",
-        email: "",
-      });
+      setErrors({ name: "", username: "", email: "", phoneNumber: "" });
       await updateUserProfile(username, email, phoneNumber, name);
       setDisplayName(name);
-      if (typeof stopEditing === "function") {
-        stopEditing(false);
-      }
+      if (typeof stopEditing === "function") stopEditing(false);
     } catch (error) {
-      console.error("Failed to update profile:", error);
-
-      if (error.response?.data?.fieldErrors) {
-        setErrors((prev) => ({
-          ...prev,
-          ...error.response.data.fieldErrors,
-        }));
-      } else if (error.response?.data?.message) {
-        const message = error.response.data.message;
-
-        if (message.toLowerCase().includes("username")) {
-          setErrors((prev) => ({ ...prev, username: message }));
-        } else if (message.toLowerCase().includes("email")) {
-          setErrors((prev) => ({ ...prev, email: message }));
+      if (error.fieldErrors) {
+        setErrors(error.fieldErrors);
+      } else if (error.message) {
+        const msg = error.message.toLowerCase();
+        if (msg.includes("username")) {
+          setErrors((prev) => ({ ...prev, username: error.message }));
+        } else if (msg.includes("email")) {
+          setErrors((prev) => ({ ...prev, email: error.message }));
         } else {
-          setErrors((prev) => ({ ...prev, username: "" }));
+          setErrors((prev) => ({ ...prev, username: error.message }));
         }
       } else {
-        setErrors((prev) => ({
-          ...prev,
-          username: "Something went wrong. Please try again.",
-        }));
+        setErrors((prev) => ({ ...prev, username: "Something went wrong. Please try again." }));
       }
     }
   }
@@ -110,20 +96,24 @@ export function ProfilePage() {
               Here is your profile information
               {displayName ? `, ${displayName}` : ""}
             </h3>
-            <p>
+            <div>
               {editingName ? (
                 <>
                   <span className="transparent">Name: </span>
                   <input
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    maxLength={200}
+                    onChange={(e) => {
+                                          setName(e.target.value);
+                                          setErrors((prev) => ({ ...prev, name: "" }));
+                                        }}
                   />
                   <FontAwesomeIcon
                     className="fa-icon fa-icon-highlighted"
                     icon={faCheck}
                     onClick={() => handleSave(setEditingName)}
                   />
-                  <br></br>
+                  <p className="errorMessage">{errors.name}</p>
                 </>
               ) : (
                 <>
@@ -136,13 +126,14 @@ export function ProfilePage() {
                   />
                 </>
               )}
-            </p>
-            <p>
+            </div>
+            <div>
               {editingUsername ? (
                 <>
                   <span className="transparent">Username: </span>
                   <input
                     value={username}
+                    maxLength={30}
                     onChange={(e) => {
                       setUsername(e.target.value);
                       setErrors((prev) => ({ ...prev, username: "" }));
@@ -169,13 +160,14 @@ export function ProfilePage() {
                   />
                 </>
               )}
-            </p>
-            <p>
+            </div>
+            <div>
               {editingEmail ? (
                 <>
                   <span className="transparent">Email: </span>
                   <input
                     value={email}
+                    maxLength={100}
                     onChange={(e) => {
                       setEmail(e.target.value);
                       setErrors((prev) => ({ ...prev, email: "" }));
@@ -187,6 +179,7 @@ export function ProfilePage() {
                     icon={faCheck}
                     onClick={() => handleSave(setEditingEmail)}
                   />
+                  <p className="errorMessage">{errors.email}</p>
                 </>
               ) : (
                 <>
@@ -199,20 +192,25 @@ export function ProfilePage() {
                   />
                 </>
               )}
-            </p>
-            <p>
+            </div>
+            <div>
               {editingPhoneNumber ? (
                 <>
                   <span className="transparent">Phone: </span>
                   <input
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    maxLength={20}
+                    onChange={(e) => {
+                                          setPhoneNumber(e.target.value);
+                                          setErrors((prev) => ({ ...prev, phoneNumber: "" }));
+                                        }}
                   />
                   <FontAwesomeIcon
                     className="fa-icon fa-icon-highlighted"
                     icon={faCheck}
                     onClick={() => handleSave(setEditingPhoneNumber)}
                   />
+                  <p className="errorMessage">{errors.phoneNumber}</p>
                 </>
               ) : (
                 <>
@@ -225,7 +223,7 @@ export function ProfilePage() {
                   />
                 </>
               )}
-            </p>
+            </div>
           </div>
           <CreatedCoursesForProfile />
         </div>
