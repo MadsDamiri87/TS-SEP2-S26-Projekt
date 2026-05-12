@@ -14,7 +14,7 @@
 .auth-modal {
   position: relative;
   min-height: auto;
-  max-height: 400px;
+  max-height: 450px;
   background: var(--menu-gradient);
   padding: 30px;
   border-radius: 12px;
