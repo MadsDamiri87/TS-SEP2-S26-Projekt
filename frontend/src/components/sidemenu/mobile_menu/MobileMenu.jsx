@@ -85,12 +85,14 @@ export function MobileMenu({
                                             buttonText="Business Insights"
                                             iconSrc="/icons/businessInsights.png"
                                             linkTo="/business-insights"
+                                            onClick={closeMenu}
                                         />
 
                                         <MenuButton
                                             buttonText="Course Builder"
                                             iconSrc="/icons/courseBuilder.png"
                                             linkTo="/course-builder"
+                                            onClick={closeMenu}
                                         />
                                     </section>
                                 </>
@@ -139,6 +141,7 @@ export function MobileMenu({
                                     openRegisterModal();
                                 }}
                                 onLogin={checkLoginStatus}
+                                isOpenMenu={true}
                             />
                         </div>
                     )}

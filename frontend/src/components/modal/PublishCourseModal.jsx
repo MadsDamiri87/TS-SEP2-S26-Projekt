@@ -32,7 +32,7 @@ export function PublishCourseModal({
 
                     <button
                         type="type"
-                        className="publish-modal-confirm"
+                        className="publish-modal-confirm highlight-btn"
                         onClick={onConfirm}
                     >
                         Confirm

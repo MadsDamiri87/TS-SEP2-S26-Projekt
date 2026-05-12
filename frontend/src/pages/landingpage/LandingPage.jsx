@@ -21,7 +21,7 @@ export function LandingPage() {
     return (
         <div className="page-container">
             <div>
-                <h1>LearnHub</h1>
+                <h1>Welcome to LearnHub!</h1>
                 <p>
                     Discover courses across programming, design, business, and
                     more. Learn at your own pace with structured lessons,

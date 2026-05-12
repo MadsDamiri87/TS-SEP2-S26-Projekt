@@ -1,9 +1,20 @@
 import "./createCourse.css"
 import {createCourse} from "../../api/courseApi.js"
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 export function CreateCoursePage() {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+        const userId = userDetails?.userId;
+
+        if (!userId) {
+            console.log("No user id found");
+            navigate("/access-denied")
+        }
+    }, [])
 
     async function handleSubmit(event) {
         event.preventDefault();
