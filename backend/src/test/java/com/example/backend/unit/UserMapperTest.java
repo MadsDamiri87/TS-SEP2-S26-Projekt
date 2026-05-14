@@ -32,7 +32,7 @@ class UserMapperTest
   private User buildUser()
   {
     User user = new User();
-    user.setId(USER_ID);
+    user.setUserId(USER_ID);
     user.setUsername(USERNAME);
     user.setEmail(EMAIL);
     user.setPhoneNumber(PHONE_NUMBER);

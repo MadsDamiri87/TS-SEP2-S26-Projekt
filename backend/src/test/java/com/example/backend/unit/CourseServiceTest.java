@@ -134,7 +134,7 @@ class CourseServiceTest {
         @Test
         void shouldSaveCourseWithCorrectOwner() {
             verify(courseRepository).save(argThat(course ->
-                    course.getOwner().getId().equals(1L)
+                    course.getOwner().getUserId().equals(1L)
             ));
         }
 
@@ -350,7 +350,7 @@ class CourseServiceTest {
     private User validUser() {
         User user = new User();
 
-        user.setId(1L);
+        user.setUserId(1L);
 
         return user;
     }

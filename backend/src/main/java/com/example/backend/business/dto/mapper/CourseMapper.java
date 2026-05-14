@@ -11,7 +11,7 @@ public class CourseMapper
     {
         return new CourseResponse(
                 course.getId(),
-                course.getOwner().getId(),
+                course.getOwner().getUserId(),
                 course.getTitle(),
                 course.getShortDescription(),
                 course.getDescription(),

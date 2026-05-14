@@ -34,7 +34,7 @@ public class UserService
         .orElseThrow(() -> new ResourceNotFoundException("User " + userId + " not found."));
 
     User conflictingUser = userRepository.findByUsername(request.username()).orElse(null);
-    if (conflictingUser != null && !conflictingUser.getId().equals(userId)) {
+    if (conflictingUser != null && !conflictingUser.getUserId().equals(userId)) {
       throw new ConflictException("Username already exists");
     }
 
