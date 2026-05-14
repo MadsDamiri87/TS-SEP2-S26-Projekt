@@ -7,6 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CourseMapper
 {
+    private final ModuleMapper moduleMapper;
+
+    public CourseMapper(ModuleMapper moduleMapper)
+    {
+        this.moduleMapper = moduleMapper;
+    }
+
     public CourseResponse toResponse(Course course)
     {
         return new CourseResponse(
@@ -17,7 +24,8 @@ public class CourseMapper
                 course.getDescription(),
                 course.getPrice(),
                 course.isPublished(),
-                course.getLastEdited()
+                course.getLastEdited(),
+                moduleMapper.toResponse(course.getModules())
         );
     }
 }
