@@ -16,7 +16,7 @@ public class User
 
     @JsonIgnore
     @OneToMany(mappedBy = "owner")
-    private List<Course> courses = new ArrayList<>();
+    private List<Course> ownedCourses = new ArrayList<>();
 
     @Column(unique = true, nullable = false, length = 30)
     private String username;
@@ -57,14 +57,14 @@ public class User
         this.userId = userId;
     }
 
-    public List<Course> getCourses()
+    public List<Course> getOwnedCourses()
     {
-        return courses;
+        return ownedCourses;
     }
 
-    public void setCourses(List<Course> courses)
+    public void setOwnedCourses(List<Course> courses)
     {
-        this.courses = courses;
+        this.ownedCourses = courses;
     }
 
     public String getUsername()
