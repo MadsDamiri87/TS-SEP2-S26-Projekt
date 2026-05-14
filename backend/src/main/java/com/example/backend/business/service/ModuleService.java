@@ -51,11 +51,13 @@ public class ModuleService
         Course course = courseRepository.findById(request.courseId())
                 .orElseThrow(() -> new ResourceNotFoundException("No course found with id=" + request.courseId()));
 
+        int orderNumber = moduleRepository.findHighestOrderNumberByCourseId(course.getId()) + 1;
+
         Module module = new Module();
         module.setCourse(course);
         module.setName(request.name());
         module.setDescription(request.description());
-        module.setOrderNumber(request.orderNumber());
+        module.setOrderNumber(orderNumber);
 
         Module savedModule = moduleRepository.save(module);
         return moduleMapper.toResponse(savedModule);
@@ -67,7 +69,6 @@ public class ModuleService
         Module module = getModule(moduleId);
         module.setName(request.name());
         module.setDescription(request.description());
-        module.setOrderNumber(request.orderNumber());
 
         Module updatedModule = moduleRepository.save(module);
 

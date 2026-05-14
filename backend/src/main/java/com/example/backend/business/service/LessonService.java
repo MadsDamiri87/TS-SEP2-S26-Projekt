@@ -49,11 +49,13 @@ public class LessonService
         Module module = moduleRepository.findById(request.moduleId())
                 .orElseThrow(() -> new ResourceNotFoundException("No module with id=" + request.moduleId()));
 
+        int orderNumber = lessonRepository.findHighestOrderNumberByModuleId(module.getModuleId()) + 1;
+
         Lesson lesson = new Lesson();
         lesson.setModule(module);
         lesson.setTitle(request.title());
         lesson.setDescription(request.description());
-        lesson.setOrderNumber(request.orderNumber());
+        lesson.setOrderNumber(orderNumber);
 
         Lesson savedLesson = lessonRepository.save(lesson);
 
@@ -65,7 +67,6 @@ public class LessonService
         Lesson lesson = getLesson(lessonId);
         lesson.setTitle(request.title());
         lesson.setDescription(request.description());
-        lesson.setOrderNumber(request.orderNumber());
 
         Lesson updatedLesson = lessonRepository.save(lesson);
 

@@ -15,11 +15,7 @@ public record ModuleRequest(
 
         @NotBlank(message = "Description is required")
         @Size(max = 1000, message = "Description must be at most 1000 characters")
-        String description,
-
-        @NotNull(message = "orderNumber is required")
-        @Positive(message = "orderNumber must be positive")
-        Integer orderNumber
+        String description
 )
 {
 }
