@@ -3,6 +3,9 @@ package com.example.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User
@@ -10,6 +13,10 @@ public class User
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "owner")
+    private List<Course> courses = new ArrayList<>();
 
     @Column(unique = true, nullable = false, length = 30)
     private String username;
@@ -40,14 +47,24 @@ public class User
     {
     }
 
-    public Long getId()
+    public Long getUserId()
     {
         return userId;
     }
 
-    public void setId(Long userId)
+    public void setUserId(Long userId)
     {
         this.userId = userId;
+    }
+
+    public List<Course> getCourses()
+    {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses)
+    {
+        this.courses = courses;
     }
 
     public String getUsername()
