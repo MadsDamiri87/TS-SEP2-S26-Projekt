@@ -3,6 +3,8 @@ package com.example.backend.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "courses")
@@ -15,6 +17,13 @@ public class Course
     @ManyToOne(optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
+
+    @OneToMany(
+            mappedBy = "course",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Module> modules = new ArrayList<>();
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -36,6 +45,30 @@ public class Course
 
     public Course()
     {
+    }
+
+    public void addModule(Module module) {
+        modules.add(module);
+        module.setCourse(this);
+    }
+
+    public void removeModule(Module module) {
+        modules.remove(module);
+        module.setCourse(null);
+    }
+
+    public List<Module> getModules()
+    {
+        return modules;
+    }
+
+    public void setModules(List<Module> modules)
+    {
+        this.modules.clear();
+
+        for (Module module : modules) {
+            addModule(module);
+        }
     }
 
     public void setId(Long id)
