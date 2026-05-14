@@ -33,7 +33,7 @@ public class ModuleController
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ModuleResponse> create(@Valid @RequestBody ModuleRequest request) {
         ModuleResponse response = moduleService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
