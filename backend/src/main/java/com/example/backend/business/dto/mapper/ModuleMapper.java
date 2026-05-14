@@ -4,6 +4,9 @@ import com.example.backend.business.dto.module.ModuleResponse;
 import com.example.backend.entity.Module;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class ModuleMapper
 {
@@ -15,4 +18,16 @@ public class ModuleMapper
                 module.getDescription()
         );
     }
+
+    public List<ModuleResponse> toResponse(List<Module> modules) {
+        List<ModuleResponse> responses = new ArrayList<>();
+
+        for (Module module : modules) {
+            responses.add(toResponse(module));
+        }
+
+        return responses;
+    }
+
+
 }

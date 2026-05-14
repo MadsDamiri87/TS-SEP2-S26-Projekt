@@ -21,15 +21,15 @@ public class ModuleController
         this.moduleService = moduleService;
     }
 
-    @GetMapping("/{moduleId}")
+    @GetMapping("/module/{moduleId}")
     public ResponseEntity<ModuleResponse> getById(@PathVariable Long moduleId) {
         ModuleResponse response = moduleService.getById(moduleId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ModuleResponse>> getAll() {
-        List<ModuleResponse> response = moduleService.getAll();
+    @GetMapping("/{courseId}")
+    public ResponseEntity<List<ModuleResponse>> getAllByCourseId(@PathVariable Long courseId) {
+        List<ModuleResponse> response = moduleService.getAllByCourseId(courseId);
         return ResponseEntity.ok(response);
     }
 
