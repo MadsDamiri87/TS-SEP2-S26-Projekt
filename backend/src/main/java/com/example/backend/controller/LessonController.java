@@ -21,15 +21,15 @@ public class LessonController
         this.lessonService = lessonService;
     }
 
-    @GetMapping("/{lessonId}")
+    @GetMapping("/lesson{lessonId}")
     public ResponseEntity<LessonResponse> getById(@PathVariable Long lessonId) {
         LessonResponse response = lessonService.getById(lessonId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<LessonResponse>> getAll() {
-        List<LessonResponse> response = lessonService.getAll();
+    @GetMapping("/{moduleId}")
+    public ResponseEntity<List<LessonResponse>> getAllByModuleId(@PathVariable Long moduleId) {
+        List<LessonResponse> response = lessonService.getAllByModuleId(moduleId);
         return ResponseEntity.ok(response);
     }
 

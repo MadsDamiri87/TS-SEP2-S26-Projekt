@@ -8,9 +8,9 @@ public record LessonRequest(
         @NotNull(message = "Module id is required")
         Long moduleId,
 
-        @NotBlank(message = "Name is required")
-        @Size(max = 100, message = "Name must be at most 100 characters")
-        String name,
+        @NotBlank(message = "Title is required")
+        @Size(max = 100, message = "Title must be at most 100 characters")
+        String title,
 
         @NotBlank(message = "Description is required")
         @Size(max = 1000, message = "Description must be at most 1000 characters")
