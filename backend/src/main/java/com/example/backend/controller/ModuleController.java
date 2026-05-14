@@ -33,13 +33,13 @@ public class ModuleController
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<ModuleResponse> create(@Valid @RequestBody ModuleRequest request) {
         ModuleResponse response = moduleService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/update/{moduleId}")
+    @PutMapping("/{moduleId}")
     public ResponseEntity<ModuleResponse> update(
             @PathVariable Long moduleId,
             @Valid @RequestBody ModuleRequest request){
@@ -47,7 +47,7 @@ public class ModuleController
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete/{moduleId}")
+    @DeleteMapping("/{moduleId}")
     public ResponseEntity<Void> delete(@PathVariable Long moduleId){
         moduleService.delete(moduleId);
         return ResponseEntity.noContent().build();
