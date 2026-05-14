@@ -50,7 +50,7 @@ class CreateCourseIntegrationTest {
             // Arrange
             owner = saveValidUser();
 
-            String jsonBody = validCreateCourseJson(owner.getId());
+            String jsonBody = validCreateCourseJson(owner.getUserId());
 
             // Act
             status = mockMvc.perform(post("/api/courses/create")
@@ -61,7 +61,7 @@ class CreateCourseIntegrationTest {
                     .getStatus();
 
             savedCourse = courseRepository.findAll().getFirst();
-            updatedOwner = userRepository.findById(owner.getId()).orElseThrow();
+            updatedOwner = userRepository.findById(owner.getUserId()).orElseThrow();
         }
 
         @Test
@@ -114,7 +114,7 @@ class CreateCourseIntegrationTest {
 
         @Test
         void shouldSaveCourseWithCorrectOwner() {
-            assertEquals(owner.getId(), savedCourse.getOwner().getId());
+            assertEquals(owner.getUserId(), savedCourse.getOwner().getUserId());
         }
 
         @Test

@@ -15,7 +15,7 @@ public class UserMapper
 {
   public UserResponse toResponse(User user) {
     return new UserResponse(
-        user.getId(),
+        user.getUserId(),
         user.getUsername(),
         user.getEmail(),
         user.isAdministrator(),
@@ -26,7 +26,7 @@ public class UserMapper
 
   public UserProfileResponse toProfileResponse(User user) {
     return new UserProfileResponse(
-        user.getId(),
+        user.getUserId(),
         user.getUsername(),
         user.getEmail(),
         user.getPhoneNumber(),
