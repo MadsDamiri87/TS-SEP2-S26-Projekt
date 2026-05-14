@@ -11,7 +11,7 @@ export function createCourse(title, shortDescription, description, price) {
     }
 
     const body = {ownerId, title, shortDescription, description, price}
-    console.log("Create course request body:", body)
+
     return api("/courses/create", {
         method: "POST",
         body: body
