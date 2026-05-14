@@ -1,6 +1,14 @@
+import { useNavigate} from "react-router-dom";
 import "./CourseCard.css";
 
-export function CourseCard({ title, shortDescription, price}) {
+
+export function CourseCard({ courseId, title, shortDescription, price}) {
+    const navigate = useNavigate();
+
+    const handleReadMore = () => {
+        navigate(`/course/${courseId}`);
+    };
+
     return (
         <div className="course-card">
             <h3 className="course-card-title">

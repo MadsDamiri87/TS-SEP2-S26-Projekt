@@ -1,0 +1,82 @@
+.page-detail-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-areas:
+    "hero content"
+    "description content";
+  gap: 2rem;
+  align-items: start;
+}
+
+.course-details-hero {
+  grid-area: hero;
+}
+
+.course-description-section {
+  grid-area: description;
+}
+
+.course-content-section {
+  grid-area: content;
+  position: sticky;
+  top: 2rem;
+}
+
+.course-details-hero,
+.course-description-section,
+.course-content-section {
+  padding: 2rem;
+  background: var(--opaque-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--std-box-shadow);
+}
+
+.course-purchase-card {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: var(--menu-gradient);
+  border-radius: var(--border-radius);
+}
+
+.course-price {
+  color: var(--off-white);
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.module-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.module-accordion details {
+  padding: 1rem;
+  background: rgba(2, 6, 47, 0.55);
+  border: 1px solid rgba(172, 191, 222, 0.2);
+  border-radius: 14px;
+}
+
+.module-accordion summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 1000px) {
+  .page-detail-content {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "hero"
+      "description"
+      "content";
+  }
+
+  .course-content-section {
+    position: relative;
+    top: 0;
+  }
+}

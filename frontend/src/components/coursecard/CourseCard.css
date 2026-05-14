@@ -50,4 +50,6 @@
   justify-content: flex-end;
 }
 
-
+.course-card {
+  cursor: pointer;
+}
