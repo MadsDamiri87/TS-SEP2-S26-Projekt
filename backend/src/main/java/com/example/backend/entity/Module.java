@@ -6,7 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "modules")
+@Table(
+        name = "modules",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_module_course_order",
+                        columnNames = {"course_id", "order_number"}
+                )
+        }
+)
 public class Module
 {
     @Id
@@ -30,16 +38,21 @@ public class Module
     @Column(nullable = false)
     private String description;
 
+    @Column(name = "order_number", nullable = false)
+    private int orderNumber;
+
     public Module()
     {
     }
 
-    public void addLesson(Lesson lesson) {
+    public void addLesson(Lesson lesson)
+    {
         lessons.add(lesson);
         lesson.setModule(this);
     }
 
-    public void removeLesson(Lesson lesson) {
+    public void removeLesson(Lesson lesson)
+    {
         lessons.remove(lesson);
         lesson.setModule(null);
     }
@@ -63,9 +76,20 @@ public class Module
     {
         this.lessons.clear();
 
-        for (Lesson lesson : lessons) {
+        for (Lesson lesson : lessons)
+        {
             addLesson(lesson);
         }
+    }
+
+    public int getOrderNumber()
+    {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber)
+    {
+        this.orderNumber = orderNumber;
     }
 
     public Long getModuleId()

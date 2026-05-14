@@ -15,7 +15,8 @@ public class LessonMapper
                 lesson.getLessonId(),
                 lesson.getModule().getModuleId(),
                 lesson.getTitle(),
-                lesson.getDescription()
+                lesson.getDescription(),
+                lesson.getOrderNumber()
         );
     }
 

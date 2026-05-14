@@ -55,6 +55,7 @@ public class ModuleService
         module.setCourse(course);
         module.setName(request.name());
         module.setDescription(request.description());
+        module.setOrderNumber(request.orderNumber());
 
         Module savedModule = moduleRepository.save(module);
         return moduleMapper.toResponse(savedModule);
@@ -66,6 +67,7 @@ public class ModuleService
         Module module = getModule(moduleId);
         module.setName(request.name());
         module.setDescription(request.description());
+        module.setOrderNumber(request.orderNumber());
 
         Module updatedModule = moduleRepository.save(module);
 

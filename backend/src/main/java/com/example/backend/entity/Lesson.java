@@ -3,7 +3,15 @@ package com.example.backend.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "lessons")
+@Table(
+        name = "lessons",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "lesson_module_order",
+                        columnNames = {"module_id", "order_number"}
+                )
+        }
+)
 public class Lesson
 {
     @Id
@@ -20,9 +28,22 @@ public class Lesson
     @Column(nullable = false)
     private String description;
 
+    @Column(name = "order_number", nullable = false)
+    private int orderNumber;
+
 
     public Lesson()
     {
+    }
+
+    public int getOrderNumber()
+    {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber)
+    {
+        this.orderNumber = orderNumber;
     }
 
     public Long getLessonId()

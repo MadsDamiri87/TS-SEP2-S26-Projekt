@@ -53,6 +53,7 @@ public class LessonService
         lesson.setModule(module);
         lesson.setTitle(request.title());
         lesson.setDescription(request.description());
+        lesson.setOrderNumber(request.orderNumber());
 
         Lesson savedLesson = lessonRepository.save(lesson);
 
@@ -64,6 +65,7 @@ public class LessonService
         Lesson lesson = getLesson(lessonId);
         lesson.setTitle(request.title());
         lesson.setDescription(request.description());
+        lesson.setOrderNumber(request.orderNumber());
 
         Lesson updatedLesson = lessonRepository.save(lesson);
 

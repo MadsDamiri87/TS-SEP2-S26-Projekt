@@ -15,7 +15,8 @@ public class ModuleMapper
                 module.getModuleId(),
                 module.getCourse().getId(),
                 module.getName(),
-                module.getDescription()
+                module.getDescription(),
+                module.getOrderNumber()
         );
     }
 

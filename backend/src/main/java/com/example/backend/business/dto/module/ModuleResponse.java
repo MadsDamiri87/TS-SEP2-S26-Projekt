@@ -4,5 +4,6 @@ public record ModuleResponse(
         Long moduleId,
         Long courseId,
         String name,
-        String description
+        String description,
+        int orderNumber
 ){}
