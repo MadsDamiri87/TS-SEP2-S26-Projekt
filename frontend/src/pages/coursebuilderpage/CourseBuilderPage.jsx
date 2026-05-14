@@ -1,97 +1,103 @@
 import "./CourseBuilderPage.css";
-import {OwnedCourseItem} from "../../components/createdcourses/OwnedCourseItem.jsx";
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { OwnedCourseItem } from "../../components/createdcourses/OwnedCourseItem.jsx";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { PublishCourseModal } from "../../components/modal/PublishCourseModal.jsx";
-import {getAllCreatedCourses, publishCourse, unPublishCourse} from "../../api/courseApi.js";
+import {
+    getAllCreatedCourses,
+    publishCourse,
+    unPublishCourse
+} from "../../api/courseApi.js";
 
 export function CourseBuilderPage() {
     const navigate = useNavigate();
 
     const [ownedCourses, setOwnedCourses] = useState([]);
-
     const [showPublishModal, setShowPublishModal] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
 
     useEffect(() => {
-        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-        const userId = userDetails?.userId;
+        async function loadCreatedCourses() {
+            const rawUserDetails = localStorage.getItem("userDetails");
 
-        if (!userId) {
-            navigate("/access-denied")
-            console.log("No user id found");
-            return;
-        }
+            if (!rawUserDetails) {
+                navigate("/access-denied");
+                return;
+            }
 
-        else if (!userDetails.isCourseProvider) navigate("/access-denied")
+            const userDetails = JSON.parse(rawUserDetails);
+            const userId = userDetails?.userId;
 
-        getAllCreatedCourses(userId)
-            .then((courses) => {
+            if (!userId) {
+                console.log("No user id found");
+                navigate("/access-denied");
+                return;
+            }
+
+            if (!userDetails.isCourseProvider) {
+                navigate("/access-denied");
+                return;
+            }
+
+            try {
+                const courses = await getAllCreatedCourses(userId);
+
                 const sortedCourses = [...courses].sort((a, b) => {
                     return new Date(b.lastEdited) - new Date(a.lastEdited);
                 });
 
                 setOwnedCourses(sortedCourses);
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error("Could not fetch created courses:", error);
-            });
-    }, []);
+            }
+        }
 
-    const handleEdit = (courseId) => {
-        console.log("Edit course:", courseId);
-        // navigate(`/course-builder/${courseId}`);
-    };
+        loadCreatedCourses();
+    }, [navigate]);
 
-    const handleToggleVisibility = async (courseId) => {
-        console.log("Clicked courseId:", courseId);
-        console.log("Owned courses:", ownedCourses);
+    function handleEdit(courseId) {
+        navigate(`/edit-course/${courseId}`);
+    }
 
+    function handleToggleVisibility(courseId) {
         const course = ownedCourses.find((course) => course.courseId === courseId);
 
-        console.log("Found course:", course);
         if (!course) {
             return;
         }
 
-        const message = course.isPublished
-            ? "Are you sure you want to unpublish this course?"
-            : "Are you sure you want to publish this course?";
-
         setSelectedCourse(course);
         setShowPublishModal(true);
-        console.log("show modal should open");
+    }
 
-    };
-
-    const handleDelete = (courseId) => {
+    function handleDelete(courseId) {
         console.log("Delete course:", courseId);
-    };
+    }
 
-    // her
-    const confirmToggleVisibility = async () => {
+    async function confirmToggleVisibility() {
         if (!selectedCourse) {
             return;
         }
+
         try {
             const updatedCourse = selectedCourse.isPublished
                 ? await unPublishCourse(selectedCourse.courseId)
                 : await publishCourse(selectedCourse.courseId);
 
-            setOwnedCourses((prevCourses) =>
-                prevCourses.map((course) =>
+            setOwnedCourses((previousCourses) =>
+                previousCourses.map((course) =>
                     course.courseId === updatedCourse.courseId
                         ? updatedCourse
-                        : course));
-        }
-        catch (error) {
+                        : course
+                )
+            );
+        } catch (error) {
             console.error("Could not update course visibility:", error);
         } finally {
             setShowPublishModal(false);
             setSelectedCourse(null);
         }
     }
-    // her
 
     return (
         <div className="page-container">
@@ -144,7 +150,6 @@ export function CourseBuilderPage() {
                     onConfirm={confirmToggleVisibility}
                 />
             )}
-
         </div>
     );
 }

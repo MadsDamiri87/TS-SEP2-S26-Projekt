@@ -68,7 +68,7 @@ function App() {
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/create-course" element={<CreateCoursePage />} />
                         <Route path="/course-builder" element={<CourseBuilderPage />} />
-                        <Route path="/edit-course" element={<EditCoursePage/> } />
+                        <Route path="/edit-course/:courseId" element={<EditCoursePage />} />
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/access-denied" element={<AccessDeniedPage />} />
 
