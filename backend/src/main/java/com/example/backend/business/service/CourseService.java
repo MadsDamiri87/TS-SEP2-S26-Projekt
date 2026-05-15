@@ -100,6 +100,8 @@ public class CourseService
         course.setDescription(request.description());
         course.setPrice(request.price());
 
+        course.setLastEditedToNow();
+
         Course updatedCourse = courseRepository.save(course);
 
         return courseMapper.toResponse(updatedCourse);

@@ -3,13 +3,13 @@ import { OwnedCourseItem } from "../../components/createdcourses/OwnedCourseItem
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PublishCourseModal } from "../../components/modal/PublishCourseModal.jsx";
+import { ConfirmDeleteModal } from "../../components/modal/ConfirmDeleteModal.jsx";
 import {
-    deleteCourse,
     getAllCreatedCourses,
     publishCourse,
-    unPublishCourse
+    unPublishCourse,
+    deleteCourse
 } from "../../api/courseApi.js";
-import {ConfirmDeleteModal} from "../../components/modal/ConfirmDeleteModal.jsx";
 
 export function CourseBuilderPage() {
     const navigate = useNavigate();
@@ -17,47 +17,42 @@ export function CourseBuilderPage() {
     const [ownedCourses, setOwnedCourses] = useState([]);
     const [showPublishModal, setShowPublishModal] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
+
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [courseToDelete, setCourseToDelete] = useState(null);
 
-    useEffect(() => {
-        async function loadCreatedCourses() {
-            const rawUserDetails = localStorage.getItem("userDetails");
+    async function loadCreatedCourses() {
+        const rawUserDetails = localStorage.getItem("userDetails");
 
-            if (!rawUserDetails) {
-                navigate("/access-denied");
-                return;
-            }
-
-            const userDetails = JSON.parse(rawUserDetails);
-            const userId = userDetails?.userId;
-
-            if (!userId) {
-                console.log("No user id found");
-                navigate("/access-denied");
-                return;
-            }
-
-            if (!userDetails.isCourseProvider) {
-                navigate("/access-denied");
-                return;
-            }
-
-            try {
-                const courses = await getAllCreatedCourses(userId);
-
-                const sortedCourses = [...courses].sort((a, b) => {
-                    return new Date(b.lastEdited) - new Date(a.lastEdited);
-                });
-
-                setOwnedCourses(sortedCourses);
-            } catch (error) {
-                console.error("Could not fetch created courses:", error);
-            }
+        if (!rawUserDetails) {
+            navigate("/access-denied");
+            return;
         }
 
+        const userDetails = JSON.parse(rawUserDetails);
+        const userId = userDetails?.userId;
+
+        if (!userId || !userDetails.isCourseProvider) {
+            navigate("/access-denied");
+            return;
+        }
+
+        try {
+            const courses = await getAllCreatedCourses(userId);
+
+            const sortedCourses = [...courses].sort((a, b) => {
+                return new Date(b.lastEdited) - new Date(a.lastEdited);
+            });
+
+            setOwnedCourses(sortedCourses);
+        } catch (error) {
+            console.error("Could not fetch created courses:", error);
+        }
+    }
+
+    useEffect(() => {
         loadCreatedCourses();
-    }, [navigate]);
+    }, []);
 
     function handleEdit(courseId) {
         navigate(`/edit-course/${courseId}`);
@@ -85,6 +80,27 @@ export function CourseBuilderPage() {
         setShowDeleteModal(true);
     }
 
+    async function confirmToggleVisibility() {
+        if (!selectedCourse) {
+            return;
+        }
+
+        try {
+            if (selectedCourse.isPublished) {
+                await unPublishCourse(selectedCourse.courseId);
+            } else {
+                await publishCourse(selectedCourse.courseId);
+            }
+
+            await loadCreatedCourses();
+        } catch (error) {
+            console.error("Could not update course visibility:", error);
+        } finally {
+            setShowPublishModal(false);
+            setSelectedCourse(null);
+        }
+    }
+
     async function confirmDeleteCourse() {
         if (!courseToDelete) {
             return;
@@ -92,10 +108,7 @@ export function CourseBuilderPage() {
 
         try {
             await deleteCourse(courseToDelete.courseId);
-
-            setOwnedCourses((previousCourses) =>
-                previousCourses.filter((course) => course.courseId !== courseToDelete.courseId)
-            );
+            await loadCreatedCourses();
         } catch (error) {
             console.error("Could not delete course:", error);
         } finally {
@@ -104,29 +117,16 @@ export function CourseBuilderPage() {
         }
     }
 
-    async function confirmToggleVisibility() {
-        if (!selectedCourse) {
-            return;
+    function formatCourseCount(count) {
+        if (count === 0) {
+            return "No courses";
         }
 
-        try {
-            const updatedCourse = selectedCourse.isPublished
-                ? await unPublishCourse(selectedCourse.courseId)
-                : await publishCourse(selectedCourse.courseId);
-
-            setOwnedCourses((previousCourses) =>
-                previousCourses.map((course) =>
-                    course.courseId === updatedCourse.courseId
-                        ? updatedCourse
-                        : course
-                )
-            );
-        } catch (error) {
-            console.error("Could not update course visibility:", error);
-        } finally {
-            setShowPublishModal(false);
-            setSelectedCourse(null);
+        if (count === 1) {
+            return "1 course";
         }
+
+        return `${count} courses`;
     }
 
     return (
@@ -152,7 +152,7 @@ export function CourseBuilderPage() {
             <section className="owned-courses-panel">
                 <div className="owned-courses-header">
                     <h2>Your Courses</h2>
-                    <span>{ownedCourses.length} courses</span>
+                    <span>{formatCourseCount(ownedCourses.length)}</span>
                 </div>
 
                 <div className="owned-course-list">
@@ -162,6 +162,7 @@ export function CourseBuilderPage() {
                             courseId={course.courseId}
                             courseName={course.title}
                             isPublished={course.isPublished}
+                            lastEdited={course.lastEdited}
                             onEdit={handleEdit}
                             onToggleVisibility={handleToggleVisibility}
                             onDelete={handleDelete}

@@ -40,68 +40,68 @@ export function EditCoursePage() {
     const [selectedModule, setSelectedModule] = useState(null);
     const [selectedLesson, setSelectedLesson] = useState(null);
 
-    useEffect(() => {
-        async function loadCourse() {
-            const rawUserDetails = localStorage.getItem("userDetails");
+    async function loadCourse() {
+        const rawUserDetails = localStorage.getItem("userDetails");
 
-            if (!rawUserDetails) {
-                navigate("/");
-                return;
-            }
-
-            let userDetails;
-
-            try {
-                userDetails = JSON.parse(rawUserDetails);
-            } catch {
-                setErrorMessage("Could not read logged in user.");
-                setIsLoading(false);
-                return;
-            }
-
-            const userId = userDetails?.userId ?? userDetails?.id;
-
-            if (!userId) {
-                setErrorMessage("Could not find logged in user.");
-                setIsLoading(false);
-                return;
-            }
-
-            try {
-                const courses = await getAllCreatedCourses(userId);
-
-                const selectedCourse = courses.find(course =>
-                    course.courseId === Number(courseId)
-                );
-
-                if (!selectedCourse) {
-                    setErrorMessage("Course was not found.");
-                    return;
-                }
-
-                setCourse({
-                    courseId: selectedCourse.courseId,
-                    ownerId: selectedCourse.ownerId,
-                    title: selectedCourse.title,
-                    shortDescription: selectedCourse.shortDescription,
-                    description: selectedCourse.description,
-                    price: selectedCourse.price,
-                    modules: selectedCourse.modules ?? []
-                });
-
-                setOpenModuleIds(
-                    (selectedCourse.modules ?? []).map(module => module.moduleId)
-                );
-            } catch (error) {
-                console.error(error);
-                setErrorMessage("Could not load course.");
-            } finally {
-                setIsLoading(false);
-            }
+        if (!rawUserDetails) {
+            navigate("/");
+            return;
         }
 
+        let userDetails;
+
+        try {
+            userDetails = JSON.parse(rawUserDetails);
+        } catch {
+            setErrorMessage("Could not read logged in user.");
+            setIsLoading(false);
+            return;
+        }
+
+        const userId = userDetails?.userId ?? userDetails?.id;
+
+        if (!userId) {
+            setErrorMessage("Could not find logged in user.");
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const courses = await getAllCreatedCourses(userId);
+
+            const selectedCourse = courses.find(course =>
+                course.courseId === Number(courseId)
+            );
+
+            if (!selectedCourse) {
+                setErrorMessage("Course was not found.");
+                return;
+            }
+
+            setCourse({
+                courseId: selectedCourse.courseId,
+                ownerId: selectedCourse.ownerId,
+                title: selectedCourse.title,
+                shortDescription: selectedCourse.shortDescription,
+                description: selectedCourse.description,
+                price: selectedCourse.price,
+                modules: selectedCourse.modules ?? []
+            });
+
+            setOpenModuleIds(
+                (selectedCourse.modules ?? []).map(module => module.moduleId)
+            );
+        } catch (error) {
+            console.error(error);
+            setErrorMessage("Could not load course.");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
         loadCourse();
-    }, [courseId, navigate]);
+    }, [courseId]);
 
     function handleCourseChange(event) {
         const { name, value } = event.target;
@@ -249,17 +249,7 @@ export function EditCoursePage() {
     async function confirmDeleteModule() {
         try {
             await deleteModule(selectedModule.moduleId);
-
-            setCourse(previousCourse => ({
-                ...previousCourse,
-                modules: previousCourse.modules.filter(module =>
-                    module.moduleId !== selectedModule.moduleId
-                )
-            }));
-
-            setOpenModuleIds(previousIds =>
-                previousIds.filter(id => id !== selectedModule.moduleId)
-            );
+            await loadCourse();
 
             closeModal();
         } catch (error) {
@@ -327,20 +317,7 @@ export function EditCoursePage() {
     async function confirmDeleteLesson() {
         try {
             await deleteLesson(selectedLesson.lessonId);
-
-            setCourse(previousCourse => ({
-                ...previousCourse,
-                modules: previousCourse.modules.map(module =>
-                    module.moduleId === selectedModule.moduleId
-                        ? {
-                            ...module,
-                            lessons: module.lessons.filter(lesson =>
-                                lesson.lessonId !== selectedLesson.lessonId
-                            )
-                        }
-                        : module
-                )
-            }));
+            await loadCourse();
 
             closeModal();
         } catch (error) {

@@ -13,4 +13,9 @@ public interface LessonRepository extends JpaRepository<Lesson, Long>
 
     @Query("SELECT COALESCE(MAX(l.orderNumber), 0) FROM Lesson l WHERE l.module.moduleId = :moduleId")
     int findHighestOrderNumberByModuleId(@Param("moduleId") Long moduleId);
+
+    List<Lesson> findAllByModule_ModuleIdAndOrderNumberGreaterThan(
+            Long moduleId,
+            int orderNumber
+    );
 }
