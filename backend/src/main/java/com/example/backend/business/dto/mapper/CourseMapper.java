@@ -4,6 +4,9 @@ import com.example.backend.business.dto.course.CourseResponse;
 import com.example.backend.entity.Course;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class CourseMapper
 {
@@ -27,5 +30,17 @@ public class CourseMapper
                 course.getLastEdited(),
                 moduleMapper.toResponse(course.getModules())
         );
+    }
+
+    public List<CourseResponse> toResponse(List<Course> courses)
+    {
+        List<CourseResponse> responses = new ArrayList<>();
+
+        for(Course course : courses)
+        {
+            responses.add(toResponse(course));
+
+        }
+     return responses;
     }
 }

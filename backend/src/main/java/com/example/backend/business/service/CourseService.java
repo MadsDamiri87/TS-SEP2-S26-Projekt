@@ -80,13 +80,13 @@ public class CourseService
 
     public List<CourseResponse> getAllPublishedCourses(){
         List<Course> courses = courseRepository.findCoursesByIsPublishedIs(true);
-        return mapToCourseResponses(courses);
+        return courseMapper.toResponse(courses);
     }
 
     public List<CourseResponse> getAllCreatedCourses(Long userId) {
         User courseCreator = getUser(userId);
         List<Course> courses = courseRepository.findByOwner(courseCreator);
-        return mapToCourseResponses(courses);
+        return courseMapper.toResponse(courses);
     }
 
     public CourseResponse getCourseById(long courseId)
@@ -123,17 +123,6 @@ public class CourseService
         }
 
         courseRepository.delete(course);
-    }
-
-    private List<CourseResponse> mapToCourseResponses(List<Course> courses)
-    {
-        List<CourseResponse> responses = new ArrayList<>();
-
-        for(Course course : courses)
-        {
-            responses.add(courseMapper.toResponse(course));
-        }
-        return responses;
     }
 
     private Course getCourse(long courseId)

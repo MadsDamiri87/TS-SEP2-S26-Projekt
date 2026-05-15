@@ -1,3 +1,7 @@
+:root {
+    --muted-text: #9ca3af;
+}
+
 .course-builder-header {
     display: flex;
     justify-content: space-between;

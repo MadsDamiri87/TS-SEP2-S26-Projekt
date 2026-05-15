@@ -2,7 +2,7 @@ import './App.css'
 import "./styles.css"
 import { MobileMenu } from "./components/sidemenu/mobile_menu/MobileMenu.jsx";
 import { DesktopMenu } from "./components/sidemenu/desktop_menu/DesktopMenu.jsx";
-import { LoginModal } from "./components/popup/LoginModal.jsx";
+import { LoginModal } from "./components/popup/login/LoginModal.jsx";
 
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -17,6 +17,7 @@ import {CourseDetailPage} from "./pages/coursedetailpage/CourseDetailPage.jsx";
 
 import {EditCoursePage} from "./pages/editcoursepage/EditCoursePage.jsx";
 import {EditLessonPage} from "./pages/editLessonPage/EditLessonPage.jsx";
+import {BuyPopup} from "./components/popup/buyform/BuyPopup.jsx";
 
 function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);

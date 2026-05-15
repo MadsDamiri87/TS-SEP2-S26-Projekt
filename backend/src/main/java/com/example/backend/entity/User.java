@@ -18,6 +18,9 @@ public class User
     @OneToMany(mappedBy = "owner")
     private List<Course> ownedCourses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Enrollment> enrollments =new ArrayList<>();
+
     @Column(unique = true, nullable = false, length = 30)
     private String username;
 
@@ -77,7 +80,17 @@ public class User
         this.username = username;
     }
 
-    public String getHashedPassword()
+  public List<Enrollment> getEnrollments()
+  {
+    return enrollments;
+  }
+
+  public void setEnrollments(List<Enrollment> enrollments)
+  {
+    this.enrollments = enrollments;
+  }
+
+  public String getHashedPassword()
     {
         return hashedPassword;
     }
