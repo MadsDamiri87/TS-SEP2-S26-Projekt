@@ -10,6 +10,7 @@ import com.example.backend.persistence.repository.UserRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,25 @@ public class CourseService
     {
         Course course = getCourse(courseId);
         return courseMapper.toResponse(course);
+    }
+
+    @Transactional
+    public CourseResponse update(Long courseId, CourseRequest request) {
+        Course course = getCourse(courseId);
+        course.setTitle(request.title());
+        course.setShortDescription(request.shortDescription());
+        course.setDescription(request.description());
+        course.setPrice(request.price());
+
+        Course updatedCourse = courseRepository.save(course);
+
+        return courseMapper.toResponse(updatedCourse);
+    }
+
+    @Transactional
+    public void delete(Long courseId) {
+        Course course  = getCourse(courseId);
+        courseRepository.delete(course);
     }
 
     private List<CourseResponse> mapToCourseResponses(List<Course> courses)
