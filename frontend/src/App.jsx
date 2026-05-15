@@ -16,6 +16,7 @@ import {AccessDeniedPage} from "./pages/accessdeniedpage/AccessDeniedPage.jsx";
 import {CourseDetailPage} from "./pages/coursedetailpage/CourseDetailPage.jsx";
 
 import {EditCoursePage} from "./pages/editcoursepage/EditCoursePage.jsx";
+import {EditLessonPage} from "./pages/editLessonPage/EditLessonPage.jsx";
 
 function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -74,6 +75,7 @@ function App() {
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/access-denied" element={<AccessDeniedPage />} />
                         <Route path="/course/:courseId/:courseTitle" element={<CourseDetailPage />} />
+                        <Route path="/edit-lesson/:lessonId" element={<EditLessonPage />} />
 
 
                         <Route path="*" element={<Error404Page/> } />

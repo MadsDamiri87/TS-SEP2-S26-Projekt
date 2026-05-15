@@ -3,12 +3,15 @@ package com.example.backend.business.service;
 import com.example.backend.business.dto.course.CourseRequest;
 import com.example.backend.business.dto.course.CourseResponse;
 import com.example.backend.business.dto.mapper.CourseMapper;
+import com.example.backend.entity.Content;
 import com.example.backend.entity.Course;
+import com.example.backend.entity.Module;
+import com.example.backend.entity.Lesson;
 import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.UserRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
-import org.jspecify.annotations.NonNull;
+import com.example.backend.shared.util.FileStorageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,7 +112,16 @@ public class CourseService
 
     @Transactional
     public void delete(Long courseId) {
-        Course course  = getCourse(courseId);
+        Course course = getCourse(courseId);
+
+        for (Module module : course.getModules()) {
+            for (Lesson lesson : module.getLessons()) {
+                for (Content content : lesson.getContents()) {
+                    FileStorageHelper.deletePhysicalFile(content.getFilePath());
+                }
+            }
+        }
+
         courseRepository.delete(course);
     }
 

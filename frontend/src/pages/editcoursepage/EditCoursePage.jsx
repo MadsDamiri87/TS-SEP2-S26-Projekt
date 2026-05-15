@@ -165,25 +165,6 @@ export function EditCoursePage() {
         setModalMode("create-lesson");
     }
 
-    function handleEditLesson(lessonId) {
-        const module = course.modules.find(module =>
-            module.lessons.some(lesson => lesson.lessonId === lessonId)
-        );
-
-        if (!module) {
-            return;
-        }
-
-        const lesson = module.lessons.find(lesson => lesson.lessonId === lessonId);
-
-        if (!lesson) {
-            return;
-        }
-
-        setSelectedModule(module);
-        setSelectedLesson(lesson);
-        setModalMode("edit-lesson");
-    }
 
     function handleDeleteLesson(lessonId) {
         const module = course.modules.find(module =>
@@ -488,8 +469,8 @@ export function EditCoursePage() {
                                                                     </span>
 
                                                                     <div className="lesson-actions">
-                                                                        <button type="button" onClick={() => handleEditLesson(lesson.lessonId)}>
-                                                                            Edit
+                                                                        <button type="button" onClick={() => navigate(`/edit-lesson/${lesson.lessonId}`)}>
+                                                                            Content
                                                                         </button>
 
                                                                         <button type="button" onClick={() => handleDeleteLesson(lesson.lessonId)}>

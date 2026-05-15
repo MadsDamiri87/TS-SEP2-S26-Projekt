@@ -3,6 +3,7 @@ package com.example.backend.business.service;
 import com.example.backend.business.dto.lesson.LessonRequest;
 import com.example.backend.business.dto.lesson.LessonResponse;
 import com.example.backend.business.dto.mapper.LessonMapper;
+import com.example.backend.entity.Content;
 import com.example.backend.entity.Course;
 import com.example.backend.entity.Lesson;
 import com.example.backend.entity.Module;
@@ -10,6 +11,7 @@ import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.LessonRepository;
 import com.example.backend.persistence.repository.ModuleRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
+import com.example.backend.shared.util.FileStorageHelper;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,20 +98,26 @@ public class LessonService
     @Transactional
     public void delete(Long lessonId)
     {
-        Lesson lessonToDelete = getLesson(lessonId);
+        Lesson lesson = getLesson(lessonId);
 
-        Long moduleId = lessonToDelete.getModule().getModuleId();
-        int deletedOrderNumber = lessonToDelete.getOrderNumber();
+        Long moduleId = lesson.getModule().getModuleId();
+        int deletedOrderNumber = lesson.getOrderNumber();
 
-        lessonRepository.delete(lessonToDelete);
+        for (Content content : lesson.getContents()) {
+            FileStorageHelper.deletePhysicalFile(content.getFilePath());
+        }
 
-        List<Lesson> lessons = lessonRepository.findAllByModule_ModuleIdAndOrderNumberGreaterThan(moduleId, deletedOrderNumber);
+        lessonRepository.delete(lesson);
+        lessonRepository.flush();
 
-        for (Lesson lessonToShift : lessons) {
+        List<Lesson> lessonsToShift = lessonRepository
+                .findAllByModule_ModuleIdAndOrderNumberGreaterThan(moduleId, deletedOrderNumber);
+
+        for (Lesson lessonToShift : lessonsToShift) {
             lessonToShift.setOrderNumber(lessonToShift.getOrderNumber() - 1);
         }
 
-        lessonRepository.saveAll(lessons);
+        lessonRepository.saveAll(lessonsToShift);
     }
 
     private Lesson getLesson(Long lessonId)

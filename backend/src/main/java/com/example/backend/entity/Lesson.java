@@ -2,6 +2,9 @@ package com.example.backend.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(
         name = "lessons",
@@ -22,6 +25,13 @@ public class Lesson
     @JoinColumn(name = "module_id", nullable = false)
     private Module module;
 
+    @OneToMany(
+            mappedBy = "lesson",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Content> contents = new ArrayList<>();
+
     @Column(nullable = false)
     private String title;
 
@@ -36,9 +46,29 @@ public class Lesson
     {
     }
 
+    public void addContent(Content content) {
+        contents.add(content);
+        content.setLesson(this);
+    }
+
+    public void removeContent(Content content) {
+        contents.remove(content);
+        content.setLesson(null);
+    }
+
     public int getOrderNumber()
     {
         return orderNumber;
+    }
+
+    public List<Content> getContents()
+    {
+        return contents;
+    }
+
+    public void setContents(List<Content> contents)
+    {
+        this.contents = contents;
     }
 
     public void setOrderNumber(int orderNumber)
