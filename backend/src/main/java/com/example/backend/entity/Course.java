@@ -25,6 +25,9 @@ public class Course
     )
     private List<Module> modules = new ArrayList<>();
 
+    @OneToMany(mappedBy = "course")
+    private List<Enrollment> enrollments = new ArrayList<>();
+
     @Column(nullable = false, length = 100)
     private String title;
 
@@ -109,6 +112,16 @@ public class Course
     public void setShortDescription(String shortDescription)
     {
         this.shortDescription = shortDescription;
+    }
+
+    public List<Enrollment> getEnrollments()
+    {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments)
+    {
+        this.enrollments = enrollments;
     }
 
     public String getDescription()
