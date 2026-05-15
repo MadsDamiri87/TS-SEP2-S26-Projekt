@@ -61,7 +61,7 @@ public class ContentService
 
             file.transferTo(filePath);
 
-            int nextOrderNumber = contentRepository.findHighestOrderNumberByLesson_LessonId(lessonId) + 1;
+            int nextOrderNumber = contentRepository.findHighestOrderNumberByLessonId(lessonId) + 1;
 
             Content content = new Content();
             content.setLesson(lesson);
