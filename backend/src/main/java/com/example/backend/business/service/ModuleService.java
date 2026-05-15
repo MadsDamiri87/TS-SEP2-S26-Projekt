@@ -3,11 +3,14 @@ package com.example.backend.business.service;
 import com.example.backend.business.dto.mapper.ModuleMapper;
 import com.example.backend.business.dto.module.ModuleRequest;
 import com.example.backend.business.dto.module.ModuleResponse;
+import com.example.backend.entity.Content;
 import com.example.backend.entity.Course;
+import com.example.backend.entity.Lesson;
 import com.example.backend.entity.Module;
 import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.ModuleRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
+import com.example.backend.shared.util.FileStorageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,18 +91,28 @@ public class ModuleService
     @Transactional
     public void delete(Long moduleId)
     {
-        Module moduleToDelete = getModule(moduleId);
-        Long courseId = moduleToDelete.getCourse().getId();
-        int orderNumber = moduleToDelete.getOrderNumber();
+        Module module = getModule(moduleId);
 
-        moduleRepository.delete(moduleToDelete);
+        Long courseId = module.getCourse().getId();
+        int deletedOrderNumber = module.getOrderNumber();
 
-        List<Module> modules = moduleRepository.findAllByCourse_IdAndOrderNumberGreaterThan(courseId, orderNumber);
-
-        for (Module module : modules){
-            int currentOrderNumber = module.getOrderNumber();
-            module.setOrderNumber(currentOrderNumber - 1);
+        for (Lesson lesson : module.getLessons()) {
+            for (Content content : lesson.getContents()) {
+                FileStorageHelper.deletePhysicalFile(content.getFilePath());
+            }
         }
+
+        moduleRepository.delete(module);
+        moduleRepository.flush();
+
+        List<Module> modulesToShift = moduleRepository
+                .findAllByCourse_IdAndOrderNumberGreaterThan(courseId, deletedOrderNumber);
+
+        for (Module moduleToShift : modulesToShift) {
+            moduleToShift.setOrderNumber(moduleToShift.getOrderNumber() - 1);
+        }
+
+        moduleRepository.saveAll(modulesToShift);
     }
 
     private Module getModule(Long moduleId)

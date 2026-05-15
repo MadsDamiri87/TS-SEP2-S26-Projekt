@@ -1,4 +1,5 @@
 .env.properties
+data/
 
 HELP.md
 target/
