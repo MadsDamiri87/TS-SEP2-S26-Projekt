@@ -10,13 +10,21 @@ import java.util.List;
 @Component
 public class ModuleMapper
 {
+    private final LessonMapper lessonMapper;
+
+    public ModuleMapper(LessonMapper lessonMapper)
+    {
+        this.lessonMapper = lessonMapper;
+    }
+
     public ModuleResponse toResponse(Module module) {
         return new ModuleResponse(
                 module.getModuleId(),
                 module.getCourse().getId(),
                 module.getName(),
                 module.getDescription(),
-                module.getOrderNumber()
+                module.getOrderNumber(),
+                lessonMapper.toResponse(module.getLessons())
         );
     }
 

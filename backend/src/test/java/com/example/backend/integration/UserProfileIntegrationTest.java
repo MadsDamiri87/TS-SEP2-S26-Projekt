@@ -41,7 +41,7 @@ class UpdateUserProfileIntegrationTest {
     void setup() throws Exception {
       User user = saveValidUser();
 
-      status = mockMvc.perform(get("/api/user/" + user.getId()))
+      status = mockMvc.perform(get("/api/user/" + user.getUserId()))
           .andReturn()
           .getResponse()
           .getStatus();
@@ -82,14 +82,14 @@ class UpdateUserProfileIntegrationTest {
     void setup() throws Exception {
       User user = saveValidUser();
 
-      status = mockMvc.perform(put("/api/user/" + user.getId())
+      status = mockMvc.perform(put("/api/user/" + user.getUserId())
               .contentType(MediaType.APPLICATION_JSON)
               .content(validUpdateUserJson()))
           .andReturn()
           .getResponse()
           .getStatus();
 
-      updatedUser = userRepository.findById(user.getId()).orElseThrow();
+      updatedUser = userRepository.findById(user.getUserId()).orElseThrow();
     }
 
     @Test
@@ -151,7 +151,7 @@ class UpdateUserProfileIntegrationTest {
 
     @Test
     void shouldReturnBadRequestWhenUsernameIsBlank() throws Exception {
-      int status = mockMvc.perform(put("/api/user/" + user.getId())
+      int status = mockMvc.perform(put("/api/user/" + user.getUserId())
               .contentType(MediaType.APPLICATION_JSON)
               .content("""
                                     {
@@ -170,7 +170,7 @@ class UpdateUserProfileIntegrationTest {
 
     @Test
     void shouldReturnBadRequestWhenEmailIsInvalid() throws Exception {
-      int status = mockMvc.perform(put("/api/user/" + user.getId())
+      int status = mockMvc.perform(put("/api/user/" + user.getUserId())
               .contentType(MediaType.APPLICATION_JSON)
               .content("""
                                     {
@@ -189,7 +189,7 @@ class UpdateUserProfileIntegrationTest {
 
     @Test
     void shouldReturnBadRequestWhenUsernameExceedsMaxLength() throws Exception {
-      int status = mockMvc.perform(put("/api/user/" + user.getId())
+      int status = mockMvc.perform(put("/api/user/" + user.getUserId())
               .contentType(MediaType.APPLICATION_JSON)
               .content("""
                                     {

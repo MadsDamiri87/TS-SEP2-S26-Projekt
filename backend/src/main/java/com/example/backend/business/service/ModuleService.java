@@ -51,25 +51,36 @@ public class ModuleService
         Course course = courseRepository.findById(request.courseId())
                 .orElseThrow(() -> new ResourceNotFoundException("No course found with id=" + request.courseId()));
 
+        int orderNumber = moduleRepository.findHighestOrderNumberByCourseId(course.getId()) + 1;
+
         Module module = new Module();
         module.setCourse(course);
         module.setName(request.name());
         module.setDescription(request.description());
-        module.setOrderNumber(request.orderNumber());
+        module.setOrderNumber(orderNumber);
 
         Module savedModule = moduleRepository.save(module);
+
+        course.setLastEditedToNow();
+        courseRepository.save(course);
+
         return moduleMapper.toResponse(savedModule);
     }
 
     @Transactional
     public ModuleResponse update(Long moduleId, ModuleRequest request)
     {
+        Course course = courseRepository.findById(request.courseId())
+                .orElseThrow(() -> new ResourceNotFoundException("No course found with id=" + request.courseId()));
+
         Module module = getModule(moduleId);
         module.setName(request.name());
         module.setDescription(request.description());
-        module.setOrderNumber(request.orderNumber());
 
         Module updatedModule = moduleRepository.save(module);
+
+        course.setLastEditedToNow();
+        courseRepository.save(course);
 
         return moduleMapper.toResponse(updatedModule);
     }
@@ -77,8 +88,18 @@ public class ModuleService
     @Transactional
     public void delete(Long moduleId)
     {
-        Module module = getModule(moduleId);
-        moduleRepository.delete(module);
+        Module moduleToDelete = getModule(moduleId);
+        Long courseId = moduleToDelete.getCourse().getId();
+        int orderNumber = moduleToDelete.getOrderNumber();
+
+        moduleRepository.delete(moduleToDelete);
+
+        List<Module> modules = moduleRepository.findAllByCourse_IdAndOrderNumberGreaterThan(courseId, orderNumber);
+
+        for (Module module : modules){
+            int currentOrderNumber = module.getOrderNumber();
+            module.setOrderNumber(currentOrderNumber - 1);
+        }
     }
 
     private Module getModule(Long moduleId)

@@ -36,7 +36,8 @@ public class CourseController
     }
 
     @GetMapping("/created/{userId}")
-    public ResponseEntity<List<CourseResponse>> getAllCreatedCourses(@PathVariable Long userId) {
+    public ResponseEntity<List<CourseResponse>> getAllCreatedCourses(@PathVariable Long userId)
+    {
         List<CourseResponse> responses = courseService.getAllCreatedCourses(userId);
         return ResponseEntity.ok(responses);
     }
@@ -60,5 +61,21 @@ public class CourseController
     {
         CourseResponse response = courseService.unPublishCourse(courseId);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> updateCourse(
+            @PathVariable Long courseId,
+            @Valid @RequestBody CourseRequest request
+    )
+    {
+        CourseResponse response = courseService.update(courseId, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable Long courseId){
+        courseService.delete(courseId);
+        return ResponseEntity.noContent().build();
     }
 }

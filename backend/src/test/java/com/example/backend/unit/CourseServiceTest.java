@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -343,7 +344,8 @@ class CourseServiceTest {
                 "long description",
                 100.00,
                 false,
-                LocalDateTime.of(2026, 1, 1, 12, 0)
+                LocalDateTime.of(2026, 1, 1, 12, 0),
+                new ArrayList<>()
         );
     }
 
