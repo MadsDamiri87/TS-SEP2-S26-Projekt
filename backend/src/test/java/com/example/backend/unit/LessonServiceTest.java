@@ -438,7 +438,8 @@ class LessonServiceTest {
                 1L,
                 1L,
                 "Lesson 1",
-                "Lesson description"
+                "Lesson description",
+                1
         );
     }
 
@@ -447,7 +448,8 @@ class LessonServiceTest {
                 1L,
                 1L,
                 "Updated Lesson",
-                "Updated description"
+                "Updated description",
+                1
         );
     }
 }
