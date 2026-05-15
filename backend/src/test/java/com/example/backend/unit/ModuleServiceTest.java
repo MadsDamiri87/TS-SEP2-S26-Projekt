@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -437,7 +438,9 @@ class ModuleServiceTest {
                 1L,
                 1L,
                 "Module 1",
-                "Module description"
+                "Module description",
+                1,
+                new ArrayList<>()
         );
     }
 
@@ -446,7 +449,9 @@ class ModuleServiceTest {
                 1L,
                 1L,
                 "Updated Module",
-                "Updated description"
+                "Updated description",
+                1,
+                new ArrayList<>()
         );
     }
 }

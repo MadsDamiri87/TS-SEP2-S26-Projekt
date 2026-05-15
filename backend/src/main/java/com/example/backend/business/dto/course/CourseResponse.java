@@ -1,6 +1,9 @@
 package com.example.backend.business.dto.course;
 
+import com.example.backend.business.dto.module.ModuleResponse;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record CourseResponse(Long courseId,
                              Long ownerId,
@@ -9,6 +12,8 @@ public record CourseResponse(Long courseId,
                              String description,
                              double price,
                              boolean isPublished,
-                             LocalDateTime lastEdited)
+                             LocalDateTime lastEdited,
+                             List<ModuleResponse> modules
+                             )
 {
 }

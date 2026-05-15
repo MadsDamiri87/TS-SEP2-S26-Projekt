@@ -1,0 +1,66 @@
+.content-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: grid;
+    place-items: center;
+
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.content-modal {
+    width: min(420px, 90vw);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+
+    background: #101a33;
+    border: 1px solid rgba(180, 120, 255, 0.45);
+    box-shadow: var(--std-box-shadow);
+    color: inherit;
+}
+
+.content-modal h2 {
+    margin: 0;
+}
+
+.content-modal label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.content-modal input,
+.content-modal textarea {
+    padding: 0.9rem;
+    border-radius: 0.45rem;
+    border: 1px solid rgba(180, 120, 255, 0.55);
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+    font: inherit;
+}
+
+.content-modal textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.content-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.content-modal-actions button {
+    padding: 0.75rem 1rem;
+    border-radius: 0.45rem;
+    border: 1px solid rgba(180, 120, 255, 0.45);
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+    cursor: pointer;
+}
