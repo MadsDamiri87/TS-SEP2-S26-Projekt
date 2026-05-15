@@ -1,9 +1,9 @@
-import "./MyCoursesPage.css";
+import "./MyCourseLibrary.css";
 import { useEffect, useState } from "react";
 import { CourseCard } from "../../components/coursecard/CourseCard.jsx";
 import { getAllEnrolledCourses } from "../../api/courseApi.js";
 
-export function MyCoursesPage() {
+export function MyCourseLibrary() {
 
     const [myCourses, setMyCourses] = useState([]);
     const [loading, setLoading] = useState(true);
