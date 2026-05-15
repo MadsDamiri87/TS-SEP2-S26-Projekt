@@ -31,6 +31,28 @@ public class GlobalExceptionHandler
                 .body(new ErrorResponse("NOT_FOUND", exception.getMessage(), 404));
     }
 
+    @ExceptionHandler(EmptyFileException.class)
+    public ResponseEntity<ErrorResponse> handleEmptyFile(EmptyFileException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+                new ErrorResponse(
+                        "EMPTY_FILE",
+                        ex.getMessage(),
+                        422
+                )
+        );
+    }
+
+    @ExceptionHandler(InvalidFileException.class)
+    public ResponseEntity<ErrorResponse> handleEmptyFile(InvalidFileException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+                new ErrorResponse(
+                        "INVALID_FILE",
+                        ex.getMessage(),
+                        422
+                )
+        );
+    }
+
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleInvalidCredentials(InvalidCredentialsException exception)
     {
