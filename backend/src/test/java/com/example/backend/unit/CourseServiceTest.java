@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -134,7 +135,7 @@ class CourseServiceTest {
         @Test
         void shouldSaveCourseWithCorrectOwner() {
             verify(courseRepository).save(argThat(course ->
-                    course.getOwner().getId().equals(1L)
+                    course.getOwner().getUserId().equals(1L)
             ));
         }
 
@@ -343,14 +344,15 @@ class CourseServiceTest {
                 "long description",
                 100.00,
                 false,
-                LocalDateTime.of(2026, 1, 1, 12, 0)
+                LocalDateTime.of(2026, 1, 1, 12, 0),
+                new ArrayList<>()
         );
     }
 
     private User validUser() {
         User user = new User();
 
-        user.setId(1L);
+        user.setUserId(1L);
 
         return user;
     }

@@ -11,7 +11,7 @@ export function createCourse(title, shortDescription, description, price) {
     }
 
     const body = {ownerId, title, shortDescription, description, price}
-    console.log("Create course request body:", body)
+
     return api("/courses/create", {
         method: "POST",
         body: body
@@ -57,6 +57,21 @@ export function getCourseById(courseId) {
         .then((data) => {
             return data
         })
+}
+
+export function updateCourse(courseId, ownerId, title, shortDescription, description, price){
+    const body = {ownerId, title, shortDescription, description, price}
+
+    return api(`/courses/${courseId}`, {
+        method: "PUT",
+        body: body
+    })
+}
+
+export function deleteCourse(courseId) {
+    return api(`/courses/${courseId}`, {
+        method: "DELETE"
+    })
 }
 
 
