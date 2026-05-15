@@ -27,6 +27,12 @@ export function CourseDetailPage() {
     if(loading) return <div className="page-container"> Loading course... </div>;
     if(!course) return <div className="page-container"> Course not found... </div>;
 
+    const formattedDate = new Date(course.lastEdited).toLocaleDateString("da-DK", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
     return (
         <div className="page-container">
             <div>
@@ -34,10 +40,16 @@ export function CourseDetailPage() {
                 <p>{course.shortDescription}</p>
             </div>
 
+            <section className="course-description-section">
+                <h2>Description</h2>
+                <p>
+                    {course.description}
+                </p>
+            </section>
             <div className="page-detail-content">
                 <section className="course-details-hero">
                     <div>
-                        <p className="course-kicker">Course details</p>
+                        <p className="course-kicker">Course details </p>
                     </div>
 
                     <div className="course-purchase-card">
@@ -48,12 +60,6 @@ export function CourseDetailPage() {
                     </div>
                 </section>
 
-                <section className="course-description-section">
-                    <h2>Description</h2>
-                    <p>
-                        {course.description}
-                    </p>
-                </section>
 
                 <section className="course-content-section">
                     <h2>Course content</h2>
