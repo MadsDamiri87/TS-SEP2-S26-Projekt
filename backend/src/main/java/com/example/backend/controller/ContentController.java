@@ -2,8 +2,11 @@ package com.example.backend.controller;
 
 import com.example.backend.business.dto.content.ContentResponse;
 import com.example.backend.business.service.ContentService;
+import com.example.backend.entity.Content;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,8 +46,13 @@ public class ContentController
     }
 
     @GetMapping("/{contentId}/file")
-    public ResponseEntity<Resource> getFile(@PathVariable Long contentId){
-        Resource resource = contentService.getFile(contentId);
-        return ResponseEntity.ok(resource);
+    public ResponseEntity<Resource> getFile(@PathVariable Long contentId) {
+        return contentService.getFile(contentId);
+    }
+
+    @DeleteMapping("/{contentId}")
+    public ResponseEntity<Void> delete(@PathVariable Long contentId) {
+        contentService.delete(contentId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -10,12 +10,18 @@ import com.example.backend.persistence.repository.LessonRepository;
 import com.example.backend.shared.exception.EmptyFileException;
 import com.example.backend.shared.exception.InvalidFileException;
 import com.example.backend.shared.exception.ResourceNotFoundException;
+import com.example.backend.shared.util.FileStorageHelper;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -81,17 +87,63 @@ public class ContentService
 
     public ContentResponse getById(Long contentId)
     {
-        return null;
+        Content content = getContent(contentId);
+        return contentMapper.toResponse(content);
     }
 
     public List<ContentResponse> getAllByLessonId(Long lessonId)
     {
-        return null;
+        List<Content> contents = contentRepository.findAllByLesson_LessonIdOrderByOrderNumberAsc(lessonId);
+        return contentMapper.toResponse(contents);
     }
 
-    public Resource getFile(Long contentId)
+    public ResponseEntity<Resource> getFile(Long contentId)
     {
-        return null;
+        Content content = getContent(contentId);
+
+        try {
+            Path path = Paths.get(content.getFilePath()).normalize();
+            Resource resource = new UrlResource(path.toUri());
+
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new ResourceNotFoundException("File could not be read");
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(getMediaType(content))
+                    .header(
+                            HttpHeaders.CONTENT_DISPOSITION,
+                            "inline; filename=\"" + content.getOriginalFileName() + "\""
+                    )
+                    .body(resource);
+        }
+        catch (MalformedURLException exception) {
+            throw new RuntimeException("Could not read file", exception);
+        }
+    }
+
+    @Transactional
+    public void delete(Long contentId)
+    {
+        Content content = getContent(contentId);
+
+        Long lessonId = content.getLesson().getLessonId();
+        int deletedOrderNumber = content.getOrderNumber();
+        String filePath = content.getFilePath();
+
+        FileStorageHelper.deletePhysicalFile(filePath);
+
+        contentRepository.delete(content);
+        contentRepository.flush();
+
+        List<Content> contentsToShift = contentRepository
+                .findAllByLesson_LessonIdAndOrderNumberGreaterThan(lessonId, deletedOrderNumber);
+
+        for (Content contentToShift : contentsToShift) {
+            contentToShift.setOrderNumber(contentToShift.getOrderNumber() - 1);
+        }
+
+        contentRepository.saveAll(contentsToShift);
     }
 
     private Lesson getLesson(Long lessonId)
@@ -130,5 +182,11 @@ public class ContentService
             case IMAGE -> MediaType.IMAGE_PNG;
             case VIDEO -> MediaType.valueOf("video/mp4");
         };
+    }
+
+    private Content getContent(Long contentId)
+    {
+        return contentRepository.findById(contentId)
+                .orElseThrow(() -> new ResourceNotFoundException("No content found with id=" + contentId));
     }
 }
