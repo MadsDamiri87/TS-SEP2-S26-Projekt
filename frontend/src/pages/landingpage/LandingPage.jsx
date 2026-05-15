@@ -1,9 +1,12 @@
 import {useEffect, useState} from "react";
 import {CourseCard} from "../../components/coursecard/CourseCard.jsx";
 import {getAllPublishedCourses} from "../../api/courseApi.js";
+import {useNavigate} from "react-router-dom";
 
 export function LandingPage() {
     const [courses, setCourses] = useState([]);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         async function fetchCourses() {
@@ -35,12 +38,16 @@ export function LandingPage() {
 
                 <div className="course-container">
                     {courses.map((course) => (
-                        <CourseCard
-                            key={course.courseId}
-                            title={course.title}
-                            shortDescription={course.shortDescription}
-                            price={course.price}
-                        />
+                        <div key={course.courseId}
+                             onClick={() => navigate(`/course/${course.courseId}/${course.title}`)}>
+                            <CourseCard
+                                key={course.courseId}
+                                courseId={course.courseId}
+                                title={course.title}
+                                shortDescription={course.shortDescription}
+                                price={course.price}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>
