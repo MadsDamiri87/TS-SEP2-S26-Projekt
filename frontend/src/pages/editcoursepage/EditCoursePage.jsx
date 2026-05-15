@@ -1,7 +1,7 @@
 import "./EditCoursePage.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAllCreatedCourses } from "../../api/courseApi.js";
+import {getAllCreatedCourses, updateCourse} from "../../api/courseApi.js";
 
 import { CourseContentModal } from "../../components/modal/CourseContentModal.jsx";
 import { ConfirmDeleteModal } from "../../components/modal/ConfirmDeleteModal.jsx";
@@ -24,6 +24,7 @@ export function EditCoursePage() {
 
     const [course, setCourse] = useState({
         courseId: null,
+        ownerId: null,
         title: "",
         shortDescription: "",
         description: "",
@@ -80,6 +81,7 @@ export function EditCoursePage() {
 
                 setCourse({
                     courseId: selectedCourse.courseId,
+                    ownerId: selectedCourse.ownerId,
                     title: selectedCourse.title,
                     shortDescription: selectedCourse.shortDescription,
                     description: selectedCourse.description,
@@ -346,10 +348,23 @@ export function EditCoursePage() {
         }
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        navigate("/course-builder")
-        console.log("Save course UPDATE COURSE NOT IMPLÆÆEMENTED", course);
+        try {
+            await updateCourse(
+                course.courseId,
+                course.ownerId,
+                course.title,
+                course.shortDescription,
+                course.description,
+                Number(course.price)
+            );
+
+            navigate("/course-builder");
+        } catch (error) {
+            console.error("Could not update course:", error);
+            setErrorMessage("Could not update course.");
+        }
     }
 
     if (isLoading) {

@@ -59,6 +59,21 @@ export function getCourseById(courseId) {
         })
 }
 
+export function updateCourse(courseId, ownerId, title, shortDescription, description, price){
+    const body = {ownerId, title, shortDescription, description, price}
+
+    return api(`/courses/${courseId}`, {
+        method: "PUT",
+        body: body
+    })
+}
+
+export function deleteCourse(courseId) {
+    return api(`/courses/${courseId}`, {
+        method: "DELETE"
+    })
+}
+
 
 
 function markUserAsCourseProvider() {

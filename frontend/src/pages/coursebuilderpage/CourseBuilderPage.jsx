@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PublishCourseModal } from "../../components/modal/PublishCourseModal.jsx";
 import {
+    deleteCourse,
     getAllCreatedCourses,
     publishCourse,
     unPublishCourse
 } from "../../api/courseApi.js";
+import {ConfirmDeleteModal} from "../../components/modal/ConfirmDeleteModal.jsx";
 
 export function CourseBuilderPage() {
     const navigate = useNavigate();
@@ -15,6 +17,8 @@ export function CourseBuilderPage() {
     const [ownedCourses, setOwnedCourses] = useState([]);
     const [showPublishModal, setShowPublishModal] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [courseToDelete, setCourseToDelete] = useState(null);
 
     useEffect(() => {
         async function loadCreatedCourses() {
@@ -71,7 +75,33 @@ export function CourseBuilderPage() {
     }
 
     function handleDelete(courseId) {
-        console.log("Delete course:", courseId);
+        const course = ownedCourses.find((course) => course.courseId === courseId);
+
+        if (!course) {
+            return;
+        }
+
+        setCourseToDelete(course);
+        setShowDeleteModal(true);
+    }
+
+    async function confirmDeleteCourse() {
+        if (!courseToDelete) {
+            return;
+        }
+
+        try {
+            await deleteCourse(courseToDelete.courseId);
+
+            setOwnedCourses((previousCourses) =>
+                previousCourses.filter((course) => course.courseId !== courseToDelete.courseId)
+            );
+        } catch (error) {
+            console.error("Could not delete course:", error);
+        } finally {
+            setShowDeleteModal(false);
+            setCourseToDelete(null);
+        }
     }
 
     async function confirmToggleVisibility() {
@@ -148,6 +178,18 @@ export function CourseBuilderPage() {
                         setSelectedCourse(null);
                     }}
                     onConfirm={confirmToggleVisibility}
+                />
+            )}
+
+            {showDeleteModal && courseToDelete && (
+                <ConfirmDeleteModal
+                    title="Delete Course"
+                    message={`Are you sure you want to delete "${courseToDelete.title}"?`}
+                    onCancel={() => {
+                        setShowDeleteModal(false);
+                        setCourseToDelete(null);
+                    }}
+                    onConfirm={confirmDeleteCourse}
                 />
             )}
         </div>
