@@ -1,13 +1,19 @@
 const BASE_URL = "http://localhost:8080/api";
 
 export async function api(path, options = {}) {
+    const isFormData = options.body instanceof FormData;
+
     const response = await fetch(`${BASE_URL}${path}`, {
         method: options.method || "GET",
         headers: {
-            "Content-Type": "application/json",
+            ...(isFormData ? {} : { "Content-Type": "application/json" }),
             ...(options.headers || {}),
         },
-        body: options.body ? JSON.stringify(options.body) : undefined,
+        body: options.body
+            ? isFormData
+                ? options.body
+                : JSON.stringify(options.body)
+            : undefined,
     });
 
     const contentType = response.headers.get("content-type") || "";
