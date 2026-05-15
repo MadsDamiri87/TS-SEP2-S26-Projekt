@@ -44,6 +44,12 @@ export function getAllPublishedCourses() {
             return data
         })
 }
+export function getAllEnrolledCourses(userId) {
+    return api(`/enrollments/${userId}`)
+        .then((data) => {
+            return data;
+        });
+}
 
 export function getAllCreatedCourses(userId) {
     return api(`/courses/created/${userId}`)

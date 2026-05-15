@@ -1,7 +1,7 @@
 import "./LoginModal.css";
 import {useState} from "react";
-import {login, register} from "../../api/authApi.js";
-import {ErrorModal} from "../modal/error/ErrorModal.jsx";
+import {login, register} from "../../../api/authApi.js";
+import {ErrorModal} from "../../modal/error/ErrorModal.jsx";
 
 
 export function LoginModal({isOpen, onClose, isLogin, setIsLogin, onSubmit}) {
