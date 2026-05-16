@@ -57,7 +57,7 @@ export function DesktopMenu({
                         <MenuButton
                             buttonText="Course Library"
                             iconSrc="/icons/courseLibrary.png"
-                            linkTo="/course-library"
+                            linkTo="/my-course-library"
                         />
                     </section>
 
