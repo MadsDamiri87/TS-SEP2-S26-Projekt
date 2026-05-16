@@ -89,9 +89,7 @@
     padding: 1.4rem;
   }
 
-  .buy-form-row {
-    grid-template-columns: 1fr;
-  }
+
 }
 
 /* STEP INDICATOR */
@@ -207,5 +205,54 @@
 
 .success-icon {
   font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.logged-in-box {
+  text-align: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.user-badge {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid #6366f1;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-badge strong {
+  font-size: 1.4rem;
+  color: white;
+}
+
+.user-badge span {
+  color: #94a3b8;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+
+.toggle-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.toggle-text span {
+  color: #6366f1;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.small-hint{
+  font-size: 0.8rem;
   margin-bottom: 1rem;
 }
