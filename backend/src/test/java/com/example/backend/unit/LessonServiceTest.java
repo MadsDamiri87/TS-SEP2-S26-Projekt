@@ -4,8 +4,10 @@ import com.example.backend.business.dto.lesson.LessonRequest;
 import com.example.backend.business.dto.lesson.LessonResponse;
 import com.example.backend.business.dto.mapper.LessonMapper;
 import com.example.backend.business.service.LessonService;
+import com.example.backend.entity.Course;
 import com.example.backend.entity.Lesson;
 import com.example.backend.entity.Module;
+import com.example.backend.persistence.repository.CourseRepository;
 import com.example.backend.persistence.repository.LessonRepository;
 import com.example.backend.persistence.repository.ModuleRepository;
 import com.example.backend.shared.exception.ResourceNotFoundException;
@@ -17,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,6 +35,9 @@ class LessonServiceTest {
 
     @Mock
     private ModuleRepository moduleRepository;
+
+    @Mock
+    private CourseRepository courseRepository;
 
     @Mock
     private LessonMapper lessonMapper;
@@ -50,6 +56,8 @@ class LessonServiceTest {
             LessonRequest request = validLessonRequest();
 
             mockModuleExists();
+            mockCourseExists();
+            mockHighestOrderNumberIsZero();
             mockLessonSaved();
             mockLessonMappedToResponse();
 
@@ -83,13 +91,33 @@ class LessonServiceTest {
         }
 
         @Test
+        void shouldReturnResponseWithOrderNumber() {
+            assertEquals(1, response.orderNumber());
+        }
+
+        @Test
         void shouldFindModuleById() {
             verify(moduleRepository, times(1)).findById(1L);
         }
 
         @Test
+        void shouldFindCourseById() {
+            verify(courseRepository, times(1)).findById(1L);
+        }
+
+        @Test
+        void shouldFindHighestOrderNumberByModuleId() {
+            verify(lessonRepository, times(1)).findHighestOrderNumberByModuleId(1L);
+        }
+
+        @Test
         void shouldSaveLessonOnce() {
             verify(lessonRepository, times(1)).save(any(Lesson.class));
+        }
+
+        @Test
+        void shouldSaveCourseOnce() {
+            verify(courseRepository, times(1)).save(any(Course.class));
         }
 
         @Test
@@ -115,6 +143,13 @@ class LessonServiceTest {
         void shouldSaveLessonWithCorrectModule() {
             verify(lessonRepository).save(argThat(lesson ->
                     lesson.getModule().getId().equals(1L)
+            ));
+        }
+
+        @Test
+        void shouldSaveLessonWithCorrectOrderNumber() {
+            verify(lessonRepository).save(argThat(lesson ->
+                    lesson.getOrderNumber() == 1
             ));
         }
     }
@@ -149,6 +184,15 @@ class LessonServiceTest {
         }
 
         @Test
+        void shouldNotSaveCourseWhenModuleDoesNotExist() {
+            // Act
+            createLessonIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(courseRepository, never()).save(any(Course.class));
+        }
+
+        @Test
         void shouldNotMapLessonWhenModuleDoesNotExist() {
             // Act
             createLessonIgnoringResourceNotFoundException();
@@ -168,6 +212,8 @@ class LessonServiceTest {
             // Arrange
             LessonRequest request = validUpdatedLessonRequest();
 
+            mockModuleExists();
+            mockCourseExists();
             mockLessonExists();
             mockLessonSavedAsUpdated();
             mockUpdatedLessonMappedToResponse();
@@ -187,6 +233,11 @@ class LessonServiceTest {
         }
 
         @Test
+        void shouldReturnResponseWithModuleId() {
+            assertEquals(1L, response.moduleId());
+        }
+
+        @Test
         void shouldReturnResponseWithUpdatedTitle() {
             assertEquals("Updated Lesson", response.title());
         }
@@ -197,6 +248,16 @@ class LessonServiceTest {
         }
 
         @Test
+        void shouldFindModuleById() {
+            verify(moduleRepository, times(1)).findById(1L);
+        }
+
+        @Test
+        void shouldFindCourseById() {
+            verify(courseRepository, times(1)).findById(1L);
+        }
+
+        @Test
         void shouldFindLessonById() {
             verify(lessonRepository, times(1)).findById(1L);
         }
@@ -204,6 +265,11 @@ class LessonServiceTest {
         @Test
         void shouldSaveLessonOnce() {
             verify(lessonRepository, times(1)).save(any(Lesson.class));
+        }
+
+        @Test
+        void shouldSaveCourseOnce() {
+            verify(courseRepository, times(1)).save(any(Course.class));
         }
 
         @Test
@@ -239,6 +305,8 @@ class LessonServiceTest {
         @BeforeEach
         void setup() {
             // Arrange
+            mockModuleExists();
+            mockCourseExists();
             mockLessonDoesNotExist();
         }
 
@@ -259,6 +327,15 @@ class LessonServiceTest {
         }
 
         @Test
+        void shouldNotSaveCourseWhenLessonDoesNotExist() {
+            // Act
+            updateLessonIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(courseRepository, never()).save(any(Course.class));
+        }
+
+        @Test
         void shouldNotMapLessonWhenLessonDoesNotExist() {
             // Act
             updateLessonIgnoringResourceNotFoundException();
@@ -275,6 +352,7 @@ class LessonServiceTest {
         void setup() {
             // Arrange
             mockLessonExists();
+            mockNoLessonsNeedOrderShift();
 
             // Act
             lessonService.delete(1L);
@@ -288,6 +366,22 @@ class LessonServiceTest {
         @Test
         void shouldDeleteLessonOnce() {
             verify(lessonRepository, times(1)).delete(any(Lesson.class));
+        }
+
+        @Test
+        void shouldFlushAfterDelete() {
+            verify(lessonRepository, times(1)).flush();
+        }
+
+        @Test
+        void shouldFindLessonsToShift() {
+            verify(lessonRepository, times(1))
+                    .findAllByModule_ModuleIdAndOrderNumberGreaterThan(1L, 1);
+        }
+
+        @Test
+        void shouldSaveShiftedLessons() {
+            verify(lessonRepository, times(1)).saveAll(Collections.emptyList());
         }
 
         @Test
@@ -322,6 +416,15 @@ class LessonServiceTest {
             // Assert
             verify(lessonRepository, never()).delete(any(Lesson.class));
         }
+
+        @Test
+        void shouldNotFlushWhenLessonDoesNotExist() {
+            // Act
+            deleteLessonIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(lessonRepository, never()).flush();
+        }
     }
 
     private void mockModuleExists() {
@@ -334,6 +437,11 @@ class LessonServiceTest {
                 .thenReturn(Optional.empty());
     }
 
+    private void mockCourseExists() {
+        when(courseRepository.findById(1L))
+                .thenReturn(Optional.of(validCourse()));
+    }
+
     private void mockLessonExists() {
         when(lessonRepository.findById(1L))
                 .thenReturn(Optional.of(savedLesson()));
@@ -344,6 +452,11 @@ class LessonServiceTest {
                 .thenReturn(Optional.empty());
     }
 
+    private void mockHighestOrderNumberIsZero() {
+        when(lessonRepository.findHighestOrderNumberByModuleId(1L))
+                .thenReturn(0);
+    }
+
     private void mockLessonSaved() {
         when(lessonRepository.save(any(Lesson.class)))
                 .thenReturn(savedLesson());
@@ -352,6 +465,11 @@ class LessonServiceTest {
     private void mockLessonSavedAsUpdated() {
         when(lessonRepository.save(any(Lesson.class)))
                 .thenReturn(updatedLesson());
+    }
+
+    private void mockNoLessonsNeedOrderShift() {
+        when(lessonRepository.findAllByModule_ModuleIdAndOrderNumberGreaterThan(1L, 1))
+                .thenReturn(Collections.emptyList());
     }
 
     private void mockLessonMappedToResponse() {
@@ -401,12 +519,19 @@ class LessonServiceTest {
         );
     }
 
+    private Course validCourse() {
+        Course course = new Course();
+        course.setId(1L);
+        return course;
+    }
+
     private Module validModule() {
         Module module = new Module();
 
         module.setId(1L);
         module.setName("Module 1");
         module.setDescription("Module description");
+        module.setCourse(validCourse());
 
         return module;
     }
@@ -418,6 +543,7 @@ class LessonServiceTest {
         lesson.setTitle("Lesson 1");
         lesson.setDescription("Lesson description");
         lesson.setModule(validModule());
+        lesson.setOrderNumber(1);
 
         return lesson;
     }
@@ -429,6 +555,7 @@ class LessonServiceTest {
         lesson.setTitle("Updated Lesson");
         lesson.setDescription("Updated description");
         lesson.setModule(validModule());
+        lesson.setOrderNumber(1);
 
         return lesson;
     }

@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +52,7 @@ class ModuleServiceTest {
             ModuleRequest request = validModuleRequest();
 
             mockCourseExists();
+            mockHighestOrderNumberIsZero();
             mockModuleSaved();
             mockModuleMappedToResponse();
 
@@ -84,13 +86,28 @@ class ModuleServiceTest {
         }
 
         @Test
+        void shouldReturnResponseWithOrderNumber() {
+            assertEquals(1, response.orderNumber());
+        }
+
+        @Test
         void shouldFindCourseById() {
             verify(courseRepository, times(1)).findById(1L);
         }
 
         @Test
+        void shouldFindHighestOrderNumberByCourseId() {
+            verify(moduleRepository, times(1)).findHighestOrderNumberByCourseId(1L);
+        }
+
+        @Test
         void shouldSaveModuleOnce() {
             verify(moduleRepository, times(1)).save(any(Module.class));
+        }
+
+        @Test
+        void shouldSaveCourseOnce() {
+            verify(courseRepository, times(1)).save(any(Course.class));
         }
 
         @Test
@@ -116,6 +133,13 @@ class ModuleServiceTest {
         void shouldSaveModuleWithCorrectCourse() {
             verify(moduleRepository).save(argThat(module ->
                     module.getCourse().getId().equals(1L)
+            ));
+        }
+
+        @Test
+        void shouldSaveModuleWithCorrectOrderNumber() {
+            verify(moduleRepository).save(argThat(module ->
+                    module.getOrderNumber() == 1
             ));
         }
     }
@@ -150,6 +174,15 @@ class ModuleServiceTest {
         }
 
         @Test
+        void shouldNotSaveCourseWhenCourseDoesNotExist() {
+            // Act
+            createModuleIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(courseRepository, never()).save(any(Course.class));
+        }
+
+        @Test
         void shouldNotMapModuleWhenCourseDoesNotExist() {
             // Act
             createModuleIgnoringResourceNotFoundException();
@@ -169,6 +202,7 @@ class ModuleServiceTest {
             // Arrange
             ModuleRequest request = validUpdatedModuleRequest();
 
+            mockCourseExists();
             mockModuleExists();
             mockModuleSavedAsUpdated();
             mockUpdatedModuleMappedToResponse();
@@ -188,6 +222,11 @@ class ModuleServiceTest {
         }
 
         @Test
+        void shouldReturnResponseWithCourseId() {
+            assertEquals(1L, response.courseId());
+        }
+
+        @Test
         void shouldReturnResponseWithUpdatedName() {
             assertEquals("Updated Module", response.name());
         }
@@ -198,6 +237,11 @@ class ModuleServiceTest {
         }
 
         @Test
+        void shouldFindCourseById() {
+            verify(courseRepository, times(1)).findById(1L);
+        }
+
+        @Test
         void shouldFindModuleById() {
             verify(moduleRepository, times(1)).findById(1L);
         }
@@ -205,6 +249,11 @@ class ModuleServiceTest {
         @Test
         void shouldSaveModuleOnce() {
             verify(moduleRepository, times(1)).save(any(Module.class));
+        }
+
+        @Test
+        void shouldSaveCourseOnce() {
+            verify(courseRepository, times(1)).save(any(Course.class));
         }
 
         @Test
@@ -240,6 +289,7 @@ class ModuleServiceTest {
         @BeforeEach
         void setup() {
             // Arrange
+            mockCourseExists();
             mockModuleDoesNotExist();
         }
 
@@ -260,6 +310,15 @@ class ModuleServiceTest {
         }
 
         @Test
+        void shouldNotSaveCourseWhenModuleDoesNotExist() {
+            // Act
+            updateModuleIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(courseRepository, never()).save(any(Course.class));
+        }
+
+        @Test
         void shouldNotMapModuleWhenModuleDoesNotExist() {
             // Act
             updateModuleIgnoringResourceNotFoundException();
@@ -276,6 +335,7 @@ class ModuleServiceTest {
         void setup() {
             // Arrange
             mockModuleExists();
+            mockNoModulesNeedOrderShift();
 
             // Act
             moduleService.delete(1L);
@@ -289,6 +349,22 @@ class ModuleServiceTest {
         @Test
         void shouldDeleteModuleOnce() {
             verify(moduleRepository, times(1)).delete(any(Module.class));
+        }
+
+        @Test
+        void shouldFlushAfterDelete() {
+            verify(moduleRepository, times(1)).flush();
+        }
+
+        @Test
+        void shouldFindModulesToShift() {
+            verify(moduleRepository, times(1))
+                    .findAllByCourse_IdAndOrderNumberGreaterThan(1L, 1);
+        }
+
+        @Test
+        void shouldSaveShiftedModules() {
+            verify(moduleRepository, times(1)).saveAll(Collections.emptyList());
         }
 
         @Test
@@ -323,6 +399,24 @@ class ModuleServiceTest {
             // Assert
             verify(moduleRepository, never()).delete(any(Module.class));
         }
+
+        @Test
+        void shouldNotFlushWhenModuleDoesNotExist() {
+            // Act
+            deleteModuleIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(moduleRepository, never()).flush();
+        }
+
+        @Test
+        void shouldNotSaveShiftedModulesWhenModuleDoesNotExist() {
+            // Act
+            deleteModuleIgnoringResourceNotFoundException();
+
+            // Assert
+            verify(moduleRepository, never()).saveAll(anyList());
+        }
     }
 
     private void mockCourseExists() {
@@ -345,6 +439,11 @@ class ModuleServiceTest {
                 .thenReturn(Optional.empty());
     }
 
+    private void mockHighestOrderNumberIsZero() {
+        when(moduleRepository.findHighestOrderNumberByCourseId(1L))
+                .thenReturn(0);
+    }
+
     private void mockModuleSaved() {
         when(moduleRepository.save(any(Module.class)))
                 .thenReturn(savedModule());
@@ -353,6 +452,11 @@ class ModuleServiceTest {
     private void mockModuleSavedAsUpdated() {
         when(moduleRepository.save(any(Module.class)))
                 .thenReturn(updatedModule());
+    }
+
+    private void mockNoModulesNeedOrderShift() {
+        when(moduleRepository.findAllByCourse_IdAndOrderNumberGreaterThan(1L, 1))
+                .thenReturn(Collections.emptyList());
     }
 
     private void mockModuleMappedToResponse() {
@@ -418,6 +522,8 @@ class ModuleServiceTest {
         module.setName("Module 1");
         module.setDescription("Module description");
         module.setCourse(validCourse());
+        module.setOrderNumber(1);
+        module.setLessons(new ArrayList<>());
 
         return module;
     }
@@ -429,6 +535,8 @@ class ModuleServiceTest {
         module.setName("Updated Module");
         module.setDescription("Updated description");
         module.setCourse(validCourse());
+        module.setOrderNumber(1);
+        module.setLessons(new ArrayList<>());
 
         return module;
     }
