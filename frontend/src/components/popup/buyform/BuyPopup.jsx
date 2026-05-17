@@ -187,7 +187,7 @@ export function BuyPopup({course, onClose}) {
                                             out on the main page first.</p>
                                         <button className="secondary-btn"
                                                 onClick={onClose}>
-                                            Go Back
+                                            Close window
                                         </button>
                                     </div>
                                 ) : (
