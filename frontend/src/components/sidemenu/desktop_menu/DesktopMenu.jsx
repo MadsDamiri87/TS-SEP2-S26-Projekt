@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import "./DesktopMenu.css";
 
-import { LoginMenu } from "../login_menu/LoginMenu.jsx";
-import { MenuButton } from "../menu_button/MenuButton.jsx";
+import {LoginMenu} from "../login_menu/LoginMenu.jsx";
+import {MenuButton} from "../menu_button/MenuButton.jsx";
 import {useNavigate} from "react-router-dom";
-import { getAllEnrolledCourses } from "../../../api/courseApi.js";
+import {getAllEnrolledCourses} from "../../../api/courseApi.js";
 
 export function DesktopMenu({
                                 openLoginModal,
@@ -13,31 +13,10 @@ export function DesktopMenu({
                             }) {
     const navigate = useNavigate()
     const [isMenuOpened, setIsMenuOpened] = useState(false);
-    const [hasEnrolledCourses, setHasEnrolledCourses] = useState(false);
-
-    useEffect(() => {
-        async function checkEnrolledCourses() {
-            const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-
-            if (!isLoggedIn || !userDetails?.userId) {
-                setHasEnrolledCourses(false);
-                return;
-            }
-
-            try {
-                const data = await getAllEnrolledCourses(userDetails.userId);
-                setHasEnrolledCourses(data.length > 0);
-            } catch (error) {
-                console.error("Error checking enrolled courses", error);
-                setHasEnrolledCourses(false);
-            }
-        }
-
-        checkEnrolledCourses();
-    }, [isLoggedIn]);
 
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
     const isCourseProvider = userDetails?.isCourseProvider === true;
+    const isCourseParticipant = userDetails?.isCourseParticipant === true;
 
 
     const handleLogout = () => {
@@ -68,7 +47,8 @@ export function DesktopMenu({
                         />
                     </section>
 
-                    <div className="desktop-menu-divider" />
+
+                    <div className="desktop-menu-divider"/>
 
                     <section className="desktop-menu-section">
                         <MenuButton
@@ -77,7 +57,7 @@ export function DesktopMenu({
                             linkTo="/"
                         />
 
-                        {hasEnrolledCourses && (
+                        {isCourseParticipant && (
                             <MenuButton
                                 buttonText="Course Library"
                                 iconSrc="/icons/courseLibrary.png"
@@ -86,9 +66,10 @@ export function DesktopMenu({
                         )}
                     </section>
 
+
                     {isCourseProvider && (
                         <>
-                            <div className="desktop-menu-divider" />
+                            <div className="desktop-menu-divider"/>
 
                             <section className="desktop-menu-section">
                                 <MenuButton
@@ -106,7 +87,7 @@ export function DesktopMenu({
                         </>
                     )}
 
-                    <div className="desktop-menu-spacer" />
+                    <div className="desktop-menu-spacer"/>
 
                     <section className="desktop-menu-section">
                         <MenuButton
@@ -116,7 +97,7 @@ export function DesktopMenu({
                         />
                     </section>
 
-                    <div className="desktop-menu-divider" />
+                    <div className="desktop-menu-divider"/>
 
                     <section className="desktop-menu-section bottom-section">
                         <MenuButton
@@ -133,9 +114,11 @@ export function DesktopMenu({
                         />
                     </section>
                 </>
-            )}
+            )
+            }
 
-            {!isLoggedIn && (
+            {
+                !isLoggedIn && (
 
                     <LoginMenu
                         onOpenLoginModal={openLoginModal}
@@ -145,7 +128,9 @@ export function DesktopMenu({
                     />
 
 
-            )}
+                )
+            }
         </aside>
-    );
+    )
+        ;
 }
