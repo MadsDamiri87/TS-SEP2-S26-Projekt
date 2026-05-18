@@ -21,7 +21,7 @@ public class LessonController
         this.lessonService = lessonService;
     }
 
-    @GetMapping("/lesson{lessonId}")
+    @GetMapping("/lesson/{lessonId}")
     public ResponseEntity<LessonResponse> getById(@PathVariable Long lessonId) {
         LessonResponse response = lessonService.getById(lessonId);
         return ResponseEntity.ok(response);
