@@ -14,6 +14,7 @@ export function MobileMenu({
     const [isOpen, setIsOpen] = useState(false);
 
     const isCourseProvider = getIsCourseProvider();
+    const isCourseParticipant = getIsCourseParticipant();
 
     const toggleMenu = () => {
         setIsOpen((prev) => !prev);
@@ -67,13 +68,15 @@ export function MobileMenu({
                                     linkTo="/"
                                     onClick={closeMenu}
                                 />
+                                {isCourseParticipant &&
+                                    <MenuButton
+                                        buttonText="Course Library"
+                                        iconSrc="/icons/courseLibrary.png"
+                                        linkTo="/course-library"
+                                        onClick={closeMenu}
+                                    />
+                                }
 
-                                <MenuButton
-                                    buttonText="Course Library"
-                                    iconSrc="/icons/courseLibrary.png"
-                                    linkTo="/course-library"
-                                    onClick={closeMenu}
-                                />
                             </section>
 
                             {isCourseProvider && (
@@ -154,4 +157,9 @@ export function MobileMenu({
 function getIsCourseProvider() {
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
     return userDetails?.isCourseProvider === true;
+}
+
+function getIsCourseParticipant() {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    return userDetails?.isCourseParticipant === true;
 }
