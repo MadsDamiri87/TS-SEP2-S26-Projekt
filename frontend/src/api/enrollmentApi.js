@@ -18,9 +18,9 @@ export function enrollInCourse(courseId) {
         method: "POST",
         body: body
     }).then((data) => {
-        if (data.userId && !userDetails) {
+        if (data) {
             localStorage.setItem("userDetails", JSON.stringify({
-                userId: data.userId,
+                ...userDetails,
                 isCourseParticipant: true
             }));
         }
