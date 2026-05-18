@@ -33,7 +33,7 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(EmptyFileException.class)
     public ResponseEntity<ErrorResponse> handleEmptyFile(EmptyFileException ex) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+        return ResponseEntity.badRequest().body(
                 new ErrorResponse(
                         "EMPTY_FILE",
                         ex.getMessage(),
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(InvalidFileException.class)
     public ResponseEntity<ErrorResponse> handleEmptyFile(InvalidFileException ex) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+        return ResponseEntity.badRequest().body(
                 new ErrorResponse(
                         "INVALID_FILE",
                         ex.getMessage(),
