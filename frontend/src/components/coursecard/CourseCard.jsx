@@ -9,14 +9,13 @@ export function CourseCard({
                                title,
                                shortDescription,
                                price,
-                               variant = "default"
+                               isEnrolled
                            }) {
     const navigate = useNavigate();
 
     const [course, setCourse] = useState(null);
     const [isBuyPopupOpen, setIsBuyPopOpen] = useState(false);
 
-    const isEnrolled = variant === "enrolled";
 
     useEffect(() => {
         async function fetchDetails() {

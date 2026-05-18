@@ -266,7 +266,7 @@ export function BuyPopup({course, onClose}) {
                             <p>
                                 <strong>Account:</strong> {user?.username || "Loading..."}
                             </p>
-                            <p><strong>Price:</strong> {course.price} DKK</p>
+                            <p><strong>Price:</strong> ${course.price}</p>
                             <p className="small-hint">By clicking confirm, you
                                 agree
                                 to our terms.</p>

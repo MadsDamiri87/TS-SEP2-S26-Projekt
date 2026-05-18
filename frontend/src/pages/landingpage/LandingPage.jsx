@@ -1,14 +1,26 @@
 import {useEffect, useState} from "react";
 import {CourseCard} from "../../components/coursecard/CourseCard.jsx";
-import {getAllPublishedCourses} from "../../api/courseApi.js";
-import {useNavigate} from "react-router-dom";
+import {getAllEnrolledCourses, getAllPublishedCourses} from "../../api/courseApi.js";
 
 export function LandingPage() {
     const [courses, setCourses] = useState([]);
-    const navigate = useNavigate();
+    const [enrolledCourses, setEnrolledCourses] = useState([]);
 
 
     useEffect(() => {
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+        const userId = userDetails?.userId;
+
+        getAllPublishedCourses()
+            .then((data) => setCourses(data))
+            .catch((error) => console.error(error));
+
+        if (userId) {
+            getAllEnrolledCourses(userId)
+                .then((data) => setEnrolledCourses(data))
+                .catch((error) => console.error(error));
+        }
+
         async function fetchCourses() {
             try {
                 const publishedCourses = await getAllPublishedCourses();
@@ -37,17 +49,22 @@ export function LandingPage() {
                 <h2>Popular courses</h2>
 
                 <div className="course-container">
-                    {courses.map((course) => (
-                        <div key={course.courseId}>
+                    {courses.map((course) => {
+                        const isEnrolled = enrolledCourses.some(
+                            (enrolledCourse) => enrolledCourse.courseId === course.courseId
+                        );
+
+                        return (
                             <CourseCard
                                 key={course.courseId}
                                 courseId={course.courseId}
                                 title={course.title}
                                 shortDescription={course.shortDescription}
                                 price={course.price}
+                                isEnrolled={isEnrolled}
                             />
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>

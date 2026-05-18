@@ -90,7 +90,7 @@ export function MyCourseLibrary() {
                                     title={course.title}
                                     shortDescription={course.shortDescription}
                                     price={course.price}
-                                    variant="enrolled"
+                                    isEnrolled={true}
                                 />
                             ))
 
