@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./DesktopMenu.css";
 
 import { UserDetails } from "../user_details/UserDetails.jsx";
@@ -6,6 +6,7 @@ import { LoginMenu } from "../login_menu/LoginMenu.jsx";
 import { LogoutButton } from "../logout_button/LogoutButton.jsx";
 import { MenuButton } from "../menu_button/MenuButton.jsx";
 import {useNavigate} from "react-router-dom";
+import { getAllEnrolledCourses } from "../../../api/courseApi.js";
 
 export function DesktopMenu({
                                 openLoginModal,
@@ -14,6 +15,28 @@ export function DesktopMenu({
                             }) {
     const navigate = useNavigate()
     const [isMenuOpened, setIsMenuOpened] = useState(false);
+    const [hasEnrolledCourses, setHasEnrolledCourses] = useState(false);
+
+    useEffect(() => {
+        async function checkEnrolledCourses() {
+            const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+            if (!isLoggedIn || !userDetails?.userId) {
+                setHasEnrolledCourses(false);
+                return;
+            }
+
+            try {
+                const data = await getAllEnrolledCourses(userDetails.userId);
+                setHasEnrolledCourses(data.length > 0);
+            } catch (error) {
+                console.error("Error checking enrolled courses", error);
+                setHasEnrolledCourses(false);
+            }
+        }
+
+        checkEnrolledCourses();
+    }, [isLoggedIn]);
 
     const isCourseProvider = getIsCourseProvider();
 
@@ -54,11 +77,13 @@ export function DesktopMenu({
                             linkTo="/"
                         />
 
-                        <MenuButton
-                            buttonText="Course Library"
-                            iconSrc="/icons/courseLibrary.png"
-                            linkTo="/my-course-library"
-                        />
+                        {hasEnrolledCourses && (
+                            <MenuButton
+                                buttonText="Course Library"
+                                iconSrc="/icons/courseLibrary.png"
+                                linkTo="/my-course-library"
+                            />
+                        )}
                     </section>
 
                     {isCourseProvider && (

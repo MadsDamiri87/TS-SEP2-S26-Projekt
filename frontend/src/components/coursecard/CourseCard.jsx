@@ -1,9 +1,11 @@
-import { useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import "./CourseCard.css";
 
 
-export function CourseCard({ courseId, title, shortDescription, price}) {
+export function CourseCard({courseId, title, shortDescription, price, variant = "default"}) {
     const navigate = useNavigate();
+
+    const isEnrolled = variant === "enrolled"
 
     const handleReadMore = () => {
         navigate(`/course/${courseId}`);
@@ -17,16 +19,31 @@ export function CourseCard({ courseId, title, shortDescription, price}) {
             <p className="course-card-description">
                 {shortDescription}
             </p>
-            <p className="course-card-price">
-                {"$" + price}
-            </p>
+            {!isEnrolled && (
+                <p className="course-card-price">
+                    {"$" + price}
+                </p>
+            )}
             <div className="course-card-actions">
-                <button type="button">
-                    Read more
-                </button>
-                <button type="button" className="highlight-btn">
-                    Purchase
-                </button>
+                {isEnrolled ? (
+                    <div className="continue-learning">
+            <span className="continue-text">
+                Continue Course
+            </span>
+                        <span className="continue-arrow">
+                →
+            </span>
+                    </div>
+                ) : (
+                    <>
+                        <button type="button" onClick={handleReadMore}>
+                            Read more
+                        </button>
+                        <button type="button" className="highlight-btn">
+                            Purchase
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );
