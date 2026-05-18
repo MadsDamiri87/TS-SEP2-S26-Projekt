@@ -1,7 +1,7 @@
 import "./MyCourseLibrary.css";
 import {useEffect, useState} from "react";
 import {getAllEnrolledCourses} from "../../api/courseApi.js";
-import {EnrolledCourseCard} from "../../components/enrolledcoursecard/EnrolledCourseCard.jsx";
+import {CourseCard} from "../../components/coursecard/CourseCard.jsx";;
 
 export function MyCourseLibrary() {
 
@@ -84,11 +84,13 @@ export function MyCourseLibrary() {
 
                             myCourses.map((course) => (
 
-                                <EnrolledCourseCard
+                                <CourseCard
                                     key={course.courseId}
                                     courseId={course.courseId}
                                     title={course.title}
                                     shortDescription={course.shortDescription}
+                                    price={course.price}
+                                    variant="enrolled"
                                 />
                             ))
 

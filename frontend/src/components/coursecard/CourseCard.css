@@ -62,3 +62,11 @@
   cursor: pointer;
 }
 
+.course-card-actions {
+  display: flex;
+  gap: calc(2 * var(--std-gap));
+  justify-content: flex-end;
+
+  margin-top: auto;
+}
+
