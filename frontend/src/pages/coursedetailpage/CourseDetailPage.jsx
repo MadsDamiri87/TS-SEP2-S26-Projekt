@@ -7,7 +7,7 @@ import {BuyPopup} from "../../components/popup/buyform/BuyPopup.jsx";
 export function CourseDetailPage() {
     const navigate = useNavigate();
 
-    const {courseId, courseTitle} = useParams();
+    const {courseId} = useParams();
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isBuyPopupOpen, setIsBuyPopOpen] = useState(false);
@@ -40,12 +40,6 @@ export function CourseDetailPage() {
     });
 
     function handleBuyCourse() {
-        const userDetails = localStorage.getItem("userDetails");
-
-        if (!userDetails) {
-            navigate("/login");
-            return
-        }
         setIsBuyPopOpen(true);
     }
 

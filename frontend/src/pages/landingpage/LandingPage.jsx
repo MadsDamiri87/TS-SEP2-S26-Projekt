@@ -38,8 +38,7 @@ export function LandingPage() {
 
                 <div className="course-container">
                     {courses.map((course) => (
-                        <div key={course.courseId}
-                             onClick={() => navigate(`/course/${course.courseId}/${course.title}`)}>
+                        <div key={course.courseId}>
                             <CourseCard
                                 key={course.courseId}
                                 courseId={course.courseId}

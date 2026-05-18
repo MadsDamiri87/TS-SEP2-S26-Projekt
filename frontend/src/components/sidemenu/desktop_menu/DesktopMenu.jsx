@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import "./DesktopMenu.css";
 
-import { UserDetails } from "../user_details/UserDetails.jsx";
 import { LoginMenu } from "../login_menu/LoginMenu.jsx";
-import { LogoutButton } from "../logout_button/LogoutButton.jsx";
 import { MenuButton } from "../menu_button/MenuButton.jsx";
 import {useNavigate} from "react-router-dom";
 import { getAllEnrolledCourses } from "../../../api/courseApi.js";
@@ -38,7 +36,9 @@ export function DesktopMenu({
         checkEnrolledCourses();
     }, [isLoggedIn]);
 
-    const isCourseProvider = getIsCourseProvider();
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const isCourseProvider = userDetails?.isCourseProvider === true;
+
 
     const handleLogout = () => {
         localStorage.removeItem("userDetails")
@@ -148,9 +148,4 @@ export function DesktopMenu({
             )}
         </aside>
     );
-}
-
-function getIsCourseProvider() {
-    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-    return userDetails?.isCourseProvider === true;
 }
