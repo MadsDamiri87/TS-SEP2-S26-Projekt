@@ -1,6 +1,8 @@
 package com.example.backend.integration;
 
 import com.example.backend.entity.User;
+import com.example.backend.persistence.repository.CourseRepository;
+import com.example.backend.persistence.repository.EnrollmentRepository;
 import com.example.backend.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -27,8 +29,18 @@ class UpdateUserProfileIntegrationTest {
   @Autowired
   private UserRepository userRepository;
 
+  // Inject dependencies causing the FK constraint violations
+  @Autowired
+  private CourseRepository courseRepository;
+
+  @Autowired
+  private EnrollmentRepository enrollmentRepository;
+
   @BeforeEach
   void cleanDatabase() {
+    // Delete child rows first to satisfy foreign key constraints
+    enrollmentRepository.deleteAll();
+    courseRepository.deleteAll();
     userRepository.deleteAll();
   }
 
@@ -60,7 +72,10 @@ class UpdateUserProfileIntegrationTest {
 
     @BeforeEach
     void setup() throws Exception {
-      status = mockMvc.perform(get("/api/user/999"))
+      User user = saveValidUser();
+      long nonExistentId = user.getUserId() + 100;
+
+      status = mockMvc.perform(get("/api/user/" + nonExistentId))
           .andReturn()
           .getResponse()
           .getStatus();
@@ -125,7 +140,10 @@ class UpdateUserProfileIntegrationTest {
 
     @BeforeEach
     void setup() throws Exception {
-      status = mockMvc.perform(put("/api/user/999")
+      User user = saveValidUser();
+      long nonExistentId = user.getUserId() + 100;
+
+      status = mockMvc.perform(put("/api/user/" + nonExistentId)
               .contentType(MediaType.APPLICATION_JSON)
               .content(validUpdateUserJson()))
           .andReturn()
