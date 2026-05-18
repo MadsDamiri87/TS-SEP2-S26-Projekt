@@ -91,6 +91,10 @@ export function BuyPopup({course, onClose}) {
         setLoading(true);
         try {
             await enrollInCourse(course.courseId);
+
+            const updatedUserDetails = JSON.parse(localStorage.getItem("userDetails"));
+            setUser(updatedUserDetails);
+
             handleNext();
         } catch (error) {
             if (error.message.includes("409") || error.message.includes("Conflict")) {
@@ -287,15 +291,15 @@ export function BuyPopup({course, onClose}) {
                         <p>You have successfully been enrolled
                             in <strong>{course.title}</strong>.</p>
                         <div className="final-actions">
-                            <button onClick={() => {
-                                onClose();
-                                navigate("/");
-                            }} className="highlight-btn final-btn">
-                                Go to Home
-                            </button>
                             <button onClick={onClose}
                                     className="secondary-btn final-btn">
-                                Stay on Page
+                                Close
+                            </button>
+                            <button onClick={() => {
+                                onClose();
+                                navigate(`/course/${course.courseId}/${course.title}`);
+                            }} className="highlight-btn final-btn">
+                                Go to Course
                             </button>
                         </div>
                     </section>
