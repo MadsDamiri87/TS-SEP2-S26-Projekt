@@ -3,7 +3,6 @@ package com.example.backend.business.service;
 import com.example.backend.business.dto.course.CourseRequest;
 import com.example.backend.business.dto.course.CourseResponse;
 import com.example.backend.business.dto.mapper.CourseMapper;
-import com.example.backend.entity.Content;
 import com.example.backend.entity.Course;
 import com.example.backend.entity.Module;
 import com.example.backend.entity.Lesson;
@@ -15,8 +14,6 @@ import com.example.backend.shared.util.FileStorageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
