@@ -1,9 +1,6 @@
 package com.example.backend.business.dto.course;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public record CourseRequest(
         @NotNull(message = "Owner id is required")
@@ -21,7 +18,7 @@ public record CourseRequest(
         @Size(max = 5000, message = "Description cannot be longer than 5000 characters")
         String description,
 
-        @Positive(message = "Price must be positive")
+        @PositiveOrZero(message = "Price must be positive or zero")
         @NotNull(message = "Price is required")
         Double price
 )
