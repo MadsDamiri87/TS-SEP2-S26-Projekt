@@ -16,6 +16,8 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 @Service
@@ -103,9 +105,7 @@ public class LessonService
         Long moduleId = lesson.getModule().getModuleId();
         int deletedOrderNumber = lesson.getOrderNumber();
 
-        for (Content content : lesson.getContents()) {
-            FileStorageHelper.deletePhysicalFile(content.getFilePath());
-        }
+        FileStorageHelper.deleteLessonContentFilesAndFolder(lesson.getContents());
 
         lessonRepository.delete(lesson);
         lessonRepository.flush();

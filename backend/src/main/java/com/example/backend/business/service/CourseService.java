@@ -15,6 +15,7 @@ import com.example.backend.shared.util.FileStorageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,9 +117,7 @@ public class CourseService
 
         for (Module module : course.getModules()) {
             for (Lesson lesson : module.getLessons()) {
-                for (Content content : lesson.getContents()) {
-                    FileStorageHelper.deletePhysicalFile(content.getFilePath());
-                }
+                FileStorageHelper.deleteLessonContentFilesAndFolder(lesson.getContents());
             }
         }
 
