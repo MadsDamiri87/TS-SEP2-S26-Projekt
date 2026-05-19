@@ -3,7 +3,6 @@ package com.example.backend.business.service;
 import com.example.backend.business.dto.mapper.ModuleMapper;
 import com.example.backend.business.dto.module.ModuleRequest;
 import com.example.backend.business.dto.module.ModuleResponse;
-import com.example.backend.entity.Content;
 import com.example.backend.entity.Course;
 import com.example.backend.entity.Lesson;
 import com.example.backend.entity.Module;
@@ -97,9 +96,7 @@ public class ModuleService
         int deletedOrderNumber = module.getOrderNumber();
 
         for (Lesson lesson : module.getLessons()) {
-            for (Content content : lesson.getContents()) {
-                FileStorageHelper.deletePhysicalFile(content.getFilePath());
-            }
+            FileStorageHelper.deleteLessonContentFilesAndFolder(lesson.getContents());
         }
 
         moduleRepository.delete(module);
