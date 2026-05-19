@@ -8,9 +8,11 @@ import com.example.backend.entity.Module;
 import com.example.backend.entity.User;
 import com.example.backend.persistence.repository.ContentRepository;
 import com.example.backend.persistence.repository.CourseRepository;
+import com.example.backend.persistence.repository.EnrollmentRepository;
 import com.example.backend.persistence.repository.LessonRepository;
 import com.example.backend.persistence.repository.ModuleRepository;
 import com.example.backend.persistence.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,9 +23,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,13 +54,22 @@ class ContentIntegrationTest {
     @Autowired
     private ContentRepository contentRepository;
 
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
     @BeforeEach
     void cleanDatabase() {
         contentRepository.deleteAll();
         lessonRepository.deleteAll();
         moduleRepository.deleteAll();
+        enrollmentRepository.deleteAll();
         courseRepository.deleteAll();
         userRepository.deleteAll();
+    }
+
+    @AfterEach
+    void cleanFiles() throws IOException {
+        deleteDirectory(Path.of("data", "test-content"));
     }
 
     @Nested
@@ -719,5 +730,23 @@ class ContentIntegrationTest {
                 "video/mp4",
                 "fake video content".getBytes()
         );
+    }
+
+    private void deleteDirectory(Path directory) throws IOException {
+        if (!Files.exists(directory)) {
+            return;
+        }
+
+        try (var paths = Files.walk(directory)) {
+            paths
+                    .sorted(java.util.Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            Files.deleteIfExists(path);
+                        } catch (IOException exception) {
+                            throw new RuntimeException(exception);
+                        }
+                    });
+        }
     }
 }
