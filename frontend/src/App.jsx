@@ -26,13 +26,17 @@ function App() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [showPopup, setShowPopup] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        return !!localStorage.getItem("userDetails")
-    })
+    const [userDetails, setUserDetails] = useState(() => {
+        const storedUser = localStorage.getItem("userDetails");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
+
+    const isLoggedIn = userDetails !== null;
 
     const checkLoginStatus = () => {
-        setIsLoggedIn(!!localStorage.getItem("userDetails"))
-    }
+        const storedUser = localStorage.getItem("userDetails");
+        setUserDetails(storedUser ? JSON.parse(storedUser) : null);
+    };
 
 
     useEffect(() => {
@@ -79,7 +83,10 @@ function App() {
 
                 <main className="router-container">
                     <Routes>
-                        <Route path="/" element={<LandingPage/>}/>
+                        <Route path="/" element={<LandingPage
+                            isLoggedIn={isLoggedIn}
+                            userDetails={userDetails}/>}
+                        />
                         <Route path="/create-course" element={<CreateCoursePage/>}/>
                         <Route path="/course-builder" element={<CourseBuilderPage/>}/>
                         <Route path="/edit-course/:courseId" element={<EditCoursePage/>}/>
@@ -90,6 +97,7 @@ function App() {
                         <Route path="/my-course-library" element={<MyCourseLibrary />} />
                         <Route path="/course-player/:courseId" element={<CoursePlayer />} />
                         <Route path="*" element={<Error404Page/>}/>
+                          
                     </Routes>
                 </main>
             </div>
@@ -98,8 +106,14 @@ function App() {
                 isOpen={showPopup}
                 isLogin={isLoginModalOpen}
                 setIsLogin={setIsLoginModalOpen}
-                onSubmit={checkLoginStatus}
-                onClose={() => setShowPopup(false)}
+                onSubmit={() => {
+                    checkLoginStatus();
+                    setShowPopup(false);
+                }}
+                onClose={() => {
+                    setShowPopup(false);
+                    checkLoginStatus();
+                }}
             />
         </BrowserRouter>
     );

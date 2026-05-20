@@ -29,9 +29,8 @@ export function LoginModal({isOpen, onClose, isLogin, setIsLogin, onSubmit}) {
             login(username, password)
                 .then((res) => {
                     console.log("login success", res);
-                    onSubmit()
-                    clearInputFields()
-                    closeMenu();
+                    clearInputFields();
+                    onSubmit();
                 })
                 .catch((err) => {
                     setErrorMessage(err.message);
@@ -40,9 +39,8 @@ export function LoginModal({isOpen, onClose, isLogin, setIsLogin, onSubmit}) {
             register(username, password, email)
                 .then((res) => {
                     console.log("register success", res);
-                    onSubmit()
-                    clearInputFields()
-                    closeMenu();
+                    clearInputFields();
+                    onSubmit();
                 })
                 .catch((err) => {
                     setErrorMessage(err.message);

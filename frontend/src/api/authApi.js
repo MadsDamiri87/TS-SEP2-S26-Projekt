@@ -15,6 +15,7 @@ export function register(username, password, email) {
                 isCourseProvider: data.isCourseProvider
             }
             localStorage.setItem("userDetails", JSON.stringify(userDetails));
+            window.dispatchEvent(new Event("authChange"));
         }
         return data;
     });
@@ -35,6 +36,7 @@ export function login(username, password) {
                 isCourseProvider: data.isCourseProvider
             }
             localStorage.setItem("userDetails", JSON.stringify(userDetails));
+            window.dispatchEvent(new Event("authChange"));
         }
         return data;
     });

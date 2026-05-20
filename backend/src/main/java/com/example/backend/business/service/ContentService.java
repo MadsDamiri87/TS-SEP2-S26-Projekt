@@ -34,21 +34,18 @@ public class ContentService
     private final ContentRepository contentRepository;
     private final LessonRepository lessonRepository;
     private final ContentMapper contentMapper;
-    private final Path uploadRoot;
-
+  
+    private final Path uploadRoot = Paths.get("seedData", "lesson-content");
+  
     public ContentService(
             ContentRepository contentRepository,
             LessonRepository lessonRepository,
-            ContentMapper contentMapper,
-
-            @Value("${app.upload-root:data/lesson-content}")
-            String uploadRoot
+            ContentMapper contentMapper
     )
     {
         this.contentRepository = contentRepository;
         this.lessonRepository = lessonRepository;
         this.contentMapper = contentMapper;
-        this.uploadRoot = Paths.get(uploadRoot);
     }
 
     @Transactional
