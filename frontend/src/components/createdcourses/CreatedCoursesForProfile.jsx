@@ -103,7 +103,7 @@ export default function CreatedCoursesForProfile() {
                             </div>
 
                             <div className="created-profile-footer">
-                                <span>{course.price} kr.</span>
+                                <span>${course.price}</span>
 
                                 <button
                                     type="button"

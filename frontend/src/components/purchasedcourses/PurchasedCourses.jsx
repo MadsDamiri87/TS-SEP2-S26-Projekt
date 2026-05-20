@@ -73,8 +73,6 @@ export default function PurchasedCourses() {
                                 <h4>{course.title}</h4>
                                 <p>{course.shortDescription}</p>
                             </div>
-
-                            <span>{course.price} kr.</span>
                         </button>
                     ))}
                 </div>
