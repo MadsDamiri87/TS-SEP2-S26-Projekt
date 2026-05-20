@@ -2,25 +2,11 @@ import {useEffect, useState} from "react";
 import {CourseCard} from "../../components/coursecard/CourseCard.jsx";
 import {getAllEnrolledCourses, getAllPublishedCourses} from "../../api/courseApi.js";
 
-export function LandingPage() {
+export function LandingPage({isLoggedIn, userDetails}) {
     const [courses, setCourses] = useState([]);
     const [enrolledCourses, setEnrolledCourses] = useState([]);
 
-
     useEffect(() => {
-        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-        const userId = userDetails?.userId;
-
-        getAllPublishedCourses()
-            .then((data) => setCourses(data))
-            .catch((error) => console.error(error));
-
-        if (userId) {
-            getAllEnrolledCourses(userId)
-                .then((data) => setEnrolledCourses(data))
-                .catch((error) => console.error(error));
-        }
-
         async function fetchCourses() {
             try {
                 const publishedCourses = await getAllPublishedCourses();
@@ -32,6 +18,24 @@ export function LandingPage() {
 
         fetchCourses();
     }, []);
+
+    useEffect(() => {
+        async function fetchEnrolledCourses() {
+            if (!userDetails?.userId) {
+                setEnrolledCourses([]);
+                return;
+            }
+
+            try {
+                const enrolled = await getAllEnrolledCourses(userDetails.userId);
+                setEnrolledCourses(enrolled);
+            } catch (error) {
+                console.error("Failed to fetch enrolled courses:", error);
+            }
+        }
+
+        fetchEnrolledCourses();
+    }, [userDetails]);
 
     return (
         <div className="page-container">
@@ -51,7 +55,8 @@ export function LandingPage() {
                 <div className="course-container">
                     {courses.map((course) => {
                         const isEnrolled = enrolledCourses.some(
-                            (enrolledCourse) => enrolledCourse.courseId === course.courseId
+                            (enrolledCourse) =>
+                                enrolledCourse.courseId === course.courseId
                         );
 
                         return (
@@ -62,6 +67,8 @@ export function LandingPage() {
                                 shortDescription={course.shortDescription}
                                 price={course.price}
                                 isEnrolled={isEnrolled}
+                                isLoggedIn={isLoggedIn}
+                                userDetails={userDetails}
                             />
                         );
                     })}

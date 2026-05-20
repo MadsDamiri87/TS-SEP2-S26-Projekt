@@ -35,7 +35,9 @@ public class ContentService
     private final LessonRepository lessonRepository;
     private final ContentMapper contentMapper;
     private final Path uploadRoot;
-
+  
+    private final Path uploadRoot = Paths.get("seedData", "lesson-content");
+  
     public ContentService(
             ContentRepository contentRepository,
             LessonRepository lessonRepository,
