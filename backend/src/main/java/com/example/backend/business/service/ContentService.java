@@ -11,6 +11,7 @@ import com.example.backend.shared.exception.EmptyFileException;
 import com.example.backend.shared.exception.InvalidFileException;
 import com.example.backend.shared.exception.ResourceNotFoundException;
 import com.example.backend.shared.util.FileStorageHelper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -33,14 +34,23 @@ public class ContentService
     private final ContentRepository contentRepository;
     private final LessonRepository lessonRepository;
     private final ContentMapper contentMapper;
-
+    private final Path uploadRoot;
+  
     private final Path uploadRoot = Paths.get("seedData", "lesson-content");
+  
+    public ContentService(
+            ContentRepository contentRepository,
+            LessonRepository lessonRepository,
+            ContentMapper contentMapper,
 
-    public ContentService(ContentRepository contentRepository, LessonRepository lessonRepository, ContentMapper contentMapper)
+            @Value("${app.upload-root:data/lesson-content}")
+            String uploadRoot
+    )
     {
         this.contentRepository = contentRepository;
         this.lessonRepository = lessonRepository;
         this.contentMapper = contentMapper;
+        this.uploadRoot = Paths.get(uploadRoot);
     }
 
     @Transactional

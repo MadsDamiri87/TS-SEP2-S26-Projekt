@@ -23,7 +23,7 @@ export function EditLessonPage() {
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [contentToDelete, setContentToDelete] = useState(null);
 
-    async function loadContents() {
+    async function loadContents({ selectLatest = false } = {}) {
         setIsLoading(true);
 
         try {
@@ -37,18 +37,23 @@ export function EditLessonPage() {
 
             if (sortedContents.length === 0) {
                 setSelectedContent(null);
+                setErrorMessage("");
                 return;
             }
 
-            setSelectedContent(previousSelectedContent => {
-                if (!previousSelectedContent) {
-                    return sortedContents[0];
-                }
+            if (selectLatest) {
+                setSelectedContent(sortedContents[sortedContents.length - 1]);
+            } else {
+                setSelectedContent(previousSelectedContent => {
+                    if (!previousSelectedContent) {
+                        return sortedContents[0];
+                    }
 
-                return sortedContents.find(content =>
-                    content.contentId === previousSelectedContent.contentId
-                ) ?? sortedContents[0];
-            });
+                    return sortedContents.find(content =>
+                        content.contentId === previousSelectedContent.contentId
+                    ) ?? sortedContents[0];
+                });
+            }
 
             setErrorMessage("");
         } catch (error) {
@@ -63,10 +68,22 @@ export function EditLessonPage() {
         loadContents();
     }, [lessonId]);
 
+    function openUploadModal() {
+        setErrorMessage("");
+        setShowUploadModal(true);
+    }
+
+    function closeUploadModal() {
+        setErrorMessage("");
+        setShowUploadModal(false);
+    }
+
     async function handleUpload(file) {
+        setErrorMessage("");
+
         try {
             await uploadContent(lessonId, file);
-            await loadContents();
+            await loadContents({ selectLatest: true });
 
             setShowUploadModal(false);
         } catch (error) {
@@ -82,6 +99,7 @@ export function EditLessonPage() {
             return;
         }
 
+        setErrorMessage("");
         setContentToDelete(content);
     }
 
@@ -89,6 +107,8 @@ export function EditLessonPage() {
         if (!contentToDelete) {
             return;
         }
+
+        setErrorMessage("");
 
         try {
             await deleteContent(contentToDelete.contentId);
@@ -154,7 +174,7 @@ export function EditLessonPage() {
 
                         <button
                             type="button"
-                            onClick={() => setShowUploadModal(true)}
+                            onClick={openUploadModal}
                         >
                             +
                         </button>
@@ -182,7 +202,7 @@ export function EditLessonPage() {
 
             {showUploadModal && (
                 <ContentUploadModal
-                    onCancel={() => setShowUploadModal(false)}
+                    onCancel={closeUploadModal}
                     onConfirm={handleUpload}
                 />
             )}

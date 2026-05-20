@@ -183,6 +183,15 @@
       border-color 180ms ease;
 
   margin-bottom: 0.5rem;
+
+  }
+
+.page-container h1  {
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
 }
 
 .module-accordion details:hover {
@@ -201,6 +210,14 @@
 
   border-color:
       rgba(99,102,241,0.35);
+}
+
+.page-container h1 {
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
 }
 
 .module-accordion summary {

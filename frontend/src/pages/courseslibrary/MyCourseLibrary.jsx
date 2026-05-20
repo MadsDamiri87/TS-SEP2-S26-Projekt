@@ -1,12 +1,31 @@
 import "./MyCourseLibrary.css";
-import {useEffect, useState} from "react";
+import {use, useEffect, useState} from "react";
 import {getAllEnrolledCourses} from "../../api/courseApi.js";
-import {CourseCard} from "../../components/coursecard/CourseCard.jsx";;
+import {CourseCard} from "../../components/coursecard/CourseCard.jsx";
+import {useNavigate} from "react-router-dom";
+
+;
 
 export function MyCourseLibrary() {
 
+    const navigate = useNavigate();
     const [myCourses, setMyCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [userDetails] = useState(() => {
+                try {
+                    return JSON.parse(localStorage.getItem("userDetails"));
+                } catch (error) {
+                    return null
+                }
+    });
+
+    useEffect(() => {
+        if (!userDetails) {
+            navigate("/access-denied");
+            return;
+        }
+    }, []);
 
     useEffect(() => {
 
