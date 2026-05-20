@@ -203,6 +203,14 @@
       rgba(99,102,241,0.35);
 }
 
+.page-container h1 {
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+
 .module-accordion summary {
   list-style: none;
 
