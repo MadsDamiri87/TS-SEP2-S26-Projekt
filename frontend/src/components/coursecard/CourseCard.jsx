@@ -44,6 +44,11 @@
             setIsBuyPopOpen(true);
         }
 
+        function handleContinueCourse(event) {
+            event.stopPropagation();
+            navigate(`/course-player/${courseId}`);
+        }
+
         return (
             <>
                 <div className="course-card" onClick={handleReadMore}>
@@ -63,7 +68,7 @@
 
                     <div className="course-card-actions">
                         {enrolled ? (
-                            <div className="continue-learning">
+                            <div className="continue-learning" onClick={handleContinueCourse}>
                                 <span className="continue-text">
                                     Continue Course
                                 </span>

@@ -88,8 +88,8 @@ function App() {
                         <Route path="/course/:courseId/:courseTitle" element={<CourseDetailPage/>}/>
                         <Route path="/edit-lesson/:lessonId" element={<EditLessonPage/>}/>
                         <Route path="/my-course-library" element={<MyCourseLibrary />} />
+                        <Route path="/course-player/:courseId" element={<CoursePlayer />} />
                         <Route path="*" element={<Error404Page/>}/>
-                        <Route path="/course-player/:courseId/:lessonId?" element={<CoursePlayer />} />
                     </Routes>
                 </main>
             </div>
