@@ -92,14 +92,14 @@ export function ProfilePage() {
                 </p>
             </div>
 
-            <div className="flex-row">
-                <div className="flex-column">
-                    <div className="section-heading">
+            <div className="profile-layout">
+                <div className="profile-left-column">
+                    <div className="profile-info-card">
                         <h3>
                             Here is your profile information
                             {displayName ? `, ${displayName}` : ""}
                         </h3>
-                        <div>
+                        <div className="profile-info-row">
                             {editingName ? (
                                 <>
                                     <span className="transparent">Name: </span>
@@ -230,7 +230,7 @@ export function ProfilePage() {
                     </div>
                     <CreatedCoursesForProfile/>
                 </div>
-                <div>
+                <div className="profile-side-column">
                     <PurchasedCourses/>
                 </div>
             </div>
