@@ -1,6 +1,7 @@
 .fa-icon {
   margin-left: 10px;
   opacity: 0.5;
+  cursor: pointer;
 }
 
 .fa-icon:hover {
@@ -10,18 +11,66 @@
 }
 
 .fa-icon-highlighted {
-color: rgba(87, 199, 133, 1);
-opacity: 1;
+  color: rgba(87, 199, 133, 1);
+  opacity: 1;
 }
 
 .transparent {
-opacity: 0.5;
-line-height: 2rem;
+  opacity: 0.5;
+  line-height: 2rem;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 32rem);
+  gap: 2rem;
+  align-items: start;
+}
+
+.profile-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 0;
+}
+
+.profile-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  padding: 1.5rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.18);
+}
+
+.profile-info-card h3 {
+  margin: 0 0 0.75rem 0;
+}
+
+.profile-info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.profile-side-column {
+  min-width: 0;
+}
+
+.errorMessage {
+  width: 100%;
+  margin: 0.25rem 0 0 0;
+  color: rgb(255, 130, 130);
 }
 
 input,
-textarea
-{
+textarea {
   padding: 1rem;
 
   font-family: inherit;
@@ -35,36 +84,45 @@ textarea
 
   outline: none;
 
-  transition: border-color 0.2s ease,
-  transform 0.2s ease,
-  box-shadow 0.2s ease;
+  transition:
+          border-color 0.2s ease,
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
 }
 
 input::placeholder,
-textarea::placeholder
-{
+textarea::placeholder {
   color: rgba(255, 255, 255, 0.45);
 }
 
 input:focus,
-textarea:focus
-{
+textarea:focus {
   border-color: #45b883;
-
   box-shadow: 0 0 0 4px rgba(69, 184, 131, 0.2);
 }
 
-input:user-valid{
-  outline: 3px solid var(--succes);
-}
-input:user-invalid{
-  outline: 3px solid var(--danger);
-}
-
-textarea:user-valid{
+input:user-valid {
   outline: 3px solid var(--succes);
 }
 
-textarea:user-invalid{
+input:user-invalid {
   outline: 3px solid var(--danger);
+}
+
+textarea:user-valid {
+  outline: 3px solid var(--succes);
+}
+
+textarea:user-invalid {
+  outline: 3px solid var(--danger);
+}
+
+@media (max-width: 1050px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-side-column {
+    width: 100%;
+  }
 }
