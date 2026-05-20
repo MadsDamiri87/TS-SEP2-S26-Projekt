@@ -417,7 +417,7 @@ class ContentServiceTest {
         content.setContentId(1L);
         content.setLesson(validLesson());
         content.setOriginalFileName("logo.png");
-        content.setFilePath("data/lesson-content/lesson-1/test-logo.png");
+        content.setFilePath("seedData/lesson-content/lesson-1/test-logo.png");
         content.setContentType(ContentType.IMAGE);
         content.setOrderNumber(3);
 

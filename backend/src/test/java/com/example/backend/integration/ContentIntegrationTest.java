@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -663,7 +662,7 @@ class ContentIntegrationTest {
 
         content.setLesson(lesson);
         content.setOriginalFileName(originalFileName);
-        content.setFilePath("data/test-content/" + originalFileName);
+        content.setFilePath("seedData/test-content/" + originalFileName);
         content.setContentType(contentType);
         content.setOrderNumber(orderNumber);
 
@@ -677,7 +676,7 @@ class ContentIntegrationTest {
             int orderNumber,
             String fileContent
     ) throws Exception {
-        Path directory = Path.of("data", "test-content", "lesson-" + lesson.getId());
+        Path directory = Path.of("seedData", "test-content", "lesson-" + lesson.getId());
         Files.createDirectories(directory);
 
         Path filePath = directory.resolve(originalFileName);

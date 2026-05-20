@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +34,7 @@ public class ContentService
     private final LessonRepository lessonRepository;
     private final ContentMapper contentMapper;
 
-    private final Path uploadRoot = Paths.get("data", "lesson-content");
+    private final Path uploadRoot = Paths.get("seedData", "lesson-content");
 
     public ContentService(ContentRepository contentRepository, LessonRepository lessonRepository, ContentMapper contentMapper)
     {
