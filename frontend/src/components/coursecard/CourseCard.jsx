@@ -57,7 +57,7 @@ export function CourseCard({
 
                 {!enrolled && (
                     <p className="course-card-price">
-                        {"$" + price}
+                        {price === 0 ? "Free" : "$" + price}
                     </p>
                 )}
 
