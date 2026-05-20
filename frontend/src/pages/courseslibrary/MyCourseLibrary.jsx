@@ -9,18 +9,15 @@ import {useNavigate} from "react-router-dom";
 export function MyCourseLibrary() {
 
     const navigate = useNavigate();
-
     const [myCourses, setMyCourses] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const [userDetails] = useState(()=> {
-
-        try {
-            const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-        }catch {
-            return;
-        }
-
+    const [userDetails] = useState(() => {
+                try {
+                    return JSON.parse(localStorage.getItem("userDetails"));
+                } catch (error) {
+                    return null
+                }
     });
 
     useEffect(() => {
@@ -28,8 +25,7 @@ export function MyCourseLibrary() {
             navigate("/access-denied");
             return;
         }
-    });
-
+    }, []);
 
     useEffect(() => {
 
