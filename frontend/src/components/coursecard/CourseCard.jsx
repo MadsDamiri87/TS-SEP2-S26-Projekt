@@ -44,12 +44,17 @@ export function CourseCard({
         setIsBuyPopOpen(true);
     }
 
-    return (
-        <>
-            <div className="course-card" onClick={handleReadMore}>
-                <h3 className="course-card-title">
-                    {title}
-                </h3>
+        function handleContinueCourse(event) {
+            event.stopPropagation();
+            navigate(`/course-player/${courseId}`);
+        }
+
+        return (
+            <>
+                <div className="course-card" onClick={handleReadMore}>
+                    <h3 className="course-card-title">
+                        {title}
+                    </h3>
 
                 <p className="course-card-description">
                     {shortDescription}
@@ -61,9 +66,9 @@ export function CourseCard({
                     </p>
                 )}
 
-                <div className="course-card-actions">
-                    {enrolled ? (
-                        <div className="continue-learning">
+                    <div className="course-card-actions">
+                        {enrolled ? (
+                            <div className="continue-learning" onClick={handleContinueCourse}>
                                 <span className="continue-text">
                                     Continue Course
                                 </span>
