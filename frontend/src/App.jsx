@@ -19,7 +19,7 @@ import {CourseDetailPage} from "./pages/coursedetailpage/CourseDetailPage.jsx";
 
 import {EditCoursePage} from "./pages/editcoursepage/EditCoursePage.jsx";
 import {EditLessonPage} from "./pages/editLessonPage/EditLessonPage.jsx";
-import {BuyPopup} from "./components/popup/buyform/BuyPopup.jsx";
+import { CoursePlayer } from "./pages/courseplayer/CoursePlayer.jsx";
 import {MyCourseLibrary} from "./pages/courseslibrary/MyCourseLibrary.jsx";
 
 function App() {
@@ -87,23 +87,17 @@ function App() {
                             isLoggedIn={isLoggedIn}
                             userDetails={userDetails}/>}
                         />
-                        <Route path="/create-course"
-                               element={<CreateCoursePage/>}/>
-                        <Route path="/course-builder"
-                               element={<CourseBuilderPage/>}/>
-                        <Route path="/edit-course/:courseId"
-                               element={<EditCoursePage/>}/>
+                        <Route path="/create-course" element={<CreateCoursePage/>}/>
+                        <Route path="/course-builder" element={<CourseBuilderPage/>}/>
+                        <Route path="/edit-course/:courseId" element={<EditCoursePage/>}/>
                         <Route path="/profile" element={<ProfilePage/>}/>
-                        <Route path="/access-denied"
-                               element={<AccessDeniedPage/>}/>
-                        <Route path="/course/:courseId/:courseTitle"
-                               element={<CourseDetailPage/>}/>
-                        <Route path="/edit-lesson/:lessonId"
-                               element={<EditLessonPage/>}/>
+                        <Route path="/access-denied" element={<AccessDeniedPage/>}/>
+                        <Route path="/course/:courseId/:courseTitle" element={<CourseDetailPage/>}/>
+                        <Route path="/edit-lesson/:lessonId" element={<EditLessonPage/>}/>
                         <Route path="/my-course-library" element={<MyCourseLibrary />} />
-
-
+                        <Route path="/course-player/:courseId" element={<CoursePlayer />} />
                         <Route path="*" element={<Error404Page/>}/>
+                          
                     </Routes>
                 </main>
             </div>
