@@ -144,7 +144,7 @@ export function EditLessonPage() {
                     className="back-button"
                     onClick={() => navigate(-1)}
                 >
-                    Back
+                    Save
                 </button>
             </section>
 
