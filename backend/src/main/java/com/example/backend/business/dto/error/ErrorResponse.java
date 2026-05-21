@@ -31,15 +31,6 @@ public class ErrorResponse
         this.fieldErrors = fieldErrors;
     }
 
-    public String getError()
-    {
-        return error;
-    }
-
-    public void setError(String error)
-    {
-        this.error = error;
-    }
 
     public String getMessage()
     {
@@ -61,23 +52,7 @@ public class ErrorResponse
         this.status = status;
     }
 
-    public LocalDateTime getTimeStamp()
-    {
-        return timeStamp;
-    }
 
-    public void setTimeStamp(LocalDateTime timeStamp)
-    {
-        this.timeStamp = timeStamp;
-    }
 
-    public Map<String, String> getFieldErrors()
-    {
-        return fieldErrors;
-    }
 
-    public void setFieldErrors(Map<String, String> fieldErrors)
-    {
-        this.fieldErrors = fieldErrors;
-    }
 }

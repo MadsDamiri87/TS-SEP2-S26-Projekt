@@ -47,11 +47,6 @@ public class LessonService
         return lessonMapper.toResponse(lessons);
     }
 
-    public List<LessonResponse> getAll()
-    {
-        List<Lesson> lessons = lessonRepository.findAll();
-        return lessonMapper.toResponse(lessons);
-    }
 
     @Transactional
     public LessonResponse create(LessonRequest request)

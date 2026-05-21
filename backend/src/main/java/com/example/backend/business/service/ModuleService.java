@@ -41,11 +41,6 @@ public class ModuleService
         return moduleMapper.toResponse(modules);
     }
 
-    public List<ModuleResponse> getAll()
-    {
-        List<Module> modules = moduleRepository.findAll();
-        return moduleMapper.toResponse(modules);
-    }
 
     @Transactional
     public ModuleResponse create(ModuleRequest request)
