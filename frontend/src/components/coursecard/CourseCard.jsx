@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import "./CourseCard.css";
-import { useEffect, useState } from "react";
-import { BuyPopup } from "../popup/buyform/BuyPopup.jsx";
-import { getCourseById } from "../../api/courseApi.js";
+import {useEffect, useState} from "react";
+import {BuyPopup} from "../popup/buyform/BuyPopup.jsx";
+import {getCourseById} from "../../api/courseApi.js";
 
 export function CourseCard({
                                courseId,
@@ -14,7 +14,7 @@ export function CourseCard({
     const navigate = useNavigate();
 
     const [course, setCourse] = useState(null);
-    const[enrolled, setEnrolled] = useState(isEnrolled)
+    const [enrolled, setEnrolled] = useState(isEnrolled)
     const [isBuyPopupOpen, setIsBuyPopOpen] = useState(false);
 
 
@@ -29,7 +29,7 @@ export function CourseCard({
         }
 
         fetchDetails();
-    }, [courseId, isEnrolled]);
+    }, [courseId]);
 
     useEffect(() => {
         setEnrolled(isEnrolled);
@@ -44,17 +44,17 @@ export function CourseCard({
         setIsBuyPopOpen(true);
     }
 
-        function handleContinueCourse(event) {
-            event.stopPropagation();
-            navigate(`/course-player/${courseId}`);
-        }
+    function handleContinueCourse(event) {
+        event.stopPropagation();
+        navigate(`/course-player/${courseId}`);
+    }
 
-        return (
-            <>
-                <div className="course-card" onClick={handleReadMore}>
-                    <h3 className="course-card-title">
-                        {title}
-                    </h3>
+    return (
+        <>
+            <div className="course-card" onClick={handleReadMore}>
+                <h3 className="course-card-title">
+                    {title}
+                </h3>
 
                 <p className="course-card-description">
                     {shortDescription}
@@ -66,9 +66,10 @@ export function CourseCard({
                     </p>
                 )}
 
-                    <div className="course-card-actions">
-                        {enrolled ? (
-                            <div className="continue-learning" onClick={handleContinueCourse}>
+                <div className="course-card-actions">
+                    {enrolled ? (
+                        <div className="continue-learning"
+                             onClick={handleContinueCourse}>
                                 <span className="continue-text">
                                     Continue Course
                                 </span>
@@ -100,7 +101,6 @@ export function CourseCard({
                     course={course}
                     onClose={() => {
                         setIsBuyPopOpen(false)
-                        setEnrolled(true)
                     }}
                 />
             )}

@@ -7,7 +7,6 @@ import "./BuyPopup.css";
 export function BuyPopup({course, onClose}) {
     const navigate = useNavigate();
 
-    // Steps: 1: Detaljer, 2: Betaling & Bruger, 3: Bekræftelse, 4: Succes
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
 
@@ -66,19 +65,16 @@ export function BuyPopup({course, onClose}) {
     const handleNavigationToConfirm = () => {
         setErrorMessage("");
 
-        // 1. Strictly validate ALL payment fields
         if (!formData.name || !formData.cardNumber || !formData.expiry || !formData.cvc) {
             setErrorMessage("Please fill in all payment details before continuing.");
             return;
         }
 
-        // 2. Make sure they actually logged in or created an account
         if (!user) {
             setErrorMessage("Please log in or create an account to proceed.");
             return;
         }
 
-        // 3. Everything is perfect -> Go to Step 3
         handleNext();
     };
 
@@ -94,6 +90,8 @@ export function BuyPopup({course, onClose}) {
 
             const updatedUserDetails = JSON.parse(localStorage.getItem("userDetails"));
             setUser(updatedUserDetails);
+
+            window.dispatchEvent(new Event("enrollmentChange"))
 
             handleNext();
         } catch (error) {
@@ -189,10 +187,6 @@ export function BuyPopup({course, onClose}) {
                                         </div>
                                         <p className="small-hint">Not you? <br/>Log
                                             out on the main page first.</p>
-                                        <button className="secondary-btn"
-                                                onClick={onClose}>
-                                            Close window
-                                        </button>
                                     </div>
                                 ) : (
                                     <div className="auth-sub-flow">
@@ -297,7 +291,7 @@ export function BuyPopup({course, onClose}) {
                             </button>
                             <button onClick={() => {
                                 onClose();
-                                navigate(`/course/${course.courseId}/${course.title}`);
+                                navigate(`/course-player/${course.courseId}`);
                             }} className="highlight-btn final-btn">
                                 Go to Course
                             </button>
