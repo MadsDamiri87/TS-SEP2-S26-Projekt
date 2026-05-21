@@ -1,6 +1,9 @@
 import {useEffect, useState} from "react";
 import {CourseCard} from "../../components/coursecard/CourseCard.jsx";
-import {getAllEnrolledCourses, getAllPublishedCourses} from "../../api/courseApi.js";
+import {
+    getAllEnrolledCourses,
+    getAllPublishedCourses
+} from "../../api/courseApi.js";
 
 export function LandingPage({isLoggedIn, userDetails}) {
     const [courses, setCourses] = useState([]);
@@ -35,6 +38,11 @@ export function LandingPage({isLoggedIn, userDetails}) {
         }
 
         fetchEnrolledCourses();
+
+        window.addEventListener("enrollmentChange", fetchEnrolledCourses);
+        return () => {
+            window.removeEventListener("enrollmentChange", fetchEnrolledCourses);
+        };
     }, [userDetails]);
 
     return (
