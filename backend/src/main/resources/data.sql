@@ -37,7 +37,7 @@ VALUES
 (4, 'provider4', '$2a$10$9fPXpM35.WPnu1wCGyePO.zT/XkUBXJx0tfW2L1yqZIqaWo/3b8Zq', 'emil.provider@test.dk', '44444444', 'Emil Larsen', false, true, false),
 
 -- Students
-(5, 'student1', '$2a$10$9fPXpM35.WPnu1wCGyePO.zT/XkUBXJx0tfW2L1yqZIqaWo/3b8Zq', 'alma@student.dk', '55555501', 'Alma Pedersen', false, false, true),
+(5, 'student5', '$2a$10$9fPXpM35.WPnu1wCGyePO.zT/XkUBXJx0tfW2L1yqZIqaWo/3b8Zq', 'alma@student.dk', '55555501', 'Alma Pedersen', false, false, true),
 (6, 'student2', '$2a$10$9fPXpM35.WPnu1wCGyePO.zT/XkUBXJx0tfW2L1yqZIqaWo/3b8Zq', 'oscar@student.dk', '55555502', 'Oscar Hansen', false, false, true),
 (7, 'student3', '$2a$10$9fPXpM35.WPnu1wCGyePO.zT/XkUBXJx0tfW2L1yqZIqaWo/3b8Zq', 'freja@student.dk', '55555503', 'Freja Andersen', false, false, true),
 (8, 'student4', '$2a$10$9fPXpM35.WPnu1wCGyePO.zT/XkUBXJx0tfW2L1yqZIqaWo/3b8Zq', 'noah@student.dk', '55555504', 'Noah Christensen', false, false, true),
