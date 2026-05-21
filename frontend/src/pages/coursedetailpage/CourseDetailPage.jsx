@@ -98,7 +98,7 @@ export function CourseDetailPage() {
 
                 <section className="course-content-section">
                     {enrolled ? (
-                        <div className="continue-learning"
+                        <div className="continue-learning" style={{margin: "1rem"}}
                              onClick={handleContinueCourse}>
                                 <span className="continue-text">
                                     Go to course
