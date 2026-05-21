@@ -53,3 +53,7 @@
   gap: calc(3*var(--std-gap));
   align-content: space-between;
 }
+
+.full-width {
+  width: 100%;
+}

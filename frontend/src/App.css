@@ -1,118 +1,129 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-:root {
-    --dark-blue: #02062f;
-    --medium-blue: #2f3c4f;
-    --light-blue: #485669;
-    --light-gray: #6d6767;
-    --contrast-color: #c39557;
-    --off-white: #e4e4e4;
-    --super-light-blue: #acbfde;
-    --off-red: #f66969;
-    --light-red: #f77f7f;
-    --light-green: #24fc7e;
-    --lime-green: #45b883;
+:root
+{
+  --dark-blue: #02062f;
+  --medium-blue: #2f3c4f;
+  --light-blue: #485669;
+  --light-gray: #6d6767;
+  --contrast-color: #c39557;
+  --off-white: #e4e4e4;
+  --super-light-blue: #acbfde;
+  --off-red: #f66969;
+  --light-red: #f77f7f;
+  --light-green: #24fc7e;
+  --lime-green: #45b883;
 
-    /*  Variabler vi skal bruger nedenunder  */
-    --accent-bg: var(--dark-blue);
-    --contrast-bg: var(--lime-green);
-    --accent-text: var(--off-white);
-    --bg: var(--medium-blue);
-    --text-color: var(--off-white);
-    --button-border: var(--light-blue);
-    --button-face: var(--light-blue);
-    --button-face-hover: var(--super-light-blue);
-    --button-text: var(--off-white);
-    --canvas-primary: var(--c-cluedo-brown);
-    --canvas-highlight: var(--c-cluedo-dark-brown);
-    --canvas-text: var(--c-light-text);
-    --link-active-text: ;
-    --link-text: var(--super-light-blue);
-    --link-hover-text: ;
-    --input-bg: var(--c-light-ghostwhite);
-    --input-border: var(--c-light-periwrinkle);
-    --succes: var(--light-green);
-    --danger: var(--off-red);
-    --transparent: hsl(0, 0%, 0%, 0%);
-    --logout-btn: var(--off-red);
-    --logout-btn-hover: var(--light-red);
-    --logout-btn-text: var(--light-gray);
-    --border-radius: 15px;
-    --std-padding: 1rem;
-    --std-gap: 1rem; 
-    --std-border: 2px solid;
-    --opaque-bg: rgba(0, 0, 0, 0.21);
-    --std-box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-    --gradient-bg: linear-gradient(
-            90deg,
-            rgb(42 125 155) 0%,
-            rgba(87, 199, 133, 1) 50%,
-            rgb(237 229 83) 100%
-    );
-    --menu-gradient: linear-gradient(180deg, #1d3050 0%, #1d2234 100%)
-
+  /*  Variabler vi skal bruger nedenunder  */
+  --accent-bg: var(--dark-blue);
+  --contrast-bg: var(--lime-green);
+  --accent-text: var(--off-white);
+  --bg: var(--medium-blue);
+  --text-color: var(--off-white);
+  --button-border: var(--light-blue);
+  --button-face: var(--light-blue);
+  --button-face-hover: var(--super-light-blue);
+  --button-text: var(--off-white);
+  --canvas-primary: var(--c-cluedo-brown);
+  --canvas-highlight: var(--c-cluedo-dark-brown);
+  --canvas-text: var(--c-light-text);
+  --link-active-text: ;
+  --link-text: var(--super-light-blue);
+  --link-hover-text: ;
+  --input-bg: var(--c-light-ghostwhite);
+  --input-border: var(--c-light-periwrinkle);
+  --succes: var(--light-green);
+  --danger: var(--off-red);
+  --transparent: hsl(0, 0%, 0%, 0%);
+  --logout-btn: var(--off-red);
+  --logout-btn-hover: var(--light-red);
+  --logout-btn-text: var(--light-gray);
+  --border-radius: 15px;
+  --std-padding: 1rem;
+  --std-gap: 1rem;
+  --std-border: 2px solid;
+  --opaque-bg: rgba(0, 0, 0, 0.21);
+  --std-box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  --gradient-bg: linear-gradient(
+      90deg,
+      rgb(42 125 155) 0%,
+      rgba(87, 199, 133, 1) 50%,
+      rgb(237 229 83) 100%
+  );
+  --menu-gradient: linear-gradient(180deg, #1d3050 0%, #1d2234 100%);
+  --mobile-breakpoint: 340px;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
+body
+{
+  font-family: 'Inter', sans-serif;
 }
 
-a {
-    color: var(--link-text);
+a
+{
+  color: var(--link-text);
 }
 
-h1 {
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 800;
-    line-height: 1;
-    margin: 0 0 1rem;
-    letter-spacing: -0.04em;
+h1
+{
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  margin: 0 0 1rem;
+  letter-spacing: -0.04em;
 }
 
-p {
-    max-width: 42rem;
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    line-height: 1.6;
-    color: rgba(245, 247, 250, 0.82);
+p
+{
+  max-width: 42rem;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: rgba(245, 247, 250, 0.82);
 }
 
-h2 {
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
-    font-weight: 700;
-    line-height: 1.2;
-    margin: 0 0 1rem;
-    letter-spacing: -0.02em;
+h2
+{
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
 }
 
-h3 {
-    font-size: clamp(1.3rem, 2.5vw, 2rem);
-    font-weight: 700;
-    line-height: 1.2;
-    margin: 0 0 1rem;
-    letter-spacing: -0.02em;
+h3
+{
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
 }
 
-button {
-    padding: 12px;
-    font-size: 17px;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    color: #ffffff;
-    cursor: pointer;
-    background-color: var(--bg);
+button
+{
+  padding: 12px;
+  font-size: 17px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  cursor: pointer;
+  background-color: var(--bg);
 }
 
-button:hover {
-    opacity: 0.9;
+button:hover
+{
+  opacity: 0.9;
 }
 
-.highlight-btn {
-    background: var(--gradient-bg);
+.highlight-btn
+{
+  background: var(--gradient-bg);
 }
