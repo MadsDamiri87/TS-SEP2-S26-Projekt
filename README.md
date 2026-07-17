@@ -36,6 +36,13 @@ Courses are organised into modules, lessons and different types of content. The 
 - CSS
 
 ### Screenshots
+![lms1.png](docs/screenshots/lms1.png)
+![lms2.png](docs/screenshots/lms2.png)
+![lms3.png](docs/screenshots/lms3.png)
+![lms4.png](docs/screenshots/lms4.png)
+![lms5.png](docs/screenshots/lms5.png)
+![lms6.png](docs/screenshots/lms6.png)
+![lms7.png](docs/screenshots/lms7.png)
 
 
 ### Backend
