@@ -35,6 +35,9 @@ Courses are organised into modules, lessons and different types of content. The 
 - Font Awesome
 - CSS
 
+### Screenshots
+
+
 ### Backend
 
 - Java 21
