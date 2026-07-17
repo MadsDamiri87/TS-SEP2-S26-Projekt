@@ -464,7 +464,7 @@ class LessonIntegrationTest {
             lesson = saveValidLesson(module, "Lesson 1", "Description 1", 1);
 
             // Act
-            status = mockMvc.perform(get("/api/lessons/lesson" + lesson.getId()))
+            status = mockMvc.perform(get("/api/lessons/lesson/" + lesson.getId()))
                     .andReturn()
                     .getResponse()
                     .getStatus();
